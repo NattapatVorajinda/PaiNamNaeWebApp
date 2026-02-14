@@ -1,5 +1,5 @@
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -146,7 +146,7 @@ model Vehicle {
   vehicleType   String
   color         String
   seatCapacity  Int
-  amenities     String[]
+  amenities     Json     @default("[]")
   photos        Json?    @db.Json
   isDefault     Boolean  @default(false)
   createdAt     DateTime @default(now())
@@ -171,14 +171,14 @@ model Route {
   departureTime   DateTime
   availableSeats  Int
   pricePerSeat    Float
-  conditions      String?
+  conditions      String?     @db.Text
   status          RouteStatus @default(AVAILABLE)
   cancelledAt     DateTime?
   cancelledBy     String?     // 'DRIVER' | 'ADMIN'
-  routePolyline String?
+  routePolyline   String?     @db.Text
   distanceMeters Int?
   durationSeconds Int?
-  routeSummary    String?
+  routeSummary    String?     @db.Text
   distance        String?
   duration        String?
   waypoints       Json?        @db.Json
