@@ -97,6 +97,14 @@ const adminDeleteBooking = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true, data: result });
 });
 
+const notifyPassengerArrival = asyncHandler(async (req, res) => {
+  const driverId = req.user.sub;
+  const { id } = req.params;
+
+  await bookingService.notifyPassengerArrival(id, driverId);
+  res.status(200).json({ success: true, message: 'Notification sent' });
+});
+
 module.exports = {
   adminListBookings,
   createBooking,
@@ -108,5 +116,6 @@ module.exports = {
   adminGetBookingById,
   adminCreateBooking,
   adminUpdateBooking,
-  adminDeleteBooking
+  adminDeleteBooking,
+  notifyPassengerArrival
 };

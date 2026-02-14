@@ -398,8 +398,10 @@
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useRuntimeConfig, useCookie } from '#app'
 import { useAuth } from '~/composables/useAuth'
+import { useToast } from '~/composables/useToast'
 
 const { token, user, logout } = useAuth()
+const { toast } = useToast()
 
 /* ====== เมนูบนสุดเดิม ====== */
 const isMobileMenuOpen = ref(false)
@@ -448,10 +450,13 @@ async function onBellClick() {
 }
 
 /** GET /notifications (ผู้ใช้ทั่วไป: แสดงทั้งหมด ไม่กรอง initiatedBy) */
-async function fetchUserNotifications() {
+const pollInterval = ref(null)
+
+/** GET /notifications (ผู้ใช้ทั่วไป: แสดงทั้งหมด ไม่กรอง initiatedBy) */
+async function fetchUserNotifications(isBackground = false) {
     try {
         if (!token.value) return
-        loading.value = true
+        if (!isBackground) loading.value = true
 
         const apiBase = useRuntimeConfig().public.apiBase || 'http://localhost:3000/api'
         const tk = useCookie('token')?.value || (process.client ? localStorage.getItem('token') : '')
@@ -463,18 +468,38 @@ async function fetchUserNotifications() {
         })
 
         const raw = Array.isArray(res?.data) ? res.data : []
-        notifications.value = raw.map(it => ({
+        const newNotifs = raw.map(it => ({
             id: it.id,
             title: it.title || '-',
             body: it.body || '',
             createdAt: it.createdAt || Date.now(),
             readAt: it.readAt || null
         }))
+
+        // ถ้าเป็นการ poll (background) ให้เช็คว่ามีแจ้งเตือนใหม่หรือไม่
+        if (isBackground && notifications.value.length > 0) {
+            const latestId = notifications.value[0].id
+            const brandNew = newNotifs.filter(n => n.id > latestId)
+            
+            brandNew.forEach(n => {
+                // แจ้งเตือนเฉพาะเรื่องสำคัญ "คนขับกำลังจะถึง"
+                if (n.title.includes('กำลังจะถึง') || n.body.includes('กำลังจะถึง')) {
+                   toast.info(n.title, n.body, 5000)
+                } else {
+                   // เรื่องอื่นๆ ก็แจ้งเตือนแบบธรรมดา
+                   toast.info(n.title, n.body, 3000)
+                }
+            })
+        }
+        
+        notifications.value = newNotifs
+
     } catch (e) {
         console.error(e)
-        notifications.value = []
+        // notifications.value = [] // Don't clear on error if polling
+        if (!isBackground) notifications.value = []
     } finally {
-        loading.value = false
+        if (!isBackground) loading.value = false
     }
 }
 
@@ -548,13 +573,20 @@ onMounted(() => {
     window.addEventListener('resize', handleResize)
     document.addEventListener('click', onClickOutside)
     document.addEventListener('keydown', onKey)
-    if (token.value) fetchUserNotifications()
+    if (token.value) {
+        fetchUserNotifications()
+        // Poll every 15 seconds
+        pollInterval.value = setInterval(() => {
+            if (token.value) fetchUserNotifications(true)
+        }, 15000)
+    }
 })
 
 onUnmounted(() => {
     window.removeEventListener('resize', handleResize)
     document.removeEventListener('click', onClickOutside)
     document.removeEventListener('keydown', onKey)
+    if (pollInterval.value) clearInterval(pollInterval.value)
 })
 
 /* ใส่ฟอนต์ Kanit แบบเดิม */

@@ -490,16 +490,44 @@ const adminDeleteBooking = async (id) => {
   });
 };
 
+const notifyPassengerArrival = async (id, driverId) => {
+  const booking = await prisma.booking.findUnique({
+    where: { id },
+    include: { route: true },
+  });
+
+  if (!booking) throw new ApiError(404, 'Booking not found');
+  if (booking.route.driverId !== driverId) {
+    throw new ApiError(403, 'Forbidden');
+  }
+  // Allow if confirmed
+  if (booking.status !== BookingStatus.CONFIRMED) {
+    throw new ApiError(400, 'Booking must be confirmed to notify arrival');
+  }
+
+  await prisma.notification.create({
+    data: {
+      userId: booking.passengerId,
+      type: 'BOOKING',
+      title: 'คนขับกำลังจะถึงแล้ว',
+      body: 'คนขับแจ้งว่ากำลังจะถึงจุดรับของคุณแล้ว โปรดเตรียมตัวให้พร้อม',
+      metadata: { kind: 'DRIVER_ARRIVING', bookingId: id, routeId: booking.route.id }
+    }
+  });
+
+  return { success: true };
+};
+
 module.exports = {
   searchBookingsAdmin,
   adminCreateBooking,
   createBooking,
   adminUpdateBooking,
-  adminCreateBooking,
   getMyBookings,
   getBookingById,
   updateBookingStatus,
   cancelBooking,
   deleteBooking,
-  adminDeleteBooking
+  adminDeleteBooking,
+  notifyPassengerArrival
 };

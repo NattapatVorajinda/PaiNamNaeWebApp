@@ -113,4 +113,13 @@ router.delete(
   bookingController.deleteBooking
 );
 
+// POST /bookings/:id/arrival
+router.post(
+  '/:id/arrival',
+  protect,
+  requireDriverVerified,
+  validate({ params: idParamSchema }),
+  bookingController.notifyPassengerArrival
+);
+
 module.exports = router;

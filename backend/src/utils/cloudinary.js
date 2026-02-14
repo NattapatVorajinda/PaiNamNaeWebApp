@@ -10,7 +10,7 @@ cloudinary.config({
 
 const uploadToCloudinary = (fileBuffer, folder) => {
     return new Promise((resolve, reject) => {
-        
+
         const uploadStream = cloudinary.uploader.upload_stream(
             {
                 folder: folder,
@@ -19,10 +19,10 @@ const uploadToCloudinary = (fileBuffer, folder) => {
             (error, result) => {
                 if (error) {
                     console.error("Cloudinary Upload Error:", error);
-                    
+
                     return reject(new ApiError(500, "Cloudinary upload failed."));
                 }
-                
+
                 resolve({ url: result.secure_url, public_id: result.public_id });
             }
         );

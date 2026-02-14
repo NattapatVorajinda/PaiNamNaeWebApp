@@ -135,17 +135,23 @@
                                                     <img :src="p.image" :alt="p.name"
                                                         class="object-cover w-12 h-12 rounded-full" />
                                                     <div class="flex-1">
-                                                        <div class="flex items-center">
-                                                            <span class="font-medium text-gray-900">{{ p.name }}</span>
-                                                            <div v-if="p.isVerified"
-                                                                class="relative group ml-1.5 flex items-center">
-                                                                <svg class="w-4 h-4 text-blue-600" viewBox="0 0 24 24"
-                                                                    fill="currentColor">
-                                                                    <path fill-rule="evenodd"
-                                                                        d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12c0 1.357-.6 2.573-1.549 3.397a4.49 4.49 0 01-1.307 3.498 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.07-.01l3.5-4.875z"
-                                                                        clip-rule="evenodd" />
-                                                                </svg>
+                                                        <div class="flex items-center justify-between">
+                                                            <div class="flex items-center">
+                                                                <span class="font-medium text-gray-900">{{ p.name }}</span>
+                                                                <div v-if="p.isVerified"
+                                                                    class="relative group ml-1.5 flex items-center">
+                                                                    <svg class="w-4 h-4 text-blue-600" viewBox="0 0 24 24"
+                                                                        fill="currentColor">
+                                                                        <path fill-rule="evenodd"
+                                                                            d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12c0 1.357-.6 2.573-1.549 3.397a4.49 4.49 0 01-1.307 3.498 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.07-.01l3.5-4.875z"
+                                                                            clip-rule="evenodd" />
+                                                                    </svg>
+                                                                </div>
                                                             </div>
+                                                            <button @click.stop="notifyArrival(p.id)"
+                                                                class="px-2 py-1 text-xs font-medium text-white transition-colors duration-200 bg-indigo-600 rounded hover:bg-indigo-700">
+                                                                แจ้งเตือนใกล้ถึง
+                                                            </button>
                                                         </div>
                                                         <div class="text-sm text-gray-600">
                                                             ที่นั่ง: {{ p.seats }}
@@ -625,6 +631,15 @@ async function fetchMyRoutes() {
         toast.error('เกิดข้อผิดพลาด', error?.data?.message || 'ไม่สามารถโหลดข้อมูลได้')
     } finally {
         isLoading.value = false
+    }
+}
+
+async function notifyArrival(bookingId) {
+    try {
+        await $api(`/bookings/${bookingId}/arrival`, { method: 'POST' })
+        toast.success('แจ้งเตือนแล้ว', 'ระบบได้ส่งการแจ้งเตือนไปยังผู้โดยสารเรียบร้อยแล้ว')
+    } catch (e) {
+        toast.error('เกิดข้อผิดพลาด', e?.data?.message || 'ไม่สามารถส่งการแจ้งเตือนได้')
     }
 }
 
