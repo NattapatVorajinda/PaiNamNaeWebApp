@@ -478,8 +478,13 @@ async function fetchUserNotifications(isBackground = false) {
 
         // ถ้าเป็นการ poll (background) ให้เช็คว่ามีแจ้งเตือนใหม่หรือไม่
         if (isBackground && notifications.value.length > 0) {
-            const latestId = notifications.value[0].id
-            const brandNew = newNotifs.filter(n => n.id > latestId)
+            // ใช้ createdAt เปรียบเทียบแทน id เพราะ cuid เป็น string เทียบ > ไม่ได้
+            const latestTime = new Date(notifications.value[0].createdAt).getTime()
+            const existingIds = new Set(notifications.value.map(n => n.id))
+            const brandNew = newNotifs.filter(n => {
+                const nTime = new Date(n.createdAt).getTime()
+                return nTime > latestTime || !existingIds.has(n.id)
+            })
             
             brandNew.forEach(n => {
                 // แจ้งเตือนเฉพาะเรื่องสำคัญ "คนขับกำลังจะถึง"
