@@ -4,12 +4,7 @@ const toasts = ref([])
 
 export function useToast() {
     const addToast = (toast) => {
-        const id = Date.now() + Math.random()
-        toasts.value.push({ ...toast, id })
-        // Auto-dismiss after duration (default 4s)
-        setTimeout(() => {
-            toasts.value = toasts.value.filter(t => t.id !== id)
-        }, toast.duration || 4000)
+        toasts.value.push({ ...toast, id: Date.now() })
     }
 
     const removeToast = (id) => {
