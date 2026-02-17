@@ -95,3 +95,10 @@ process.on('unhandledRejection', (err) => {
     console.error(err);
     process.exit(1);
 });
+
+
+app.get('/debug-db', (req, res) => {
+    // โชว์แค่ 10 ตัวแรกเพื่อความปลอดภัย
+    const url = process.env.DATABASE_URL || "NOT FOUND";
+    res.send(`DB URL Starts with: ${url.substring(0, 15)}...`);
+});
