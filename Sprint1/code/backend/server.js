@@ -16,11 +16,6 @@ const ensureAdmin = require('./src/bootstrap/ensureAdmin');
 const app = express();
 promClient.collectDefaultMetrics();
 
-app.get('/debug-db', (req, res) => {
-    // โชว์แค่ 10 ตัวแรกเพื่อความปลอดภัย
-    const url = process.env.DATABASE_URL || "NOT FOUND";
-    res.send(`DB URL Starts with: ${url.substring(0, 15)}...`);
-});
 
 app.use(helmet());
 
