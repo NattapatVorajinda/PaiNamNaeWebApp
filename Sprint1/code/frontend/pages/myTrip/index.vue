@@ -66,7 +66,22 @@
                                     <img :src="trip.driver.image" :alt="trip.driver.name"
                                         class="object-cover w-12 h-12 rounded-full" />
                                     <div class="flex-1">
-                                        <h5 class="font-medium text-gray-900">{{ trip.driver.name }}</h5>
+                                        <div class="flex items-center">
+                                            <h5 class="font-medium text-gray-900">{{ trip.driver.name }}</h5>
+                                            <div v-if="trip.driver.isVerified"
+                                                class="relative group ml-1.5 flex items-center">
+                                                <svg class="w-4 h-4 text-blue-600" viewBox="0 0 24 24"
+                                                    fill="currentColor">
+                                                    <path fill-rule="evenodd"
+                                                        d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12c0 1.357-.6 2.573-1.549 3.397a4.49 4.49 0 01-1.307 3.498 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.07-.01l3.5-4.875z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                                <span
+                                                    class="absolute px-2 py-1 mb-2 text-xs text-white transition-opacity -translate-x-1/2 bg-gray-800 rounded-md opacity-0 pointer-events-none bottom-full left-1/2 w-max group-hover:opacity-100">
+                                                    ผู้ขับขี่ยืนยันตัวตนแล้ว
+                                                </span>
+                                            </div>
+                                        </div>
                                         <div class="flex items-center">
                                             <div class="flex text-sm text-yellow-400">
                                                 <span>
@@ -76,6 +91,47 @@
                                             </div>
                                             <span class="ml-2 text-sm text-gray-600">{{ trip.driver.rating }} ({{
                                                 trip.driver.reviews }} รีวิว)</span>
+                                        </div>
+                                        <!-- ข้อมูลติดต่อคนขับ -->
+                                        <div class="mt-1 space-y-0.5">
+                                            <div v-if="trip.driver.email" class="flex items-center text-xs text-gray-500">
+                                                <svg class="w-3.5 h-3.5 mr-1 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                                </svg>
+                                                <a :href="`mailto:${trip.driver.email}`"
+                                                    class="text-blue-600 hover:underline" @click.stop>
+                                                    {{ trip.driver.email }}
+                                                </a>
+                                                <button
+                                                    class="inline-flex items-center ml-1 text-gray-500 rounded hover:text-gray-700 hover:bg-gray-100 focus:outline-none"
+                                                    title="คัดลอกอีเมล" @click.stop="copyToClipboard(trip.driver.email)">
+                                                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M8 7h8a2 2 0 012 2v8a2 2 0 01-2 2H8a2 2 0 01-2-2V9a2 2 0 012-2z" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M16 7V5a2 2 0 00-2-2H8a2 2 0 00-2 2v2" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <div v-if="trip.driver.phoneNumber" class="flex items-center text-xs text-gray-500">
+                                                <svg class="w-3.5 h-3.5 mr-1 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                                </svg>
+                                                <a :href="`tel:${trip.driver.phoneNumber}`"
+                                                    class="text-blue-600 hover:underline" @click.stop>
+                                                    {{ trip.driver.phoneNumber }}
+                                                </a>
+                                                <button
+                                                    class="inline-flex items-center ml-1 text-gray-500 rounded hover:text-gray-700 hover:bg-gray-100 focus:outline-none"
+                                                    title="คัดลอกเบอร์โทร" @click.stop="copyToClipboard(trip.driver.phoneNumber)">
+                                                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M8 7h8a2 2 0 012 2v8a2 2 0 01-2 2H8a2 2 0 01-2-2V9a2 2 0 012-2z" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M16 7V5a2 2 0 00-2-2H8a2 2 0 00-2 2v2" />
+                                                    </svg>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="text-right">
@@ -316,6 +372,9 @@ async function fetchMyTrips() {
                 image:
                     b.route.driver.profilePicture ||
                     `https://ui-avatars.com/api/?name=${encodeURIComponent(b.route.driver.firstName || 'U')}&background=random&size=64`,
+                email: b.route.driver.email || '',
+                phoneNumber: b.route.driver.phoneNumber || '',
+                isVerified: !!b.route.driver.isVerified,
                 rating: 4.5,
                 reviews: Math.floor(Math.random() * 50) + 5
             }
@@ -671,6 +730,15 @@ async function submitCancel() {
         toast.error('เกิดข้อผิดพลาด', err?.data?.message || 'ไม่สามารถยกเลิกได้')
     } finally {
         isSubmittingCancel.value = false
+    }
+}
+
+const copyToClipboard = async (text) => {
+    try {
+        await navigator.clipboard.writeText(text)
+        toast.success('คัดลอกแล้ว', text)
+    } catch (e) {
+        toast.error('คัดลอกไม่สำเร็จ', 'ลองใหม่อีกครั้ง')
     }
 }
 
