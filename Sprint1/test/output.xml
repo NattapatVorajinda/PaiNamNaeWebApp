@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.4.1 (Python 3.14.2 on win32)" generated="2026-02-18T23:42:48.679790" rpa="false" schemaversion="5">
+<suite id="s1" name="Test" source="D:\PaiNamNaeWebApp\sprint1\test\test.robot">
+<test id="s1-t1" name="TC-001 Report Incident Multiple Problems" line="11">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2026-02-18T23:42:48.958575" level="INFO">Opening browser 'Chrome' to base url 'https://cs-se4g5-68.cpkku.com'.</msg>
+<arg>${URL}</arg>
+<arg>${BROWSER}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2026-02-18T23:42:48.958221" elapsed="1.399672"/>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" start="2026-02-18T23:42:50.358595" elapsed="0.029688"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>เข้าสู่ระบบ</arg>
+<arg>10s</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" start="2026-02-18T23:42:50.388929" elapsed="0.114041"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-02-18T23:42:50.503889" level="INFO">Clicking element 'xpath=//a[contains(.,'เข้าสู่ระบบ')]'.</msg>
+<arg>xpath=//a[contains(.,'เข้าสู่ระบบ')]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-02-18T23:42:50.503317" elapsed="0.165120"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//input[contains(@placeholder,'อีเมล')]</arg>
+<arg>15s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-02-18T23:42:50.669081" elapsed="0.046737"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-02-18T23:42:50.716525" level="INFO">Typing text 'test@kkumail.com' into text field 'xpath=//input[contains(@placeholder,'อีเมล')]'.</msg>
+<arg>xpath=//input[contains(@placeholder,'อีเมล')]</arg>
+<arg>${EMAIL}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-02-18T23:42:50.716205" elapsed="0.107853"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-02-18T23:42:50.824965" level="INFO">Typing text '12345678' into text field 'xpath=//input[contains(@placeholder,'รหัสผ่าน')]'.</msg>
+<arg>xpath=//input[contains(@placeholder,'รหัสผ่าน')]</arg>
+<arg>${PASSWORD}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-02-18T23:42:50.824437" elapsed="0.083071"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-02-18T23:42:50.907998" level="INFO">Clicking element 'xpath=//button[contains(.,'เข้าสู่ระบบ')]'.</msg>
+<arg>xpath=//button[contains(.,'เข้าสู่ระบบ')]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-02-18T23:42:50.907793" elapsed="0.066459"/>
+</kw>
+<kw name="Wait Until Page Does Not Contain" owner="SeleniumLibrary">
+<arg>เข้าสู่ระบบ</arg>
+<arg>10s</arg>
+<doc>Waits until ``text`` disappears from the current page.</doc>
+<status status="PASS" start="2026-02-18T23:42:50.974564" elapsed="1.056487"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-02-18T23:42:55.032574" level="INFO">Slept 3 seconds.</msg>
+<arg>3s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-02-18T23:42:52.031558" elapsed="3.001162"/>
+</kw>
+<kw name="Capture Page Screenshot" owner="SeleniumLibrary">
+<msg time="2026-02-18T23:42:55.194590" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-4.png"&gt;&lt;img src="selenium-screenshot-4.png" width="800px"&gt;&lt;/a&gt;</msg>
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<status status="PASS" start="2026-02-18T23:42:55.033150" elapsed="0.161551"/>
+</kw>
+<status status="PASS" start="2026-02-18T23:42:48.957059" elapsed="6.237991"/>
+</test>
+<test id="s1-t2" name="TC-002 Report" line="33">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//button[@aria-haspopup='true']</arg>
+<arg>15s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-02-18T23:42:55.196176" elapsed="0.018769"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-02-18T23:42:55.215400" level="INFO">Clicking element 'xpath=//button[@aria-haspopup='true']'.</msg>
+<arg>xpath=//button[@aria-haspopup='true']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-02-18T23:42:55.215221" elapsed="0.064209"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-02-18T23:42:56.280636" level="INFO">Slept 1 second.</msg>
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-02-18T23:42:55.279984" elapsed="1.000918"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//a[@href='/notifications']</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-02-18T23:42:56.281819" elapsed="0.017835"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-02-18T23:42:56.300222" level="INFO">Clicking element 'xpath=//a[@href='/notifications']'.</msg>
+<arg>xpath=//a[@href='/notifications']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-02-18T23:42:56.299945" elapsed="0.057581"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>การแจ้งเตือน</arg>
+<arg>15s</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" start="2026-02-18T23:42:56.358003" elapsed="0.031157"/>
+</kw>
+<kw name="Capture Page Screenshot" owner="SeleniumLibrary">
+<msg time="2026-02-18T23:42:56.530534" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-5.png"&gt;&lt;img src="selenium-screenshot-5.png" width="800px"&gt;&lt;/a&gt;</msg>
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<status status="PASS" start="2026-02-18T23:42:56.389582" elapsed="0.141077"/>
+</kw>
+<status status="PASS" start="2026-02-18T23:42:55.195745" elapsed="1.335229"/>
+</test>
+<test id="s1-t3" name="TC-003 Check Notification Messages" line="44">
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>รายการแจ้งเตือน</arg>
+<arg>10s</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" start="2026-02-18T23:42:56.532286" elapsed="0.012569"/>
+</kw>
+<kw name="Page Should Contain" owner="SeleniumLibrary">
+<msg time="2026-02-18T23:42:56.559449" level="INFO">Current page contains text 'การแจ้งเตือน'.</msg>
+<arg>การแจ้งเตือน</arg>
+<doc>Verifies that current page contains ``text``.</doc>
+<status status="PASS" start="2026-02-18T23:42:56.545220" elapsed="0.014411"/>
+</kw>
+<kw name="Page Should Contain" owner="SeleniumLibrary">
+<msg time="2026-02-18T23:42:56.575477" level="INFO">Current page contains text 'รายการแจ้งเตือน'.</msg>
+<arg>รายการแจ้งเตือน</arg>
+<doc>Verifies that current page contains ``text``.</doc>
+<status status="PASS" start="2026-02-18T23:42:56.560376" elapsed="0.015213"/>
+</kw>
+<kw name="Capture Page Screenshot" owner="SeleniumLibrary">
+<msg time="2026-02-18T23:42:56.820891" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-6.png"&gt;&lt;img src="selenium-screenshot-6.png" width="800px"&gt;&lt;/a&gt;</msg>
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<status status="PASS" start="2026-02-18T23:42:56.575904" elapsed="0.245084"/>
+</kw>
+<status status="PASS" start="2026-02-18T23:42:56.531755" elapsed="0.289522"/>
+</test>
+<status status="PASS" start="2026-02-18T23:42:48.681524" elapsed="8.140653"/>
+</suite>
+<statistics>
+<total>
+<stat pass="3" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Test" id="s1" pass="3" fail="0" skip="0">Test</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
