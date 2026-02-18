@@ -12,7 +12,9 @@ const baseInclude = {
       lastName: true,
       gender: true,
       profilePicture: true,
-      isVerified: true
+      isVerified: true,
+      email: true,
+      phoneNumber: true
     }
   },
   vehicle: {
@@ -222,7 +224,7 @@ const searchRoutesByEndpointProximity = async (opts = {}) => {
     ? await prisma.route.findMany({
       where: { id: { in: idList } },
       include: {
-        driver: { select: { id: true, firstName: true, lastName: true, gender: true, profilePicture: true, isVerified: true } },
+        driver: { select: { id: true, firstName: true, lastName: true, gender: true, profilePicture: true, isVerified: true, email: true, phoneNumber: true } },
         vehicle: { select: { vehicleModel: true, vehicleType: true, photos: true, amenities: true } },
       },
     })
@@ -275,7 +277,8 @@ const getMyRoutes = async (driverId) => {
               lastName: true,
               profilePicture: true,
               isVerified: true,
-              email: true
+              email: true,
+              phoneNumber: true
             }
           }
         }

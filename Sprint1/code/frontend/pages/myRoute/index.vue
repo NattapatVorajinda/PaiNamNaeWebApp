@@ -155,11 +155,46 @@
                                                         </div>
                                                         <div class="text-sm text-gray-600">
                                                             ที่นั่ง: {{ p.seats }}
-                                                            <span v-if="p.email" class="mx-2 text-gray-300">|</span>
-                                                            <a v-if="p.email" :href="`mailto:${p.email}`"
-                                                                class="text-blue-600 hover:underline" @click.stop>
-                                                                {{ p.email }}
-                                                            </a>
+                                                        </div>
+                                                        <div class="mt-0.5 space-y-0.5">
+                                                            <div v-if="p.email" class="flex items-center text-xs text-gray-500">
+                                                                <svg class="w-3.5 h-3.5 mr-1 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                                                </svg>
+                                                                <a :href="`mailto:${p.email}`"
+                                                                    class="text-blue-600 hover:underline" @click.stop>
+                                                                    {{ p.email }}
+                                                                </a>
+                                                                <button
+                                                                    class="inline-flex items-center ml-1 text-gray-500 rounded hover:text-gray-700 hover:bg-gray-100 focus:outline-none"
+                                                                    title="คัดลอกอีเมล" @click.stop="copyEmail(p.email)">
+                                                                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                            d="M8 7h8a2 2 0 012 2v8a2 2 0 01-2 2H8a2 2 0 01-2-2V9a2 2 0 012-2z" />
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                            d="M16 7V5a2 2 0 00-2-2H8a2 2 0 00-2 2v2" />
+                                                                    </svg>
+                                                                </button>
+                                                            </div>
+                                                            <div v-if="p.phoneNumber" class="flex items-center text-xs text-gray-500">
+                                                                <svg class="w-3.5 h-3.5 mr-1 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                                                </svg>
+                                                                <a :href="`tel:${p.phoneNumber}`"
+                                                                    class="text-blue-600 hover:underline" @click.stop>
+                                                                    {{ p.phoneNumber }}
+                                                                </a>
+                                                                <button
+                                                                    class="inline-flex items-center ml-1 text-gray-500 rounded hover:text-gray-700 hover:bg-gray-100 focus:outline-none"
+                                                                    title="คัดลอกเบอร์โทร" @click.stop="copyEmail(p.phoneNumber)">
+                                                                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                            d="M8 7h8a2 2 0 012 2v8a2 2 0 01-2 2H8a2 2 0 01-2-2V9a2 2 0 012-2z" />
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                            d="M16 7V5a2 2 0 00-2-2H8a2 2 0 00-2 2v2" />
+                                                                    </svg>
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -257,6 +292,29 @@
                                                 class="inline-flex items-center ml-1 text-gray-500 rounded hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                 title="คัดลอกอีเมล" aria-label="คัดลอกอีเมล"
                                                 @click.stop="copyEmail(trip.passenger.email)">
+                                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M8 7h8a2 2 0 012 2v8a2 2 0 01-2 2H8a2 2 0 01-2-2V9a2 2 0 012-2z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M16 7V5a2 2 0 00-2-2H8a2 2 0 00-2 2v2" />
+                                                </svg>
+                                            </button>
+                                        </div>
+
+                                        <div v-if="trip.passenger.phoneNumber" class="flex items-center mt-0.5">
+                                            <p class="text-xs text-gray-500">
+                                                โทร:
+                                                <a :href="`tel:${trip.passenger.phoneNumber}`"
+                                                    class="text-blue-600 hover:underline" @click.stop>
+                                                    {{ trip.passenger.phoneNumber }}
+                                                </a>
+                                            </p>
+                                            <button
+                                                class="inline-flex items-center ml-1 text-gray-500 rounded hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                title="คัดลอกเบอร์โทร" aria-label="คัดลอกเบอร์โทร"
+                                                @click.stop="copyEmail(trip.passenger.phoneNumber)">
                                                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"
                                                     stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -544,6 +602,7 @@ async function fetchMyRoutes() {
                         name: `${b.passenger?.firstName || ''} ${b.passenger?.lastName || ''}`.trim() || 'ผู้โดยสาร',
                         image: b.passenger?.profilePicture || `https://ui-avatars.com/api/?name=${encodeURIComponent(b.passenger?.firstName || 'P')}&background=random&size=64`,
                         email: b.passenger?.email || '',
+                        phoneNumber: b.passenger?.phoneNumber || '',
                         isVerified: !!b.passenger?.isVerified,
                         rating: 4.5,
                         reviews: Math.floor(Math.random() * 50) + 5,
@@ -594,6 +653,7 @@ async function fetchMyRoutes() {
                     name: `${b.passenger?.firstName || ''} ${b.passenger?.lastName || ''}`.trim() || 'ผู้โดยสาร',
                     image: b.passenger?.profilePicture || `https://ui-avatars.com/api/?name=${encodeURIComponent(b.passenger?.firstName || 'P')}&background=random&size=64`,
                     email: b.passenger?.email || '',
+                    phoneNumber: b.passenger?.phoneNumber || '',
                     isVerified: !!b.passenger?.isVerified,
                     rating: 4.5,
                     reviews: Math.floor(Math.random() * 50) + 5,
