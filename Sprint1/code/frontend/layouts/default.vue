@@ -401,7 +401,7 @@ import { useAuth } from '~/composables/useAuth'
 import { useToast } from '~/composables/useToast'
 
 const { token, user, logout } = useAuth()
-const { toast } = useToast()
+const { toasts, removeToast, toast } = useToast()
 
 /* ====== เมนูบนสุดเดิม ====== */
 const isMobileMenuOpen = ref(false)
@@ -487,12 +487,12 @@ async function fetchUserNotifications(isBackground = false) {
             })
             
             brandNew.forEach(n => {
-                // แจ้งเตือนเฉพาะเรื่องสำคัญ "คนขับกำลังจะถึง"
+                // แจ้งเตือนเฉพาะเรื่องสำคัญ "คนขับกำลังจะถึง" → ค้างไว้ 15 นาที
                 if (n.title.includes('กำลังจะถึง') || n.body.includes('กำลังจะถึง')) {
-                   toast.info(n.title, n.body, 5000)
+                   toast.info(n.title, n.body, 900000)
                 } else {
                    // เรื่องอื่นๆ ก็แจ้งเตือนแบบธรรมดา
-                   toast.info(n.title, n.body, 3000)
+                   toast.info(n.title, n.body, 5000)
                 }
             })
         }
@@ -580,10 +580,10 @@ onMounted(() => {
     document.addEventListener('keydown', onKey)
     if (token.value) {
         fetchUserNotifications()
-        // Poll every 15 seconds
+        // Poll every 5 seconds for faster notification delivery
         pollInterval.value = setInterval(() => {
             if (token.value) fetchUserNotifications(true)
-        }, 15000)
+        }, 5000)
     }
 })
 
@@ -648,5 +648,21 @@ useHead({
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+
+/* Toast animation */
+.toast-enter-active {
+    animation: toast-in 0.35s ease;
+}
+.toast-leave-active {
+    animation: toast-out 0.25s ease forwards;
+}
+@keyframes toast-in {
+    from { opacity: 0; transform: translateX(80px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes toast-out {
+    from { opacity: 1; transform: translateX(0); }
+    to   { opacity: 0; transform: translateX(80px); }
 }
 </style>
