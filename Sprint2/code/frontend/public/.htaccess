@@ -1,0 +1,11 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # ถ้าเป็นไฟล์หรือโฟลเดอร์จริงอยู่แล้ว ไม่ต้อง rewrite
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+
+  # ส่งทุก request ไป index.html (SPA fallback)
+  RewriteRule ^(.*)$ /index.html [L]
+</IfModule>
