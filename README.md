@@ -1,3 +1,15 @@
+# Group Members - SoftwareEngineerSec4_5 
+
+| Student ID | Name | Github Username |
+|------------|------|------------------|
+| 663380601-7 | นายนพชาติ น้อยนารถ |[@Nophachat](https://github.com/Nophachat)|
+| 663380390-4 | นายปาณวัฒน์ จันทร์ทองหลาง |[@panawatc](https://github.com/panawatc)|
+| 663380617-2 | นางสาวเกษราภรณ์ รุ่งโรจน์มุกดากุล |[@ZHanNp](https://github.com/ZHanNp)|
+| 663380379-2 | นายญานวิทย์ พิชญกุลมงคล |[@RhythmSarino](https://github.com/RhythmSarino)|
+| 663380406-5 | นางสาวสิตานัน เอกสัจจา |[@Ching-13](https://github.com/Ching-13)|
+| 663380383-1 | นายณัฐภัทร วรจินดา |[@NattapatVorajinda](https://github.com/NattapatVorajinda)|
+| 663380045-1 | นายปิติ มูลเทพพิชัย |[@piti](https://github.com/piti)|
+
 # Pai Nam Nae - A Safe Ride Sharing App
 
 <!-- A safe ride-sharing application with a **Nuxt.js** frontend and **Express.js** backend, powered by **Prisma** ORM and **PostgreSQL**. -->

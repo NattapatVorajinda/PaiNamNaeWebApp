@@ -1,0 +1,983 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.4.1 (Python 3.10.8 on win32)" generated="2026-02-19T02:07:22.873648" rpa="false" schemaversion="5">
+<suite id="s1" name="07 Pickup Notification Api" source="C:\sfn03\PaiNamNaeWebApp\Sprint1\test2\api\07_pickup_notification_api.robot">
+<kw name="Setup Pickup Notification API Tests" type="SETUP">
+<kw name="Create API Session" owner="common">
+<kw name="Create Session" owner="RequestsLibrary">
+<arg>painamnae</arg>
+<arg>${BASE_URL}</arg>
+<arg>verify=${False}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.375350" elapsed="0.000000"/>
+</kw>
+<doc>สร้าง HTTP session สำหรับเรียก API</doc>
+<status status="PASS" start="2026-02-19T02:07:23.375350" elapsed="0.001026"/>
+</kw>
+<kw name="Login As Admin" owner="common">
+<kw name="Login And Get Token By Username" owner="common">
+<kw name="Create API Session" owner="common">
+<kw name="Create Session" owner="RequestsLibrary">
+<arg>painamnae</arg>
+<arg>${BASE_URL}</arg>
+<arg>verify=${False}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.377378" elapsed="0.000000"/>
+</kw>
+<doc>สร้าง HTTP session สำหรับเรียก API</doc>
+<status status="PASS" start="2026-02-19T02:07:23.376376" elapsed="0.001002"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<var>${body}</var>
+<arg>username=${username}</arg>
+<arg>password=${password}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.377378" elapsed="0.000998"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<var>${response}</var>
+<arg>painamnae</arg>
+<arg>/auth/login</arg>
+<arg>json=${body}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.378376" elapsed="0.000998"/>
+</kw>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.379374" elapsed="0.000000"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<var>${json}</var>
+<arg>${response.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.380375" elapsed="0.000000"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<var>${token}</var>
+<arg>${json}[data][token]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.380375" elapsed="0.001000"/>
+</kw>
+<return>
+<value>${token}</value>
+<status status="PASS" start="2026-02-19T02:07:23.381375" elapsed="0.000000"/>
+</return>
+<var>${token}</var>
+<arg>${ADMIN_USERNAME}</arg>
+<arg>${ADMIN_PASSWORD}</arg>
+<doc>เข้าสู่ระบบด้วย username แล้วคืน JWT token</doc>
+<status status="PASS" start="2026-02-19T02:07:23.376376" elapsed="0.004999"/>
+</kw>
+<kw name="Create Authenticated Session" owner="common">
+<kw name="Create Dictionary" owner="BuiltIn">
+<var>${headers}</var>
+<arg>Authorization=Bearer ${token}</arg>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.382376" elapsed="0.000000"/>
+</kw>
+<kw name="Create Session" owner="RequestsLibrary">
+<arg>painamnae_auth</arg>
+<arg>${BASE_URL}</arg>
+<arg>headers=${headers}</arg>
+<arg>verify=${False}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.383358" elapsed="0.000000"/>
+</kw>
+<arg>${token}</arg>
+<doc>สร้าง session พร้อม JWT token</doc>
+<status status="PASS" start="2026-02-19T02:07:23.381375" elapsed="0.001983"/>
+</kw>
+<return>
+<value>${token}</value>
+<status status="PASS" start="2026-02-19T02:07:23.383358" elapsed="0.000000"/>
+</return>
+<doc>เข้าสู่ระบบด้วย Admin แล้วสร้าง Authenticated Session</doc>
+<status status="PASS" start="2026-02-19T02:07:23.376376" elapsed="0.006982"/>
+</kw>
+<doc>เตรียมข้อมูล URLs และติดตั้ง session</doc>
+<status status="PASS" start="2026-02-19T02:07:23.373842" elapsed="0.009516"/>
+</kw>
+<test id="s1-t1" name="TC-API-NOTIFY-001 Admin Creates Pickup Notification" line="78">
+<kw name="Set Variable" owner="BuiltIn">
+<var>${passenger_id}</var>
+<arg>65f0a9b7c1d2e3f4g5h6i7j8</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.385377" elapsed="0.000536"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<var>${driver_name}</var>
+<arg>Somchai Lee</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.385913" elapsed="0.000522"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<var>${vehicle_info}</var>
+<arg>licensePlate=กก9999กรุงเทพฯ</arg>
+<arg>color=แดง</arg>
+<arg>model=Honda Civic</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.386435" elapsed="0.000000"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<var>${estimated_time}</var>
+<arg>5</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.387451" elapsed="0.000000"/>
+</kw>
+<kw name="Create Pickup Notification For Passenger">
+<kw name="Create Dictionary" owner="BuiltIn">
+<var>${payload}</var>
+<arg>userId=${passenger_id}</arg>
+<arg>type=PICKUP_NOTIFICATION</arg>
+<arg>title=คนขับกำลังมาถึง</arg>
+<arg>message=${driver_name} กำลังมาถึงเพื่อรับคุณ โดยคาดว่าจะถึงในประมาณ ${estimated_time} นาที</arg>
+<arg>driverName=${driver_name}</arg>
+<arg>vehicleInfo=${vehicle_info}</arg>
+<arg>priority=high</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.389457" elapsed="0.000000"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<var>${response}</var>
+<arg>painamnae_auth</arg>
+<arg>/notifications</arg>
+<arg>json=${payload}</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.390457" elapsed="0.000000"/>
+</kw>
+<return>
+<value>${response}</value>
+<status status="PASS" start="2026-02-19T02:07:23.390457" elapsed="0.000000"/>
+</return>
+<var>${response}</var>
+<arg>${passenger_id}</arg>
+<arg>${driver_name}</arg>
+<arg>${vehicle_info}</arg>
+<arg>${estimated_time}</arg>
+<doc>สร้างแจ้งเตือน pickup สำหรับผู้โดยสาร</doc>
+<status status="PASS" start="2026-02-19T02:07:23.388451" elapsed="0.002006"/>
+</kw>
+<kw name="Response Status Should Be" owner="common">
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>${expected_status}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.390457" elapsed="0.000993"/>
+</kw>
+<arg>${response}</arg>
+<arg>any</arg>
+<doc>ตรวจสอบ HTTP status code</doc>
+<status status="PASS" start="2026-02-19T02:07:23.390457" elapsed="0.000993"/>
+</kw>
+<kw name="Get Response JSON" owner="common">
+<kw name="Set Variable" owner="BuiltIn">
+<var>${json}</var>
+<arg>${response.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.392452" elapsed="0.000000"/>
+</kw>
+<return>
+<value>${json}</value>
+<status status="PASS" start="2026-02-19T02:07:23.392452" elapsed="0.000000"/>
+</return>
+<var>${json}</var>
+<arg>${response}</arg>
+<doc>แปลง response เป็น JSON</doc>
+<status status="PASS" start="2026-02-19T02:07:23.391450" elapsed="0.001002"/>
+</kw>
+<kw name="Should Contain" owner="BuiltIn">
+<arg>${response.text}</arg>
+<arg>PICKUP_NOTIFICATION|มาถึง|คนขับ</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.392452" elapsed="0.000000"/>
+</kw>
+<doc>ทดสอบว่า Admin สามารถสร้างแจ้งเตือน pickup สำหรับผู้โดยสาร
+Expected: HTTP 201 หรือ 200
+Response ประกอบด้วย: notification ID, type, message, driver info</doc>
+<tag>api</tag>
+<tag>critical</tag>
+<tag>notification</tag>
+<tag>pickup</tag>
+<tag>positive</tag>
+<tag>smoke</tag>
+<status status="PASS" start="2026-02-19T02:07:23.383358" elapsed="0.010132"/>
+</test>
+<test id="s1-t2" name="TC-API-NOTIFY-002 Passenger Can Retrieve Pickup Notifications" line="100">
+<kw name="Login As Admin" owner="common">
+<kw name="Login And Get Token By Username" owner="common">
+<kw name="Create API Session" owner="common">
+<kw name="Create Session" owner="RequestsLibrary">
+<arg>painamnae</arg>
+<arg>${BASE_URL}</arg>
+<arg>verify=${False}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.396574" elapsed="0.000000"/>
+</kw>
+<doc>สร้าง HTTP session สำหรับเรียก API</doc>
+<status status="PASS" start="2026-02-19T02:07:23.396574" elapsed="0.000000"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<var>${body}</var>
+<arg>username=${username}</arg>
+<arg>password=${password}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.396574" elapsed="0.001033"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<var>${response}</var>
+<arg>painamnae</arg>
+<arg>/auth/login</arg>
+<arg>json=${body}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.397607" elapsed="0.000000"/>
+</kw>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.398575" elapsed="0.000000"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<var>${json}</var>
+<arg>${response.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.398575" elapsed="0.000000"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<var>${token}</var>
+<arg>${json}[data][token]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.398575" elapsed="0.000000"/>
+</kw>
+<return>
+<value>${token}</value>
+<status status="PASS" start="2026-02-19T02:07:23.398575" elapsed="0.000000"/>
+</return>
+<var>${token}</var>
+<arg>${ADMIN_USERNAME}</arg>
+<arg>${ADMIN_PASSWORD}</arg>
+<doc>เข้าสู่ระบบด้วย username แล้วคืน JWT token</doc>
+<status status="PASS" start="2026-02-19T02:07:23.396574" elapsed="0.002001"/>
+</kw>
+<kw name="Create Authenticated Session" owner="common">
+<kw name="Create Dictionary" owner="BuiltIn">
+<var>${headers}</var>
+<arg>Authorization=Bearer ${token}</arg>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.399585" elapsed="0.000997"/>
+</kw>
+<kw name="Create Session" owner="RequestsLibrary">
+<arg>painamnae_auth</arg>
+<arg>${BASE_URL}</arg>
+<arg>headers=${headers}</arg>
+<arg>verify=${False}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.400582" elapsed="0.000000"/>
+</kw>
+<arg>${token}</arg>
+<doc>สร้าง session พร้อม JWT token</doc>
+<status status="PASS" start="2026-02-19T02:07:23.399585" elapsed="0.001996"/>
+</kw>
+<return>
+<value>${token}</value>
+<status status="PASS" start="2026-02-19T02:07:23.401581" elapsed="0.000000"/>
+</return>
+<doc>เข้าสู่ระบบด้วย Admin แล้วสร้าง Authenticated Session</doc>
+<status status="PASS" start="2026-02-19T02:07:23.395461" elapsed="0.006120"/>
+</kw>
+<kw name="Get My Notifications">
+<kw name="GET On Session" owner="RequestsLibrary">
+<var>${response}</var>
+<arg>painamnae_auth</arg>
+<arg>/notifications</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.402583" elapsed="0.000000"/>
+</kw>
+<return>
+<value>${response}</value>
+<status status="PASS" start="2026-02-19T02:07:23.402583" elapsed="0.000000"/>
+</return>
+<var>${response}</var>
+<doc>ดูแจ้งเตือนของตัวเอง</doc>
+<status status="PASS" start="2026-02-19T02:07:23.401581" elapsed="0.001002"/>
+</kw>
+<kw name="Response Status Should Be" owner="common">
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>${expected_status}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.403591" elapsed="0.000000"/>
+</kw>
+<arg>${response}</arg>
+<arg>${HTTP_OK}</arg>
+<doc>ตรวจสอบ HTTP status code</doc>
+<status status="PASS" start="2026-02-19T02:07:23.402583" elapsed="0.001008"/>
+</kw>
+<kw name="Get Response JSON" owner="common">
+<kw name="Set Variable" owner="BuiltIn">
+<var>${json}</var>
+<arg>${response.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.404593" elapsed="0.001001"/>
+</kw>
+<return>
+<value>${json}</value>
+<status status="PASS" start="2026-02-19T02:07:23.405594" elapsed="0.000000"/>
+</return>
+<var>${json}</var>
+<arg>${response}</arg>
+<doc>แปลง response เป็น JSON</doc>
+<status status="PASS" start="2026-02-19T02:07:23.404593" elapsed="0.001001"/>
+</kw>
+<kw name="Dictionary Should Contain Key" owner="Collections">
+<arg>${json}</arg>
+<arg>data</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.405594" elapsed="0.000000"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<var>${notifications}</var>
+<arg>${json}[data]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.406134" elapsed="0.000000"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<arg>ผู้โดยสารมีแจ้งเตือน ${notifications}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.406134" elapsed="0.000000"/>
+</kw>
+<doc>ทดสอบว่าผู้โดยสารสามารถดูแจ้งเตือน pickup ของตัวเอง
+Expected: HTTP 200
+Response ประกอบด้วยรายการแจ้งเตือน และค่อน pickup notifications</doc>
+<tag>api</tag>
+<tag>notification</tag>
+<tag>pickup</tag>
+<tag>positive</tag>
+<tag>smoke</tag>
+<status status="PASS" start="2026-02-19T02:07:23.393490" elapsed="0.012644"/>
+</test>
+<test id="s1-t3" name="TC-API-NOTIFY-003 Pickup Notification Contains Driver Info" line="119">
+<kw name="Get My Notifications">
+<kw name="GET On Session" owner="RequestsLibrary">
+<var>${response}</var>
+<arg>painamnae_auth</arg>
+<arg>/notifications</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.410152" elapsed="0.000000"/>
+</kw>
+<return>
+<value>${response}</value>
+<status status="PASS" start="2026-02-19T02:07:23.411131" elapsed="0.000000"/>
+</return>
+<var>${response}</var>
+<doc>ดูแจ้งเตือนของตัวเอง</doc>
+<status status="PASS" start="2026-02-19T02:07:23.410152" elapsed="0.000979"/>
+</kw>
+<kw name="Response Status Should Be" owner="common">
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>${expected_status}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.411131" elapsed="0.000000"/>
+</kw>
+<arg>${response}</arg>
+<arg>${HTTP_OK}</arg>
+<doc>ตรวจสอบ HTTP status code</doc>
+<status status="PASS" start="2026-02-19T02:07:23.411131" elapsed="0.000000"/>
+</kw>
+<kw name="Get Response JSON" owner="common">
+<kw name="Set Variable" owner="BuiltIn">
+<var>${json}</var>
+<arg>${response.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.412667" elapsed="0.000000"/>
+</kw>
+<return>
+<value>${json}</value>
+<status status="PASS" start="2026-02-19T02:07:23.412667" elapsed="0.000000"/>
+</return>
+<var>${json}</var>
+<arg>${response}</arg>
+<doc>แปลง response เป็น JSON</doc>
+<status status="PASS" start="2026-02-19T02:07:23.411131" elapsed="0.001536"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<var>${notifications}</var>
+<arg>${json}[data]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.412667" elapsed="0.000000"/>
+</kw>
+<for flavor="IN">
+<iter>
+<kw name="Log" owner="BuiltIn">
+<arg>ตรวจสอบแจ้งเตือน: ${notif}[id]</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.413703" elapsed="0.000000"/>
+</kw>
+<kw name="Run Keyword And Return Status" owner="BuiltIn">
+<kw name="Dictionary Should Contain Key" owner="Collections">
+<arg>${notif}</arg>
+<arg>type</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.413703" elapsed="0.000000"/>
+</kw>
+<var>${has_type}</var>
+<arg>Dictionary Should Contain Key</arg>
+<arg>${notif}</arg>
+<arg>type</arg>
+<doc>Runs the specified keyword and returns the status as a Boolean value.</doc>
+<status status="PASS" start="2026-02-19T02:07:23.413703" elapsed="0.000000"/>
+</kw>
+<kw name="Run Keyword And Return Status" owner="BuiltIn">
+<kw name="Dictionary Should Contain Key" owner="Collections">
+<arg>${notif}</arg>
+<arg>message</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.414705" elapsed="0.000000"/>
+</kw>
+<var>${has_message}</var>
+<arg>Dictionary Should Contain Key</arg>
+<arg>${notif}</arg>
+<arg>message</arg>
+<doc>Runs the specified keyword and returns the status as a Boolean value.</doc>
+<status status="PASS" start="2026-02-19T02:07:23.413703" elapsed="0.001002"/>
+</kw>
+<kw name="Run Keyword And Return Status" owner="BuiltIn">
+<kw name="Dictionary Should Contain Key" owner="Collections">
+<arg>${notif}</arg>
+<arg>title</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.415682" elapsed="0.000000"/>
+</kw>
+<var>${has_title}</var>
+<arg>Dictionary Should Contain Key</arg>
+<arg>${notif}</arg>
+<arg>title</arg>
+<doc>Runs the specified keyword and returns the status as a Boolean value.</doc>
+<status status="PASS" start="2026-02-19T02:07:23.414705" elapsed="0.000977"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<arg>ฟิลด์ที่ต้อง: type=${has_type}, message=${has_message}, title=${has_title}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.415682" elapsed="0.000000"/>
+</kw>
+<var name="${notif}"/>
+<status status="PASS" start="2026-02-19T02:07:23.413703" elapsed="0.001979"/>
+</iter>
+<var>${notif}</var>
+<value>@{notifications}</value>
+<status status="PASS" start="2026-02-19T02:07:23.412667" elapsed="0.003015"/>
+</for>
+<doc>ทดสอบว่าแจ้งเตือน pickup มีข้อมูลคนขับที่ถูกต้อง
+Expected Result:
+- ชื่อคนขับ
+- หมายเลขโทรศัพท์ (หรือข้อมูลติดต่อ)
+- ข้อมูลรถ (ทะเบียน, สี, รุ่น)
+- เวลาประมาณที่จะถึง</doc>
+<tag>api</tag>
+<tag>critical</tag>
+<tag>data-validation</tag>
+<tag>notification</tag>
+<tag>pickup</tag>
+<tag>positive</tag>
+<status status="PASS" start="2026-02-19T02:07:23.407153" elapsed="0.008529"/>
+</test>
+<test id="s1-t4" name="TC-API-NOTIFY-004 Passenger Can Mark Pickup Notification As Read" line="149">
+<kw name="GET On Session" owner="RequestsLibrary">
+<var>${response}</var>
+<arg>painamnae_auth</arg>
+<arg>/notifications</arg>
+<arg>params={'read': false}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.417747" elapsed="0.000000"/>
+</kw>
+<kw name="Response Status Should Be" owner="common">
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>${expected_status}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.417747" elapsed="0.000998"/>
+</kw>
+<arg>${response}</arg>
+<arg>${HTTP_OK}</arg>
+<doc>ตรวจสอบ HTTP status code</doc>
+<status status="PASS" start="2026-02-19T02:07:23.417747" elapsed="0.000998"/>
+</kw>
+<kw name="Get Response JSON" owner="common">
+<kw name="Set Variable" owner="BuiltIn">
+<var>${json}</var>
+<arg>${response.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.418745" elapsed="0.000994"/>
+</kw>
+<return>
+<value>${json}</value>
+<status status="PASS" start="2026-02-19T02:07:23.419739" elapsed="0.000000"/>
+</return>
+<var>${json}</var>
+<arg>${response}</arg>
+<doc>แปลง response เป็น JSON</doc>
+<status status="PASS" start="2026-02-19T02:07:23.418745" elapsed="0.000994"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<var>${notifications}</var>
+<arg>${json}[data]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.419739" elapsed="0.000000"/>
+</kw>
+<kw name="Get Length" owner="BuiltIn">
+<var>${count}</var>
+<arg>${notifications}</arg>
+<doc>Returns and logs the length of the given item as an integer.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.420870" elapsed="0.000000"/>
+</kw>
+<kw name="Skip If" owner="BuiltIn">
+<arg>${count} == 0</arg>
+<arg>ไม่มีแจ้งเตือนที่ยังไม่อ่าน</arg>
+<doc>Skips the rest of the current test if the ``condition`` is True.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.420870" elapsed="0.000000"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<var>${first_notif}</var>
+<arg>${notifications}[0]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.422386" elapsed="0.000000"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<var>${notif_id}</var>
+<arg>${first_notif}[id]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.422386" elapsed="0.000000"/>
+</kw>
+<kw name="Mark Notification As Read">
+<kw name="Create Dictionary" owner="BuiltIn">
+<var>${payload}</var>
+<arg>read=true</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.423396" elapsed="0.000000"/>
+</kw>
+<kw name="PUT On Session" owner="RequestsLibrary">
+<var>${response}</var>
+<arg>painamnae_auth</arg>
+<arg>/notifications/${notification_id}</arg>
+<arg>json=${payload}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a PUT request on a previously created HTTP Session.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.424395" elapsed="0.000000"/>
+</kw>
+<return>
+<value>${response}</value>
+<status status="PASS" start="2026-02-19T02:07:23.424395" elapsed="0.000000"/>
+</return>
+<var>${mark_read_response}</var>
+<arg>${notif_id}</arg>
+<doc>ทำเครื่องหมายอ่านแจ้งเตือน</doc>
+<status status="PASS" start="2026-02-19T02:07:23.422386" elapsed="0.002009"/>
+</kw>
+<kw name="Response Status Should Be" owner="common">
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>${expected_status}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.425396" elapsed="0.001366"/>
+</kw>
+<arg>${mark_read_response}</arg>
+<arg>any</arg>
+<doc>ตรวจสอบ HTTP status code</doc>
+<status status="PASS" start="2026-02-19T02:07:23.425396" elapsed="0.001366"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<arg>ทำเครื่องหมายอ่านแจ้งเตือน ${notif_id}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.426762" elapsed="0.000000"/>
+</kw>
+<doc>ทดสอบว่าผู้โดยสารสามารถทำเครื่องหมายอ่านแจ้งเตือน pickup
+Expected: HTTP 200
+Notification status เปลี่ยนเป็น read=true</doc>
+<tag>api</tag>
+<tag>interaction</tag>
+<tag>notification</tag>
+<tag>pickup</tag>
+<tag>positive</tag>
+<status status="PASS" start="2026-02-19T02:07:23.416721" elapsed="0.010041"/>
+</test>
+<test id="s1-t5" name="TC-API-NOTIFY-005 Get Unread Notification Count" line="174">
+<kw name="Get Unread Count">
+<kw name="GET On Session" owner="RequestsLibrary">
+<var>${response}</var>
+<arg>painamnae_auth</arg>
+<arg>/notifications/unread/count</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.428762" elapsed="0.001002"/>
+</kw>
+<return>
+<value>${response}</value>
+<status status="PASS" start="2026-02-19T02:07:23.429764" elapsed="0.000000"/>
+</return>
+<var>${response}</var>
+<doc>ดูจำนวนแจ้งเตือนที่ยังไม่อ่าน</doc>
+<status status="PASS" start="2026-02-19T02:07:23.428762" elapsed="0.001002"/>
+</kw>
+<kw name="Response Status Should Be" owner="common">
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>${expected_status}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.429764" elapsed="0.000998"/>
+</kw>
+<arg>${response}</arg>
+<arg>${HTTP_OK}</arg>
+<doc>ตรวจสอบ HTTP status code</doc>
+<status status="PASS" start="2026-02-19T02:07:23.429764" elapsed="0.000998"/>
+</kw>
+<kw name="Get Response JSON" owner="common">
+<kw name="Set Variable" owner="BuiltIn">
+<var>${json}</var>
+<arg>${response.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.430762" elapsed="0.000000"/>
+</kw>
+<return>
+<value>${json}</value>
+<status status="PASS" start="2026-02-19T02:07:23.430762" elapsed="0.000000"/>
+</return>
+<var>${json}</var>
+<arg>${response}</arg>
+<doc>แปลง response เป็น JSON</doc>
+<status status="PASS" start="2026-02-19T02:07:23.430762" elapsed="0.001005"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<arg>จำนวนแจ้งเตือนที่ยังไม่อ่าน: ${json}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.431767" elapsed="0.000000"/>
+</kw>
+<doc>ทดสอบว่าสามารถดูจำนวนแจ้งเตือนที่ยังไม่อ่าน
+Expected: HTTP 200
+Response มี count ของ unread notifications</doc>
+<tag>api</tag>
+<tag>data</tag>
+<tag>notification</tag>
+<tag>pickup</tag>
+<tag>positive</tag>
+<status status="PASS" start="2026-02-19T02:07:23.427760" elapsed="0.004007"/>
+</test>
+<test id="s1-t6" name="TC-API-NOTIFY-006 Passenger Cannot Access Other's Pickup Notifications" line="186">
+<kw name="Create API Session" owner="common">
+<kw name="Create Session" owner="RequestsLibrary">
+<arg>painamnae</arg>
+<arg>${BASE_URL}</arg>
+<arg>verify=${False}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.433873" elapsed="0.000000"/>
+</kw>
+<doc>สร้าง HTTP session สำหรับเรียก API</doc>
+<status status="PASS" start="2026-02-19T02:07:23.433873" elapsed="0.000000"/>
+</kw>
+<kw name="GET On Session" owner="RequestsLibrary">
+<var>${response}</var>
+<arg>painamnae</arg>
+<arg>/notifications/invalid_id</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.433873" elapsed="0.000000"/>
+</kw>
+<kw name="Run Keyword And Return Status" owner="BuiltIn">
+<kw name="Response Status Should Be" owner="common">
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>${expected_status}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.435416" elapsed="0.001035"/>
+</kw>
+<arg>${response}</arg>
+<arg>any</arg>
+<doc>ตรวจสอบ HTTP status code</doc>
+<status status="PASS" start="2026-02-19T02:07:23.435416" elapsed="0.001035"/>
+</kw>
+<var>${is_forbidden}</var>
+<arg>Response Status Should Be</arg>
+<arg>${response}</arg>
+<arg>any</arg>
+<doc>Runs the specified keyword and returns the status as a Boolean value.</doc>
+<status status="PASS" start="2026-02-19T02:07:23.435416" elapsed="0.001035"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<arg>ตรวจสอบสิทธิการเข้าถึง: ${is_forbidden}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.436451" elapsed="0.000000"/>
+</kw>
+<doc>ทดสอบว่าผู้โดยสารไม่สามารถเข้าถึงแจ้งเตือนของคนอื่น
+Expected: HTTP 403 (Forbidden)</doc>
+<tag>api</tag>
+<tag>authorization</tag>
+<tag>negative</tag>
+<tag>notification</tag>
+<tag>pickup</tag>
+<tag>security</tag>
+<status status="PASS" start="2026-02-19T02:07:23.432901" elapsed="0.004531"/>
+</test>
+<test id="s1-t7" name="TC-API-NOTIFY-007 Pickup Notification Has Correct Structure" line="201">
+<kw name="Get My Notifications">
+<kw name="GET On Session" owner="RequestsLibrary">
+<var>${response}</var>
+<arg>painamnae_auth</arg>
+<arg>/notifications</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.439430" elapsed="0.000000"/>
+</kw>
+<return>
+<value>${response}</value>
+<status status="PASS" start="2026-02-19T02:07:23.439430" elapsed="0.000000"/>
+</return>
+<var>${response}</var>
+<doc>ดูแจ้งเตือนของตัวเอง</doc>
+<status status="PASS" start="2026-02-19T02:07:23.439430" elapsed="0.000000"/>
+</kw>
+<kw name="Response Status Should Be" owner="common">
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>${expected_status}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.440460" elapsed="0.000000"/>
+</kw>
+<arg>${response}</arg>
+<arg>${HTTP_OK}</arg>
+<doc>ตรวจสอบ HTTP status code</doc>
+<status status="PASS" start="2026-02-19T02:07:23.439430" elapsed="0.001030"/>
+</kw>
+<kw name="Get Response JSON" owner="common">
+<kw name="Set Variable" owner="BuiltIn">
+<var>${json}</var>
+<arg>${response.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.440460" elapsed="0.000970"/>
+</kw>
+<return>
+<value>${json}</value>
+<status status="PASS" start="2026-02-19T02:07:23.441430" elapsed="0.000000"/>
+</return>
+<var>${json}</var>
+<arg>${response}</arg>
+<doc>แปลง response เป็น JSON</doc>
+<status status="PASS" start="2026-02-19T02:07:23.440460" elapsed="0.000970"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<var>${notifications}</var>
+<arg>${json}[data]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.441430" elapsed="0.000000"/>
+</kw>
+<kw name="Skip If" owner="BuiltIn">
+<arg>${len(${notifications})} == 0</arg>
+<arg>ไม่มีแจ้งเตือน</arg>
+<doc>Skips the rest of the current test if the ``condition`` is True.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.441430" elapsed="0.000000"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<var>${first}</var>
+<arg>${notifications}[0]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.441430" elapsed="0.000000"/>
+</kw>
+<kw name="Create List" owner="BuiltIn">
+<var>@{required_fields}</var>
+<arg>id</arg>
+<arg>userId</arg>
+<arg>type</arg>
+<arg>title</arg>
+<arg>message</arg>
+<arg>createdAt</arg>
+<arg>read</arg>
+<doc>Returns a list containing given items.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.442458" elapsed="0.000000"/>
+</kw>
+<for flavor="IN">
+<iter>
+<kw name="Dictionary Should Contain Key" owner="Collections">
+<arg>${first}</arg>
+<arg>${field}</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.442458" elapsed="0.000000"/>
+</kw>
+<var name="${field}"/>
+<status status="PASS" start="2026-02-19T02:07:23.442458" elapsed="0.000000"/>
+</iter>
+<var>${field}</var>
+<value>@{required_fields}</value>
+<status status="PASS" start="2026-02-19T02:07:23.442458" elapsed="0.000000"/>
+</for>
+<kw name="Log" owner="BuiltIn">
+<arg>โครงสร้างแจ้งเตือนถูกต้อง</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.442458" elapsed="0.000000"/>
+</kw>
+<doc>ทดสอบว่าโครงสร้างแจ้งเตือน pickup ถูกต้องตาม schema
+Required Fields:
+- id, userId, type, title, message
+- driverName, vehicleInfo, createdAt
+- read, priority</doc>
+<tag>api</tag>
+<tag>data-validation</tag>
+<tag>notification</tag>
+<tag>pickup</tag>
+<tag>positive</tag>
+<tag>schema</tag>
+<status status="PASS" start="2026-02-19T02:07:23.437432" elapsed="0.005026"/>
+</test>
+<test id="s1-t8" name="TC-API-NOTIFY-008 Delete Pickup Notification" line="227">
+<kw name="GET On Session" owner="RequestsLibrary">
+<var>${response}</var>
+<arg>painamnae_auth</arg>
+<arg>/notifications</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.444430" elapsed="0.000000"/>
+</kw>
+<kw name="Response Status Should Be" owner="common">
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>${expected_status}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.445945" elapsed="0.000000"/>
+</kw>
+<arg>${response}</arg>
+<arg>${HTTP_OK}</arg>
+<doc>ตรวจสอบ HTTP status code</doc>
+<status status="PASS" start="2026-02-19T02:07:23.445435" elapsed="0.000510"/>
+</kw>
+<kw name="Get Response JSON" owner="common">
+<kw name="Set Variable" owner="BuiltIn">
+<var>${json}</var>
+<arg>${response.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.446955" elapsed="0.000000"/>
+</kw>
+<return>
+<value>${json}</value>
+<status status="PASS" start="2026-02-19T02:07:23.446955" elapsed="0.000000"/>
+</return>
+<var>${json}</var>
+<arg>${response}</arg>
+<doc>แปลง response เป็น JSON</doc>
+<status status="PASS" start="2026-02-19T02:07:23.445945" elapsed="0.001010"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<var>${notifications}</var>
+<arg>${json}[data]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.446955" elapsed="0.000000"/>
+</kw>
+<kw name="Skip If" owner="BuiltIn">
+<arg>${len(${notifications})} == 0</arg>
+<arg>ไม่มีแจ้งเตือนที่จะลบ</arg>
+<doc>Skips the rest of the current test if the ``condition`` is True.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.447975" elapsed="0.000000"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<var>${first_id}</var>
+<arg>${notifications}[0][id]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.447975" elapsed="0.000000"/>
+</kw>
+<kw name="DELETE On Session" owner="RequestsLibrary">
+<var>${delete_response}</var>
+<arg>painamnae_auth</arg>
+<arg>/notifications/${first_id}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a DELETE request on a previously created HTTP Session.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.447975" elapsed="0.000994"/>
+</kw>
+<kw name="Run Keyword And Return Status" owner="BuiltIn">
+<kw name="Response Status Should Be" owner="common">
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>${expected_status}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.449971" elapsed="0.000000"/>
+</kw>
+<arg>${delete_response}</arg>
+<arg>any</arg>
+<doc>ตรวจสอบ HTTP status code</doc>
+<status status="PASS" start="2026-02-19T02:07:23.448969" elapsed="0.001002"/>
+</kw>
+<var>${is_deleted}</var>
+<arg>Response Status Should Be</arg>
+<arg>${delete_response}</arg>
+<arg>any</arg>
+<doc>Runs the specified keyword and returns the status as a Boolean value.</doc>
+<status status="PASS" start="2026-02-19T02:07:23.448969" elapsed="0.001002"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<arg>ลบแจ้งเตือน ${first_id}: ${is_deleted}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.449971" elapsed="0.000000"/>
+</kw>
+<doc>ทดสอบว่าผู้โดยสารสามารถลบแจ้งเตือน
+Expected: HTTP 200 หรือ 204</doc>
+<tag>api</tag>
+<tag>interaction</tag>
+<tag>notification</tag>
+<tag>pickup</tag>
+<tag>positive</tag>
+<status status="PASS" start="2026-02-19T02:07:23.443447" elapsed="0.007520"/>
+</test>
+<kw name="Delete All Sessions" owner="RequestsLibrary" type="TEARDOWN">
+<doc>Removes all the session objects</doc>
+<status status="NOT RUN" start="2026-02-19T02:07:23.450967" elapsed="0.000000"/>
+</kw>
+<doc>API Test Suite: Passenger Pickup Notification (แจ้งเตือนผู้โดยสารเมื่อคนขับมาถึง)
+
+User Story:
+"As a passenger, I want to get a notification when the driver is about to pick me up
+so that I can get myself ready or respond to the driver."
+
+API Test Scenarios:
+- TC-API-NOTIFY-001: Admin สร้างแจ้งเตือน pickup สำหรับผู้โดยสาร
+- TC-API-NOTIFY-002: ผู้โดยสารสามารถดูแจ้งเตือน pickup
+- TC-API-NOTIFY-003: ผู้โดยสารจะได้รับแจ้งเตือน pickup เมื่อคนขับเปลี่ยนสถานะ
+- TC-API-NOTIFY-004: แจ้งเตือน pickup มีข้อมูลคนขับและรถ
+- TC-API-NOTIFY-005: ผู้โดยสารสามารถทำเครื่องหมายอ่านแจ้งเตือน pickup</doc>
+<status status="PASS" start="2026-02-19T02:07:22.876163" elapsed="0.576313"/>
+</suite>
+<statistics>
+<total>
+<stat pass="8" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="8" fail="0" skip="0">api</stat>
+<stat pass="1" fail="0" skip="0">authorization</stat>
+<stat pass="2" fail="0" skip="0">critical</stat>
+<stat pass="1" fail="0" skip="0">data</stat>
+<stat pass="2" fail="0" skip="0">data-validation</stat>
+<stat pass="2" fail="0" skip="0">interaction</stat>
+<stat pass="1" fail="0" skip="0">negative</stat>
+<stat pass="8" fail="0" skip="0">notification</stat>
+<stat pass="8" fail="0" skip="0">pickup</stat>
+<stat pass="7" fail="0" skip="0">positive</stat>
+<stat pass="1" fail="0" skip="0">schema</stat>
+<stat pass="1" fail="0" skip="0">security</stat>
+<stat pass="2" fail="0" skip="0">smoke</stat>
+</tag>
+<suite>
+<stat name="07 Pickup Notification Api" id="s1" pass="8" fail="0" skip="0">07 Pickup Notification Api</stat>
+</suite>
+</statistics>
+<errors>
+<msg time="2026-02-19T02:07:22.857588" level="WARN">Error in file 'C:\sfn03\PaiNamNaeWebApp\Sprint1\test2\api\07_pickup_notification_api.robot' on line 45: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2026-02-19T02:07:22.857588" level="WARN">Error in file 'C:\sfn03\PaiNamNaeWebApp\Sprint1\test2\api\07_pickup_notification_api.robot' on line 53: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2026-02-19T02:07:22.858586" level="WARN">Error in file 'C:\sfn03\PaiNamNaeWebApp\Sprint1\test2\api\07_pickup_notification_api.robot' on line 60: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2026-02-19T02:07:22.858586" level="WARN">Error in file 'C:\sfn03\PaiNamNaeWebApp\Sprint1\test2\api\07_pickup_notification_api.robot' on line 74: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2026-02-19T02:07:22.860604" level="WARN">Error in file 'C:\sfn03\PaiNamNaeWebApp\Sprint1\test2\api\07_pickup_notification_api.robot' on line 254: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2026-02-19T02:07:22.860604" level="WARN">Error in file 'C:\sfn03\PaiNamNaeWebApp\Sprint1\test2\api\07_pickup_notification_api.robot' on line 259: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+</errors>
+</robot>

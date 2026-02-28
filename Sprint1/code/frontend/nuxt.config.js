@@ -1,12 +1,13 @@
 import tailwindcssVite from "@tailwindcss/vite";
 
 export default defineNuxtConfig({
+  ssr: false,
   compatibilityDate: "2025-05-15",
   devtools: { enabled: true },
   runtimeConfig: {
     public: {
-      apiBase: "http://localhost:3000/api/",
-      // apiBase:"https://painamnae-backend.onrender.com/api/",
+      //apiBase: "http://localhost:3000/api/",
+      apiBase:"https://painamnaewebapp-af4j.onrender.com/api/",
       googleMapsApiKey: process.env.NUXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""
     },
   },

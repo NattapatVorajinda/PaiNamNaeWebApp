@@ -16,11 +16,16 @@ const ensureAdmin = require('./src/bootstrap/ensureAdmin');
 const app = express();
 promClient.collectDefaultMetrics();
 
+
 app.use(helmet());
 
 const corsOptions = {
     origin: ['http://localhost:3001',
-        'https://amazing-crisp-9bcb1a.netlify.app'],
+        'https://amazing-crisp-9bcb1a.netlify.app',
+        'https://cs-se4g5-68.cpkku.com',
+        'http://cs-se4g5-68.cpkku.com'],
+        
+        
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -93,3 +98,5 @@ process.on('unhandledRejection', (err) => {
     console.error(err);
     process.exit(1);
 });
+
+
