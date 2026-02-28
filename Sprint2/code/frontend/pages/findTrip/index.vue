@@ -101,7 +101,11 @@
                                         <div class="flex items-start justify-between">
                                             <div>
                                                 <div class="flex items-center">
-                                                    <h4 class="font-semibold text-gray-900">{{ route.driver.name }}</h4>
+                                                    <NuxtLink v-if="route.driver._driverId" :to="`/reviews/${route.driver._driverId}?name=${encodeURIComponent(route.driver.name)}`"
+                                                        class="font-semibold text-gray-900 hover:text-blue-600 hover:underline transition" @click.stop>
+                                                        {{ route.driver.name }}
+                                                    </NuxtLink>
+                                                    <h4 v-else class="font-semibold text-gray-900">{{ route.driver.name }}</h4>
 
                                                     <div v-if="route.driver.isVerified"
                                                         class="relative group ml-1.5 flex items-center">
@@ -117,7 +121,17 @@
                                                         </span>
                                                     </div>
                                                 </div>
-                                                <div class="flex items-center mt-1">
+                                                <NuxtLink v-if="route.driver._driverId" :to="`/reviews/${route.driver._driverId}?name=${encodeURIComponent(route.driver.name)}`"
+                                                    class="flex items-center mt-1 cursor-pointer hover:opacity-80 transition" @click.stop>
+                                                    <div class="flex text-yellow-400">
+                                                        <span v-for="star in 5" :key="star">{{ star <=
+                                                            route.driver.rating ? '★' : '☆' }}</span>
+                                                    </div>
+                                                    <span class="ml-2 text-sm text-blue-600 hover:underline">
+                                                        {{ route.driver.rating }} ({{ route.driver.reviews }} รีวิว)
+                                                    </span>
+                                                </NuxtLink>
+                                                <div v-else class="flex items-center mt-1">
                                                     <div class="flex text-yellow-400">
                                                         <span v-for="star in 5" :key="star">{{ star <=
                                                             route.driver.rating ? '★' : '☆' }}</span>
@@ -698,12 +712,13 @@ async function handleSearch() {
                 originAddress: route.startLocation?.address ? cleanAddr(route.startLocation.address) : null,
                 destinationAddress: route.endLocation?.address ? cleanAddr(route.endLocation.address) : null,
                 driver: {
+                    _driverId: route.driver?.id || null,
                     name: `${route.driver?.firstName || ''} ${route.driver?.lastName || ''}`.trim() || 'ไม่ระบุชื่อ',
                     image: route.driver?.profilePicture || `https://ui-avatars.com/api/?name=${encodeURIComponent(route.driver?.firstName || 'U')}&background=random&size=64`,
                     email: route.driver?.email || '',
                     phoneNumber: route.driver?.phoneNumber || '',
-                    rating: 4.5,
-                    reviews: Math.floor(Math.random() * 50) + 5,
+                    rating: 0,
+                    reviews: 0,
                     isVerified: !!route.driver?.isVerified
                 },
                 carDetails: route.vehicle
@@ -731,6 +746,22 @@ async function handleSearch() {
             if (!r.end?.name && dParts.name) routes.value[i].destinationName = dParts.name
         })
         await Promise.allSettled(jobs)
+
+        // ดึงข้อมูลรีวิวจริงของแต่ละคนขับ
+        const driverIds = [...new Set(routes.value.map(r => r.driver._driverId).filter(Boolean))]
+        const reviewMap = {}
+        await Promise.allSettled(driverIds.map(async (dId) => {
+            try {
+                const res = await $fetch(`${useRuntimeConfig().public.apiBase}reviews/driver/${dId}?limit=1`)
+                reviewMap[dId] = { rating: res.averageRating || 0, reviews: res.totalReviews || 0 }
+            } catch { /* ignore */ }
+        }))
+        routes.value.forEach(r => {
+            if (r.driver._driverId && reviewMap[r.driver._driverId]) {
+                r.driver.rating = reviewMap[r.driver._driverId].rating
+                r.driver.reviews = reviewMap[r.driver._driverId].reviews
+            }
+        })
 
     } catch (e) {
         console.error('Failed to fetch routes:', e)

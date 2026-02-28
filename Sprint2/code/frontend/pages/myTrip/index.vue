@@ -67,7 +67,11 @@
                                         class="object-cover w-12 h-12 rounded-full" />
                                     <div class="flex-1">
                                         <div class="flex items-center">
-                                            <h5 class="font-medium text-gray-900">{{ trip.driver.name }}</h5>
+                                            <NuxtLink v-if="trip.driver._driverId" :to="`/reviews/${trip.driver._driverId}?name=${encodeURIComponent(trip.driver.name)}`"
+                                                class="font-medium text-gray-900 hover:text-blue-600 hover:underline transition" @click.stop>
+                                                {{ trip.driver.name }}
+                                            </NuxtLink>
+                                            <h5 v-else class="font-medium text-gray-900">{{ trip.driver.name }}</h5>
                                             <div v-if="trip.driver.isVerified"
                                                 class="relative group ml-1.5 flex items-center">
                                                 <svg class="w-4 h-4 text-blue-600" viewBox="0 0 24 24"
@@ -82,7 +86,18 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="flex items-center">
+                                        <NuxtLink v-if="trip.driver._driverId" :to="`/reviews/${trip.driver._driverId}?name=${encodeURIComponent(trip.driver.name)}`"
+                                            class="flex items-center cursor-pointer hover:opacity-80 transition" @click.stop>
+                                            <div class="flex text-sm text-yellow-400">
+                                                <span>
+                                                    {{ '★'.repeat(Math.round(trip.driver.rating)) }}{{ '☆'.repeat(5 -
+                                                        Math.round(trip.driver.rating)) }}
+                                                </span>
+                                            </div>
+                                            <span class="ml-2 text-sm text-blue-600 hover:underline">{{ trip.driver.rating }} ({{
+                                                trip.driver.reviews }} รีวิว)</span>
+                                        </NuxtLink>
+                                        <div v-else class="flex items-center">
                                             <div class="flex text-sm text-yellow-400">
                                                 <span>
                                                     {{ '★'.repeat(Math.round(trip.driver.rating)) }}{{ '☆'.repeat(5 -
@@ -204,8 +219,8 @@
                                         ยกเลิกการจอง
                                     </button>
 
-                                    <!-- CONFIRMED: เพิ่มปุ่มยกเลิก + คงปุ่มแชท -->
-                                    <template v-else-if="trip.status === 'confirmed'">
+                                    <!-- CONFIRMED + route NOT completed: ยกเลิกได้ + แชท -->
+                                    <template v-else-if="trip.status === 'confirmed' && !trip.routeCompleted">
                                         <button @click.stop="openCancelModal(trip)"
                                             class="px-4 py-2 text-sm text-red-600 transition duration-200 border border-red-300 rounded-md hover:bg-red-50">
                                             ยกเลิกการจอง
@@ -214,6 +229,22 @@
                                             class="px-4 py-2 text-sm text-white transition duration-200 bg-blue-600 rounded-md hover:bg-blue-700">
                                             แชทกับผู้ขับ
                                         </button>
+                                    </template>
+
+                                    <!-- CONFIRMED + route COMPLETED: no cancel, show review button -->
+                                    <template v-else-if="trip.status === 'confirmed' && trip.routeCompleted">
+                                        <span class="px-3 py-2 text-sm text-green-700 bg-green-50 rounded-md">✅ เดินทางเสร็จสิ้น</span>
+                                        <button v-if="!trip.hasReview"
+                                            @click.stop="openReviewForTrip(trip)"
+                                            class="px-4 py-2 text-sm text-white transition duration-200 bg-amber-500 rounded-md hover:bg-amber-600">
+                                            ⭐ เขียนรีวิว
+                                        </button>
+                                        <span v-else class="px-3 py-2 text-sm text-amber-700 bg-amber-50 rounded-md">✍️ รีวิวแล้ว</span>
+                                        <NuxtLink :to="`/reviews/${trip.driver._driverId}?name=${encodeURIComponent(trip.driver.name)}`"
+                                            class="px-4 py-2 text-sm text-blue-600 transition duration-200 border border-blue-300 rounded-md hover:bg-blue-50"
+                                            @click.stop>
+                                            ดูรีวิว
+                                        </NuxtLink>
                                     </template>
 
                                     <!-- REJECTED / CANCELLED: ลบได้ -->
@@ -275,6 +306,14 @@
         <ConfirmModal :show="isModalVisible" :title="modalContent.title" :message="modalContent.message"
             :confirmText="modalContent.confirmText" :variant="modalContent.variant" @confirm="handleConfirmAction"
             @cancel="closeConfirmModal" />
+
+        <!-- Review Popup -->
+        <ReviewPopupModal
+            :show="showReviewModal"
+            :booking="reviewBooking"
+            @submitted="onReviewSubmitted"
+            @skip="showReviewModal = false"
+        />
     </div>
 </template>
 
@@ -284,6 +323,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/th'
 import buddhistEra from 'dayjs/plugin/buddhistEra'
 import ConfirmModal from '~/components/ConfirmModal.vue'
+import ReviewPopupModal from '~/components/ReviewPopupModal.vue'
 import { useToast } from '~/composables/useToast'
 
 // Setup dayjs for Thai locale
@@ -368,6 +408,7 @@ async function fetchMyTrips() {
         // map ข้อมูลพื้นฐานก่อน (ตั้งชื่อชั่วคราวเป็นพิกัด แล้วไป reverse geocode ภายหลัง)
         const formatted = bookings.map((b) => {
             const driverData = {
+                _driverId: b.route.driver.id || null,
                 name: `${b.route.driver.firstName} ${b.route.driver.lastName}`.trim(),
                 image:
                     b.route.driver.profilePicture ||
@@ -375,8 +416,8 @@ async function fetchMyTrips() {
                 email: b.route.driver.email || '',
                 phoneNumber: b.route.driver.phoneNumber || '',
                 isVerified: !!b.route.driver.isVerified,
-                rating: 4.5,
-                reviews: Math.floor(Math.random() * 50) + 5
+                rating: 0,
+                reviews: 0
             }
 
             const carDetails = []
@@ -434,6 +475,7 @@ async function fetchMyTrips() {
                 price: (b.route.pricePerSeat || 0) * (b.numberOfSeats || 1),
                 seats: b.numberOfSeats || 1,
                 driver: driverData,
+                routeCompleted: (b.route.status || '').toUpperCase() === 'COMPLETED',
                 coords: [
                     [start.lat, start.lng],
                     [end.lat, end.lng]
@@ -454,6 +496,22 @@ async function fetchMyTrips() {
         })
 
         allTrips.value = formatted
+
+        // ดึงข้อมูลรีวิวจริงของแต่ละคนขับ
+        const driverIds = [...new Set(formatted.map(t => t.driver._driverId).filter(Boolean))]
+        const reviewMap = {}
+        await Promise.allSettled(driverIds.map(async (dId) => {
+            try {
+                const res = await $fetch(`${useRuntimeConfig().public.apiBase}reviews/driver/${dId}?limit=1`)
+                reviewMap[dId] = { rating: res.averageRating || 0, reviews: res.totalReviews || 0 }
+            } catch { /* ignore */ }
+        }))
+        allTrips.value.forEach(t => {
+            if (t.driver._driverId && reviewMap[t.driver._driverId]) {
+                t.driver.rating = reviewMap[t.driver._driverId].rating
+                t.driver.reviews = reviewMap[t.driver._driverId].reviews
+            }
+        })
 
         // รอให้แผนที่พร้อมก่อน แล้วค่อย reverse geocode เพื่อได้ "ชื่อสถานที่" สวยๆ
         await waitMapReady()
