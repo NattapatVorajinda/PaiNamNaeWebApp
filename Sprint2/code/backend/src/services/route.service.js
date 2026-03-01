@@ -295,6 +295,10 @@ const createRoute = async (data) => {
 };
 
 const updateRoute = async (id, data) => {
+  // ถ้าเปลี่ยน status เป็น COMPLETED ให้บันทึก completedAt อัตโนมัติ
+  if (data.status === 'COMPLETED' && !data.completedAt) {
+    data.completedAt = new Date();
+  }
   return prisma.route.update({
     where: { id },
     data
