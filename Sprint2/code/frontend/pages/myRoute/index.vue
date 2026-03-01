@@ -46,8 +46,14 @@
                                             <span class="status-badge" :class="{
                                                 'status-confirmed': route.status === 'available',
                                                 'status-pending': route.status === 'full',
+                                                'status-in-transit': route.status === 'in_transit',
+                                                'status-completed': route.status === 'completed',
                                             }">
-                                                {{ route.status === 'available' ? 'เปิดรับผู้โดยสาร' : 'เต็ม' }}
+                                                {{ route.status === 'available' ? 'เปิดรับผู้โดยสาร'
+                                                    : route.status === 'full' ? 'เต็ม'
+                                                    : route.status === 'in_transit' ? 'กำลังเดินทาง'
+                                                    : route.status === 'completed' ? 'สิ้นสุดการเดินทาง'
+                                                    : route.status }}
                                             </span>
                                         </div>
                                         <p class="mt-1 text-sm text-gray-600">
@@ -148,7 +154,7 @@
                                                                     </svg>
                                                                 </div>
                                                             </div>
-                                                            <button @click.stop="notifyArrival(p.id)"
+                                                            <button v-if="route.status !== 'completed'" @click.stop="notifyArrival(p.id)"
                                                                 class="px-2 py-1 text-xs font-medium text-white transition-colors duration-200 bg-indigo-600 rounded hover:bg-indigo-700">
                                                                 แจ้งเตือนใกล้ถึง
                                                             </button>
@@ -215,7 +221,7 @@
                                         class="px-4 py-2 text-sm text-white transition duration-200 bg-green-600 rounded-md hover:bg-green-700">
                                         ✅ ถึงปลายทางแล้ว
                                     </button>
-                                    <NuxtLink :to="`/myRoute/${route.id}/edit`"
+                                    <NuxtLink v-if="route.status !== 'completed'" :to="`/myRoute/${route.id}/edit`"
                                         class="px-4 py-2 text-sm text-white transition duration-200 bg-blue-600 rounded-md hover:bg-blue-700"
                                         @click.stop>
                                         แก้ไขเส้นทาง
@@ -1116,6 +1122,16 @@ watch(activeTab, () => {
 .status-cancelled {
     background-color: #f3f4f6;
     color: #6b7280;
+}
+
+.status-in-transit {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+}
+
+.status-completed {
+    background-color: #ccfbf1;
+    color: #0f766e;
 }
 
 @keyframes slide-in-from-top {
