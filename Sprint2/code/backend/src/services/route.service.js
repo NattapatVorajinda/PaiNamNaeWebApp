@@ -378,6 +378,71 @@ const cancelRoute = async (routeId, driverId, opts = {}) => {
   return { id: routeId, status: RouteStatus.CANCELLED, cancelledBy: 'DRIVER', cancelledAt: now };
 };
 
+const startRoute = async (routeId, driverId) => {
+  const route = await prisma.route.findUnique({
+    where: { id: routeId },
+  });
+
+  if (!route) throw new ApiError(404, 'Route not found');
+  if (route.driverId !== driverId) throw new ApiError(403, 'Forbidden');
+  if (route.status !== RouteStatus.AVAILABLE && route.status !== RouteStatus.FULL) {
+    throw new ApiError(400, 'เฉพาะเส้นทางที่พร้อมใช้งาน (AVAILABLE/FULL) เท่านั้นที่สามารถเริ่มเดินทางได้');
+  }
+
+  await prisma.route.update({
+    where: { id: routeId },
+    data: { status: RouteStatus.IN_TRANSIT },
+  });
+
+  return { id: routeId, status: RouteStatus.IN_TRANSIT };
+};
+
+const completeRoute = async (routeId, driverId) => {
+  const route = await prisma.route.findUnique({
+    where: { id: routeId },
+    include: {
+      bookings: {
+        where: { status: BookingStatus.CONFIRMED },
+        include: { passenger: { select: { id: true } } }
+      }
+    }
+  });
+
+  if (!route) throw new ApiError(404, 'Route not found');
+  if (route.driverId !== driverId) throw new ApiError(403, 'Forbidden');
+  if (route.status !== RouteStatus.IN_TRANSIT) {
+    throw new ApiError(400, 'เฉพาะเส้นทางที่กำลังเดินทาง (IN_TRANSIT) เท่านั้นที่สามารถกดถึงปลายทางได้');
+  }
+
+  const now = new Date();
+
+  await prisma.$transaction(async (tx) => {
+    await tx.route.update({
+      where: { id: routeId },
+      data: {
+        status: RouteStatus.COMPLETED,
+        completedAt: now,
+      },
+    });
+
+    // แจ้งเตือนผู้โดยสารทุกคนที่ยืนยันแล้ว
+    const confirmed = route.bookings || [];
+    for (const b of confirmed) {
+      await tx.notification.create({
+        data: {
+          userId: b.passengerId,
+          type: 'ROUTE',
+          title: 'ถึงปลายทางแล้ว!',
+          body: 'เส้นทางของคุณเสร็จสิ้นแล้ว คุณสามารถรีวิวคนขับได้ภายใน 7 วัน',
+          metadata: { routeId, bookingId: b.id },
+        },
+      });
+    }
+  });
+
+  return { id: routeId, status: RouteStatus.COMPLETED, completedAt: now };
+};
+
 module.exports = {
   getAllRoutes,
   searchRoutes,
@@ -386,5 +451,7 @@ module.exports = {
   createRoute,
   updateRoute,
   deleteRoute,
-  cancelRoute
+  cancelRoute,
+  startRoute,
+  completeRoute,
 };

@@ -112,6 +112,24 @@ router.put(
   routeController.updateRoute
 );
 
+// PATCH /routes/:id/start
+router.patch(
+  "/:id/start",
+  protect,
+  requireDriverVerified,
+  validate({ params: idParamSchema }),
+  routeController.startRoute
+);
+
+// PATCH /routes/:id/complete
+router.patch(
+  "/:id/complete",
+  protect,
+  requireDriverVerified,
+  validate({ params: idParamSchema }),
+  routeController.completeRoute
+);
+
 // PATCH /routes/:id/cancel
 router.patch(
   "/:id/cancel",

@@ -24,7 +24,7 @@ const login = asyncHandler(async (req, res) => {
 
     const token = signToken({ sub: user.id, role: user.role });
     const {
-        password:_,
+        password: _,
         gender,
         phoneNumber,
         otpCode,
@@ -37,8 +37,8 @@ const login = asyncHandler(async (req, res) => {
         lastLogin,
         createdAt,
         updatedAt,
-        username:__,
-        email:___,
+        username: __,
+        email: ___,
         ...safeUser
     } = user;
 

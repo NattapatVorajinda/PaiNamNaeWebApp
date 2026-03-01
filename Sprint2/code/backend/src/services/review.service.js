@@ -1,86 +1,16 @@
 const prisma = require('../utils/prisma');
 const ApiError = require('../utils/ApiError');
+const { BookingStatus, RouteStatus } = require('@prisma/client');
 
 const REVIEW_WINDOW_DAYS = 7;
 
 /**
- * สร้างรีวิว — passenger เท่านั้น
- * ตรวจสอบ: booking เป็นของ passenger / route COMPLETED / booking CONFIRMED / ยังไม่เคยรีวิว / ไม่เกิน 7 วัน
+ * GET /reviews/driver/:driverId — public
  */
-const createReview = async (passengerId, bookingId, { rating, comment }) => {
-    // 1. ดึง booking + route
-    const booking = await prisma.booking.findUnique({
-        where: { id: bookingId },
-        include: {
-            route: { select: { id: true, driverId: true, status: true, completedAt: true } },
-            review: { select: { id: true } }
-        }
-    });
-
-    if (!booking) throw new ApiError(404, 'ไม่พบ Booking');
-    if (booking.passengerId !== passengerId) throw new ApiError(403, 'คุณไม่มีสิทธิ์รีวิว Booking นี้');
-
-    // 2. Route ต้อง COMPLETED
-    if (booking.route.status !== 'COMPLETED') {
-        throw new ApiError(400, 'ไม่สามารถรีวิวได้ เนื่องจากการเดินทางยังไม่สิ้นสุด');
-    }
-
-    // 3. Booking ต้อง CONFIRMED
-    if (booking.status !== 'CONFIRMED') {
-        throw new ApiError(400, 'ไม่สามารถรีวิวได้ เนื่องจาก Booking ไม่ได้อยู่ในสถานะยืนยัน');
-    }
-
-    // 4. ยังไม่เคยรีวิว
-    if (booking.review) {
-        throw new ApiError(400, 'คุณรีวิว Booking นี้แล้ว');
-    }
-
-    // 5. ไม่เกิน 7 วัน
-    const completedAt = booking.route.completedAt;
-    if (!completedAt) {
-        throw new ApiError(400, 'ไม่สามารถรีวิวได้ เนื่องจากยังไม่มีข้อมูลเวลาสิ้นสุดการเดินทาง');
-    }
-
-    const now = new Date();
-    const diffMs = now.getTime() - completedAt.getTime();
-    const diffDays = diffMs / (1000 * 60 * 60 * 24);
-    if (diffDays > REVIEW_WINDOW_DAYS) {
-        throw new ApiError(400, 'หมดระยะเวลารีวิว (เกิน 7 วัน)');
-    }
-
-    // 6. ตรวจสอบ rating 1–5
-    if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
-        throw new ApiError(400, 'คะแนนต้องเป็นจำนวนเต็ม 1–5');
-    }
-
-    // 7. สร้าง review
-    const review = await prisma.review.create({
-        data: {
-            bookingId,
-            passengerId,
-            driverId: booking.route.driverId,
-            rating,
-            comment: comment || null
-        },
-        include: {
-            passenger: {
-                select: { id: true, firstName: true, lastName: true, profilePicture: true }
-            }
-        }
-    });
-
-    return review;
-};
-
-/**
- * ดึงรีวิวทั้งหมดของ driver (public — ไม่ต้อง auth)
- */
-const getReviewsByDriver = async (driverId, opts = {}) => {
-    const { page = 1, limit = 20 } = opts;
+const getDriverReviews = async (driverId, page = 1, limit = 20) => {
     const skip = (page - 1) * limit;
 
-    const [total, data] = await prisma.$transaction([
-        prisma.review.count({ where: { driverId } }),
+    const [reviews, totalReviews, avgResult] = await prisma.$transaction([
         prisma.review.findMany({
             where: { driverId },
             include: {
@@ -90,70 +20,63 @@ const getReviewsByDriver = async (driverId, opts = {}) => {
                 booking: {
                     select: {
                         route: {
-                            select: { routeSummary: true, startLocation: true, endLocation: true }
+                            select: {
+                                routeSummary: true,
+                                startLocation: true,
+                                endLocation: true,
+                                driver: {
+                                    select: { id: true, firstName: true, lastName: true, profilePicture: true }
+                                }
+                            }
                         }
                     }
                 }
             },
             orderBy: { createdAt: 'desc' },
             skip,
-            take: limit
-        })
+            take: limit,
+        }),
+        prisma.review.count({ where: { driverId } }),
+        prisma.review.aggregate({
+            where: { driverId },
+            _avg: { rating: true },
+        }),
     ]);
 
-    // คำนวณคะแนนเฉลี่ย
-    const avgResult = await prisma.review.aggregate({
-        where: { driverId },
-        _avg: { rating: true }
-    });
+    const averageRating = avgResult._avg.rating
+        ? Math.round(avgResult._avg.rating * 10) / 10
+        : 0;
 
     return {
-        data,
-        averageRating: avgResult._avg.rating ? parseFloat(avgResult._avg.rating.toFixed(1)) : null,
-        totalReviews: total,
+        data: reviews,
+        averageRating,
+        totalReviews,
         pagination: {
             page,
             limit,
-            total,
-            totalPages: Math.ceil(total / limit)
-        }
+            total: totalReviews,
+            totalPages: Math.ceil(totalReviews / limit),
+        },
     };
 };
 
 /**
- * ดึงรีวิวของ booking (เจ้าของ passenger/driver ดูได้)
- */
-const getReviewByBooking = async (bookingId) => {
-    const review = await prisma.review.findUnique({
-        where: { bookingId },
-        include: {
-            passenger: {
-                select: { id: true, firstName: true, lastName: true, profilePicture: true }
-            }
-        }
-    });
-
-    return review;
-};
-
-/**
- * ดึง bookings ที่สามารถรีวิวได้ (COMPLETED + CONFIRMED + ไม่เกิน 7 วัน + ยังไม่มี review)
+ * GET /reviews/reviewable — auth (passenger)
+ * Bookings ที่ route COMPLETED ภายใน 7 วัน + ยังไม่มี review
  */
 const getReviewableBookings = async (passengerId) => {
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - REVIEW_WINDOW_DAYS);
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - REVIEW_WINDOW_DAYS);
 
     const bookings = await prisma.booking.findMany({
         where: {
             passengerId,
-            status: 'CONFIRMED',
+            status: BookingStatus.CONFIRMED,
             review: null, // ยังไม่มี review
             route: {
-                status: 'COMPLETED',
-                completedAt: {
-                    gte: sevenDaysAgo // ยังอยู่ในช่วง 7 วัน
-                }
-            }
+                status: RouteStatus.COMPLETED,
+                completedAt: { gte: cutoff }, // ภายใน 7 วัน
+            },
         },
         include: {
             route: {
@@ -166,19 +89,97 @@ const getReviewableBookings = async (passengerId) => {
                     driverId: true,
                     driver: {
                         select: { id: true, firstName: true, lastName: true, profilePicture: true }
-                    }
+                    },
                 }
-            }
+            },
         },
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: 'desc' },
     });
 
     return bookings;
 };
 
+/**
+ * GET /reviews/booking/:bookingId — auth
+ */
+const getReviewByBookingId = async (bookingId) => {
+    return prisma.review.findUnique({
+        where: { bookingId },
+        include: {
+            passenger: {
+                select: { id: true, firstName: true, lastName: true, profilePicture: true }
+            },
+        },
+    });
+};
+
+/**
+ * POST /reviews — auth (passenger)
+ */
+const createReview = async (passengerId, { bookingId, rating, comment }) => {
+    // 1. ดึง booking + route
+    const booking = await prisma.booking.findUnique({
+        where: { id: bookingId },
+        include: {
+            route: { select: { id: true, driverId: true, status: true, completedAt: true } },
+            review: true,
+        },
+    });
+
+    if (!booking) throw new ApiError(404, 'ไม่พบการจองนี้');
+    if (booking.passengerId !== passengerId) throw new ApiError(403, 'คุณไม่ใช่ผู้โดยสารของการจองนี้');
+    if (booking.status !== BookingStatus.CONFIRMED) throw new ApiError(400, 'การจองยังไม่ได้รับการยืนยัน');
+    if (booking.route.status !== RouteStatus.COMPLETED) throw new ApiError(400, 'เส้นทางยังไม่เสร็จสิ้น');
+    if (booking.review) throw new ApiError(400, 'คุณรีวิวการจองนี้ไปแล้ว');
+
+    // 2. ตรวจ 7-day window
+    if (booking.route.completedAt) {
+        const cutoff = new Date();
+        cutoff.setDate(cutoff.getDate() - REVIEW_WINDOW_DAYS);
+        if (booking.route.completedAt < cutoff) {
+            throw new ApiError(400, 'หมดเวลารีวิวแล้ว (เกิน 7 วัน)');
+        }
+    }
+
+    // 3. สร้าง review
+    const review = await prisma.review.create({
+        data: {
+            bookingId,
+            passengerId,
+            driverId: booking.route.driverId,
+            rating,
+            comment: comment || null,
+        },
+        include: {
+            passenger: {
+                select: { id: true, firstName: true, lastName: true, profilePicture: true }
+            },
+        },
+    });
+
+    return review;
+};
+
+/**
+ * ดึงค่าเฉลี่ยรีวิวของ driver (สำหรับใช้ภายใน)
+ */
+const getDriverRatingSummary = async (driverId) => {
+    const result = await prisma.review.aggregate({
+        where: { driverId },
+        _avg: { rating: true },
+        _count: true,
+    });
+
+    return {
+        averageRating: result._avg.rating ? Math.round(result._avg.rating * 10) / 10 : 0,
+        totalReviews: result._count,
+    };
+};
+
 module.exports = {
+    getDriverReviews,
+    getReviewableBookings,
+    getReviewByBookingId,
     createReview,
-    getReviewsByDriver,
-    getReviewByBooking,
-    getReviewableBookings
+    getDriverRatingSummary,
 };

@@ -177,7 +177,7 @@ model Route {
   status          RouteStatus @default(AVAILABLE)
   cancelledAt     DateTime?
   cancelledBy     String?     // 'DRIVER' | 'ADMIN'
-  completedAt     DateTime?   // เวลาที่คนขับกดสิ้นสุดการเดินทาง (ใช้นับ 7 วันสำหรับรีวิว)
+  completedAt     DateTime?
   routePolyline String?
   distanceMeters Int?
   durationSeconds Int?
@@ -219,13 +219,13 @@ model Booking {
 
 model Review {
   id          String   @id @default(cuid())
-  bookingId   String   @unique          // 1 booking = 1 review เท่านั้น
+  bookingId   String   @unique
   booking     Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
   passengerId String
   passenger   User     @relation("PassengerReviews", fields: [passengerId], references: [id], onDelete: Cascade)
   driverId    String
   driver      User     @relation("DriverReviews", fields: [driverId], references: [id], onDelete: Cascade)
-  rating      Int      // 1–5
+  rating      Int      // 1-5
   comment     String?
   createdAt   DateTime @default(now())
 

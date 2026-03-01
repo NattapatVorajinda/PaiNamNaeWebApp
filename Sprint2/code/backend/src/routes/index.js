@@ -2,12 +2,12 @@ const express = require('express');
 const authRoutes = require('./auth.routes');
 const userRoutes = require('./user.routes');
 const vehicleRoutes = require('./vehicle.routes');
-const routeRoutes   = require('./route.routes');
+const routeRoutes = require('./route.routes');
 const driverVerifRoutes = require('./driverVerification.routes');
 const bookingRoutes = require('./booking.routes');
 const notificationRoutes = require('./notification.routes')
 const mapRoutes = require('./maps.routes')
-const reviewRoutes = require('./review.routes');
+const reviewRoutes = require('./review.routes')
 
 const router = express.Router();
 
