@@ -240,11 +240,10 @@
                                             ⭐ เขียนรีวิว
                                         </button>
                                         <span v-else class="px-3 py-2 text-sm text-amber-700 bg-amber-50 rounded-md">✍️ รีวิวแล้ว</span>
-                                        <NuxtLink :to="`/reviews/${trip.driver._driverId}?name=${encodeURIComponent(trip.driver.name)}`"
-                                            class="px-4 py-2 text-sm text-blue-600 transition duration-200 border border-blue-300 rounded-md hover:bg-blue-50"
-                                            @click.stop>
-                                            ดูรีวิว
-                                        </NuxtLink>
+                                        <button
+                                            class="px-4 py-2 text-sm text-white transition duration-200 bg-blue-600 rounded-md hover:bg-blue-700">
+                                            แชทกับผู้ขับ
+                                        </button>
                                     </template>
 
                                     <!-- REJECTED / CANCELLED: ลบได้ -->
@@ -318,7 +317,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import dayjs from 'dayjs'
 import 'dayjs/locale/th'
 import buddhistEra from 'dayjs/plugin/buddhistEra'
@@ -381,6 +380,10 @@ const isSubmittingCancel = ref(false)
 const selectedCancelReason = ref('')
 const cancelReasonError = ref('')
 const tripToCancel = ref(null)
+
+// --- Review State ---
+const showReviewModal = ref(false)
+const reviewBooking = ref(null)
 
 // --- Computed Properties ---
 const filteredTrips = computed(() => {
@@ -462,6 +465,8 @@ async function fetchMyTrips() {
 
             return {
                 id: b.id,
+                _rawBooking: b,
+                hasReview: false,
                 status: String(b.status || '').toLowerCase(),
                 origin: start?.name || `(${Number(start.lat).toFixed(2)}, ${Number(start.lng).toFixed(2)})`,
                 destination: end?.name || `(${Number(end.lat).toFixed(2)}, ${Number(end.lng).toFixed(2)})`,
@@ -512,6 +517,14 @@ async function fetchMyTrips() {
                 t.driver.reviews = reviewMap[t.driver._driverId].reviews
             }
         })
+
+        // ตรวจสอบว่าแต่ละ booking มีรีวิวแล้วหรือยัง
+        await Promise.allSettled(allTrips.value.map(async (t) => {
+            try {
+                const res = await $api(`/reviews/booking/${t.id}`)
+                if (res) t.hasReview = true
+            } catch { /* ยังไม่มีรีวิว */ }
+        }))
 
         // รอให้แผนที่พร้อมก่อน แล้วค่อย reverse geocode เพื่อได้ "ชื่อสถานที่" สวยๆ
         await waitMapReady()
@@ -800,6 +813,23 @@ const copyToClipboard = async (text) => {
     }
 }
 
+// --- Review Functions ---
+function openReviewForTrip(trip) {
+    reviewBooking.value = trip._rawBooking || null
+    showReviewModal.value = true
+}
+
+function onReviewSubmitted() {
+    showReviewModal.value = false
+    // อัปเดต hasReview ของ trip ที่เพิ่งรีวิว
+    const bookingId = reviewBooking.value?.id
+    if (bookingId) {
+        const trip = allTrips.value.find(t => t.id === bookingId)
+        if (trip) trip.hasReview = true
+    }
+    reviewBooking.value = null
+}
+
 function formatDistance(input) {
     if (typeof input !== 'string') return input
     const parts = input.split('+')
@@ -857,6 +887,9 @@ useHead({
 })
 
 onMounted(() => {
+    // ฟัง event จาก layout popup เมื่อรีวิวสำเร็จ
+    window.addEventListener('review-submitted', handleExternalReview)
+
     // ถ้า script โหลดแล้ว
     if (window.google?.maps) {
         initializeMap()
@@ -878,6 +911,18 @@ onMounted(() => {
         })
     }
 })
+
+onUnmounted(() => {
+    window.removeEventListener('review-submitted', handleExternalReview)
+})
+
+function handleExternalReview(e) {
+    const bookingId = e.detail?.bookingId
+    if (bookingId) {
+        const trip = allTrips.value.find(t => t.id === bookingId)
+        if (trip) trip.hasReview = true
+    }
+}
 
 function initializeMap() {
     if (!mapContainer.value || gmap) return

@@ -643,6 +643,8 @@ function onReviewSubmitted() {
         const reviewed = JSON.parse(sessionStorage.getItem('reviewed_bookings') || '[]')
         reviewed.push(pendingReviewBooking.value.id)
         sessionStorage.setItem('reviewed_bookings', JSON.stringify(reviewed))
+        // แจ้ง myTrip page ให้อัปเดต hasReview
+        window.dispatchEvent(new CustomEvent('review-submitted', { detail: { bookingId: pendingReviewBooking.value.id } }))
     }
     showReviewPopup.value = false
     pendingReviewBooking.value = null
