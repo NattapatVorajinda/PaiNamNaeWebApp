@@ -18,6 +18,13 @@ router.get(
     reviewController.getReviewableBookings
 );
 
+// GET /reviews/me — auth (passenger), must be before /:driverId
+router.get(
+    '/me',
+    protect,
+    reviewController.getMyReviews
+);
+
 // GET /reviews/booking/:bookingId — auth
 router.get(
     '/booking/:bookingId',

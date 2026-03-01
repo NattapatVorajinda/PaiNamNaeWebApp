@@ -42,9 +42,22 @@ const createReview = asyncHandler(async (req, res) => {
     });
 });
 
+const getMyReviews = asyncHandler(async (req, res) => {
+    const passengerId = req.user.sub;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const result = await reviewService.getMyReviews(passengerId, page, limit);
+    res.status(200).json({
+        success: true,
+        ...result,
+    });
+});
+
 module.exports = {
     getDriverReviews,
     getReviewableBookings,
     getReviewByBookingId,
     createReview,
+    getMyReviews,
 };

@@ -176,10 +176,66 @@ const getDriverRatingSummary = async (driverId) => {
     };
 };
 
+/**
+ * GET /reviews/me — auth (driver)
+ * รีวิวทั้งหมดที่คนอื่นเขียนให้ผู้ใช้ (ในฐานะคนขับ)
+ */
+const getMyReviews = async (driverId, page = 1, limit = 10) => {
+    const skip = (page - 1) * limit;
+
+    const [reviews, totalReviews, avgResult] = await prisma.$transaction([
+        prisma.review.findMany({
+            where: { driverId },
+            include: {
+                passenger: {
+                    select: { id: true, firstName: true, lastName: true, profilePicture: true }
+                },
+                booking: {
+                    select: {
+                        route: {
+                            select: {
+                                routeSummary: true,
+                                startLocation: true,
+                                endLocation: true,
+                                departureTime: true,
+                            }
+                        }
+                    }
+                }
+            },
+            orderBy: { createdAt: 'desc' },
+            skip,
+            take: limit,
+        }),
+        prisma.review.count({ where: { driverId } }),
+        prisma.review.aggregate({
+            where: { driverId },
+            _avg: { rating: true },
+        }),
+    ]);
+
+    const averageRating = avgResult._avg.rating
+        ? Math.round(avgResult._avg.rating * 10) / 10
+        : 0;
+
+    return {
+        data: reviews,
+        averageRating,
+        totalReviews,
+        pagination: {
+            page,
+            limit,
+            total: totalReviews,
+            totalPages: Math.ceil(totalReviews / limit),
+        },
+    };
+};
+
 module.exports = {
     getDriverReviews,
     getReviewableBookings,
     getReviewByBookingId,
     createReview,
     getDriverRatingSummary,
+    getMyReviews,
 };
