@@ -204,7 +204,17 @@
                                 </div>
 
                                 <!-- ปุ่มขวาล่าง -->
-                                <div class="flex justify-end" :class="{ 'mt-4': selectedTripId !== route.id }">
+                                <div class="flex justify-end gap-3" :class="{ 'mt-4': selectedTripId !== route.id }">
+                                    <button v-if="route.status === 'available' || route.status === 'full'"
+                                        @click.stop="openConfirmModal({ id: route.id, type: 'route' }, 'start')"
+                                        class="px-4 py-2 text-sm text-white transition duration-200 bg-indigo-600 rounded-md hover:bg-indigo-700">
+                                        🚗 เริ่มเดินทาง
+                                    </button>
+                                    <button v-if="route.status === 'in_transit'"
+                                        @click.stop="openConfirmModal({ id: route.id, type: 'route' }, 'complete')"
+                                        class="px-4 py-2 text-sm text-white transition duration-200 bg-green-600 rounded-md hover:bg-green-700">
+                                        ✅ ถึงปลายทางแล้ว
+                                    </button>
                                     <NuxtLink :to="`/myRoute/${route.id}/edit`"
                                         class="px-4 py-2 text-sm text-white transition duration-200 bg-blue-600 rounded-md hover:bg-blue-700"
                                         @click.stop>
@@ -263,7 +273,11 @@
                                         class="object-cover rounded-full w-15 h-15" />
                                     <div class="flex-1">
                                         <div class="flex items-center">
-                                            <h5 class="font-medium text-gray-900">{{ trip.passenger.name }}</h5>
+                                            <NuxtLink v-if="trip.passenger._passengerId" :to="`/reviews/${trip.passenger._passengerId}?name=${encodeURIComponent(trip.passenger.name)}`"
+                                                class="font-medium text-gray-900 hover:text-blue-600 hover:underline transition" @click.stop>
+                                                {{ trip.passenger.name }}
+                                            </NuxtLink>
+                                            <h5 v-else class="font-medium text-gray-900">{{ trip.passenger.name }}</h5>
 
                                             <div v-if="trip.passenger.isVerified"
                                                 class="relative group ml-1.5 flex items-center">
@@ -326,7 +340,19 @@
                                             </button>
                                         </div>
 
-                                        <div class="flex items-center mt-1">
+                                        <NuxtLink v-if="trip.passenger._passengerId" :to="`/reviews/${trip.passenger._passengerId}?name=${encodeURIComponent(trip.passenger.name)}`"
+                                            class="flex items-center mt-1 cursor-pointer hover:opacity-80 transition" @click.stop>
+                                            <div class="flex text-sm text-yellow-400">
+                                                <span>
+                                                    {{ '★'.repeat(Math.round(trip.passenger.rating)) }}{{ '☆'.repeat(5 -
+                                                        Math.round(trip.passenger.rating)) }}
+                                                </span>
+                                            </div>
+                                            <span class="ml-2 text-sm text-blue-600 hover:underline">
+                                                {{ trip.passenger.rating }} ({{ trip.passenger.reviews }} รีวิว)
+                                            </span>
+                                        </NuxtLink>
+                                        <div v-else class="flex items-center mt-1">
                                             <div class="flex text-sm text-yellow-400">
                                                 <span>
                                                     {{ '★'.repeat(Math.round(trip.passenger.rating)) }}{{ '☆'.repeat(5 -
@@ -537,7 +563,7 @@ async function fetchMyRoutes() {
     try {
         const routes = await $api('/routes/me')
 
-        const allowedRouteStatuses = new Set(['AVAILABLE', 'FULL', 'IN_TRANSIT'])
+        const allowedRouteStatuses = new Set(['AVAILABLE', 'FULL', 'IN_TRANSIT', 'COMPLETED'])
 
         const formatted = []
         const ownRoutes = []
@@ -599,13 +625,14 @@ async function fetchMyRoutes() {
                     price: (r.pricePerSeat || 0) * (b.numberOfSeats || 0),
                     seats: b.numberOfSeats || 0,
                     passenger: {
+                        _passengerId: b.passenger?.id || null,
                         name: `${b.passenger?.firstName || ''} ${b.passenger?.lastName || ''}`.trim() || 'ผู้โดยสาร',
                         image: b.passenger?.profilePicture || `https://ui-avatars.com/api/?name=${encodeURIComponent(b.passenger?.firstName || 'P')}&background=random&size=64`,
                         email: b.passenger?.email || '',
                         phoneNumber: b.passenger?.phoneNumber || '',
                         isVerified: !!b.passenger?.isVerified,
-                        rating: 4.5,
-                        reviews: Math.floor(Math.random() * 50) + 5,
+                        rating: 0,
+                        reviews: 0,
                     },
                     coords,
                     polyline: r.routePolyline || null,
@@ -655,8 +682,8 @@ async function fetchMyRoutes() {
                     email: b.passenger?.email || '',
                     phoneNumber: b.passenger?.phoneNumber || '',
                     isVerified: !!b.passenger?.isVerified,
-                    rating: 4.5,
-                    reviews: Math.floor(Math.random() * 50) + 5,
+                    rating: 0,
+                    reviews: 0,
                 })),
                 durationText: (typeof r.duration === 'string' ? formatDuration(r.duration) : r.duration) || (r.durationSeconds ? `${Math.round(r.durationSeconds / 60)} นาที` : '-'),
                 distanceText: (typeof r.distance === 'string' ? formatDistance(r.distance) : r.distance) || (r.distanceMeters ? `${(r.distanceMeters / 1000).toFixed(1)} กม.` : '-'),
@@ -857,6 +884,22 @@ const openConfirmModal = (trip, action) => {
             action: 'delete',
             variant: 'danger',
         }
+    } else if (action === 'complete') {
+        modalContent.value = {
+            title: 'ยืนยันถึงปลายทาง',
+            message: 'คุณถึงปลายทางแล้วใช่หรือไม่? ผู้โดยสารจะสามารถรีวิวคุณได้ภายใน 7 วัน',
+            confirmText: 'ยืนยัน',
+            action: 'complete',
+            variant: 'primary',
+        }
+    } else if (action === 'start') {
+        modalContent.value = {
+            title: 'เริ่มเดินทาง',
+            message: 'ยืนยันเริ่มเดินทางเส้นทางนี้ใช่หรือไม่? สถานะจะเปลี่ยนเป็น "กำลังเดินทาง"',
+            confirmText: 'เริ่มเดินทาง',
+            action: 'start',
+            variant: 'primary',
+        }
     }
     isModalVisible.value = true
 }
@@ -880,6 +923,14 @@ const handleConfirmAction = async () => {
         } else if (action === 'delete') {
             await $api(`/bookings/${bookingId}`, { method: 'DELETE' })
             toast.success('ลบรายการสำเร็จ', 'ลบคำขอออกจากรายการแล้ว')
+        } else if (action === 'complete') {
+            const routeId = tripToAction.value.id
+            await $api(`/routes/${routeId}/complete`, { method: 'PATCH' })
+            toast.success('สำเร็จ', 'ยืนยันถึงปลายทางแล้ว ผู้โดยสารสามารถรีวิวคุณได้ภายใน 7 วัน')
+        } else if (action === 'start') {
+            const routeId = tripToAction.value.id
+            await $api(`/routes/${routeId}/start`, { method: 'PATCH' })
+            toast.success('สำเร็จ', 'เริ่มเดินทางแล้ว!')
         }
         closeConfirmModal()
         await fetchMyRoutes()

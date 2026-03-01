@@ -391,14 +391,24 @@
         <main>
             <NuxtPage />
         </main>
+
+        <!-- Review Popup -->
+        <ReviewPopupModal
+            v-if="showReviewPopup"
+            :show="showReviewPopup"
+            :booking="pendingReviewBooking"
+            @submitted="onReviewSubmitted"
+            @skip="onReviewSkip"
+        />
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { useRuntimeConfig, useCookie } from '#app'
 import { useAuth } from '~/composables/useAuth'
 import { useToast } from '~/composables/useToast'
+import ReviewPopupModal from '~/components/ReviewPopupModal.vue'
 
 const { token, user, logout } = useAuth()
 const { toasts, removeToast, toast } = useToast()
@@ -584,6 +594,8 @@ onMounted(() => {
         pollInterval.value = setInterval(() => {
             if (token.value) fetchUserNotifications(true)
         }, 5000)
+        // เช็ค review ที่ค้าง
+        checkPendingReviews()
     }
 })
 
@@ -601,6 +613,53 @@ useHead({
         //{ rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' }
     ]
 })
+
+/* ====== Review Popup ====== */
+const showReviewPopup = ref(false)
+const pendingReviewBooking = ref(null)
+
+async function checkPendingReviews() {
+    if (!token.value) return
+    try {
+        const { $api } = useNuxtApp()
+        const bookings = await $api('/reviews/reviewable')
+        if (!Array.isArray(bookings) || bookings.length === 0) return
+
+        // กรอง booking ที่ skip ไปแล้วใน session นี้
+        const reviewed = JSON.parse(sessionStorage.getItem('reviewed_bookings') || '[]')
+        const pending = bookings.find(b => !reviewed.includes(b.id))
+        if (!pending) return
+
+        pendingReviewBooking.value = pending
+        showReviewPopup.value = true
+    } catch (e) {
+        console.warn('checkPendingReviews error:', e)
+    }
+}
+
+function onReviewSubmitted() {
+    // บันทึกลง sessionStorage ไม่ให้ popup ซ้ำ
+    if (pendingReviewBooking.value) {
+        const reviewed = JSON.parse(sessionStorage.getItem('reviewed_bookings') || '[]')
+        reviewed.push(pendingReviewBooking.value.id)
+        sessionStorage.setItem('reviewed_bookings', JSON.stringify(reviewed))
+        // แจ้ง myTrip page ให้อัปเดต hasReview
+        window.dispatchEvent(new CustomEvent('review-submitted', { detail: { bookingId: pendingReviewBooking.value.id } }))
+    }
+    showReviewPopup.value = false
+    pendingReviewBooking.value = null
+}
+
+function onReviewSkip() {
+    // บันทึกลง sessionStorage ไม่ให้ popup ซ้ำ
+    if (pendingReviewBooking.value) {
+        const reviewed = JSON.parse(sessionStorage.getItem('reviewed_bookings') || '[]')
+        reviewed.push(pendingReviewBooking.value.id)
+        sessionStorage.setItem('reviewed_bookings', JSON.stringify(reviewed))
+    }
+    showReviewPopup.value = false
+    pendingReviewBooking.value = null
+}
 </script>
 
 
