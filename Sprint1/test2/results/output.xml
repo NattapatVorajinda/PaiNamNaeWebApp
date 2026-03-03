@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.4.1 (Python 3.10.8 on win32)" generated="2026-02-19T02:32:02.411068" rpa="false" schemaversion="5">
+<suite id="s1" name="07 Pickup Notification Api" source="C:\sfn03\PaiNamNaeWebApp\Sprint1\test2\api\07_pickup_notification_api.robot">
+<kw name="Setup Pickup Notification API Tests" type="SETUP">
+<kw name="Create API Session" owner="common">
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2026-02-19T02:32:02.743220" level="INFO">Creating Session using : alias=painamnae, url=http://localhost:3000/api, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>painamnae</arg>
+<arg>${BASE_URL}</arg>
+<arg>verify=${False}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2026-02-19T02:32:02.742223" elapsed="0.000997"/>
+</kw>
+<doc>สร้าง HTTP session สำหรับเรียก API</doc>
+<status status="PASS" start="2026-02-19T02:32:02.741220" elapsed="0.003001"/>
+</kw>
+<kw name="Login As Admin" owner="common">
+<kw name="Login And Get Token By Username" owner="common">
+<kw name="Create API Session" owner="common">
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2026-02-19T02:32:02.747236" level="INFO">Creating Session using : alias=painamnae, url=http://localhost:3000/api, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>painamnae</arg>
+<arg>${BASE_URL}</arg>
+<arg>verify=${False}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2026-02-19T02:32:02.746227" elapsed="0.001009"/>
+</kw>
+<doc>สร้าง HTTP session สำหรับเรียก API</doc>
+<status status="PASS" start="2026-02-19T02:32:02.746227" elapsed="0.001009"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-02-19T02:32:02.748233" level="INFO">${body} = {'username': 'admin123', 'password': '123456789'}</msg>
+<var>${body}</var>
+<arg>username=${username}</arg>
+<arg>password=${password}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-02-19T02:32:02.747236" elapsed="0.000997"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-02-19T02:32:06.920531" level="INFO">POST Request : url=http://localhost:3000/api/auth/login 
+ path_url=/api/auth/login 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '49', 'Content-Type': 'application/json'} 
+ body=b'{"username": "admin123", "password": "123456789"}' 
+ </msg>
+<msg time="2026-02-19T02:32:06.920531" level="INFO">POST Response : url=http://localhost:3000/api/auth/login 
+ status=500, reason=Internal Server Error 
+ headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '169', 'ETag': 'W/"a9-pKId7w7/F1/ie7r9NbzpA8LaA5w"', 'Date': 'Wed, 18 Feb 2026 19:32:06 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"success":false,"message":"เกิดข้อผิดพลาดภายในระบบ กรุณาลองใหม่ภายหลัง","data":null} 
+ </msg>
+<msg time="2026-02-19T02:32:06.921545" level="INFO">${response} = &lt;Response [500]&gt;</msg>
+<var>${response}</var>
+<arg>painamnae</arg>
+<arg>/auth/login</arg>
+<arg>json=${body}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-02-19T02:32:02.748233" elapsed="4.173312"/>
+</kw>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<msg time="2026-02-19T02:32:06.925055" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<msg time="2026-02-19T02:32:06.925055" level="FAIL">500 != 200</msg>
+<arg>${response.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="FAIL" start="2026-02-19T02:32:06.922544" elapsed="0.003520">500 != 200</status>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<var>${json}</var>
+<arg>${response.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:32:06.926064" elapsed="0.001013"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<var>${token}</var>
+<arg>${json}[data][token]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2026-02-19T02:32:06.927077" elapsed="0.000000"/>
+</kw>
+<return>
+<value>${token}</value>
+<status status="NOT RUN" start="2026-02-19T02:32:06.927077" elapsed="0.000000"/>
+</return>
+<var>${token}</var>
+<arg>${ADMIN_USERNAME}</arg>
+<arg>${ADMIN_PASSWORD}</arg>
+<doc>เข้าสู่ระบบด้วย username แล้วคืน JWT token</doc>
+<status status="FAIL" start="2026-02-19T02:32:02.745220" elapsed="4.181857">500 != 200</status>
+</kw>
+<kw name="Create Authenticated Session" owner="common">
+<arg>${token}</arg>
+<doc>สร้าง session พร้อม JWT token</doc>
+<status status="NOT RUN" start="2026-02-19T02:32:06.928082" elapsed="0.000000"/>
+</kw>
+<return>
+<value>${token}</value>
+<status status="NOT RUN" start="2026-02-19T02:32:06.928082" elapsed="0.000000"/>
+</return>
+<doc>เข้าสู่ระบบด้วย Admin แล้วสร้าง Authenticated Session</doc>
+<status status="FAIL" start="2026-02-19T02:32:02.745220" elapsed="4.182862">500 != 200</status>
+</kw>
+<doc>เตรียมข้อมูล URLs และติดตั้ง session</doc>
+<status status="FAIL" start="2026-02-19T02:32:02.740220" elapsed="4.187862">500 != 200</status>
+</kw>
+<test id="s1-t1" name="TC-API-NOTIFY-001 Admin Creates Pickup Notification" line="78">
+<doc>ทดสอบว่า Admin สามารถสร้างแจ้งเตือน pickup สำหรับผู้โดยสาร
+Expected: HTTP 201 หรือ 200
+Response ประกอบด้วย: notification ID, type, message, driver info</doc>
+<tag>api</tag>
+<tag>critical</tag>
+<tag>notification</tag>
+<tag>pickup</tag>
+<tag>positive</tag>
+<tag>smoke</tag>
+<status status="FAIL" start="2026-02-19T02:32:06.928082" elapsed="0.003521">Parent suite setup failed:
+500 != 200</status>
+</test>
+<test id="s1-t2" name="TC-API-NOTIFY-002 Passenger Can Retrieve Pickup Notifications" line="100">
+<doc>ทดสอบว่าผู้โดยสารสามารถดูแจ้งเตือน pickup ของตัวเอง
+Expected: HTTP 200
+Response ประกอบด้วยรายการแจ้งเตือน และค่อน pickup notifications</doc>
+<tag>api</tag>
+<tag>notification</tag>
+<tag>pickup</tag>
+<tag>positive</tag>
+<tag>smoke</tag>
+<status status="FAIL" start="2026-02-19T02:32:06.932601" elapsed="0.001997">Parent suite setup failed:
+500 != 200</status>
+</test>
+<test id="s1-t3" name="TC-API-NOTIFY-003 Pickup Notification Contains Driver Info" line="119">
+<doc>ทดสอบว่าแจ้งเตือน pickup มีข้อมูลคนขับที่ถูกต้อง
+Expected Result:
+- ชื่อคนขับ
+- หมายเลขโทรศัพท์ (หรือข้อมูลติดต่อ)
+- ข้อมูลรถ (ทะเบียน, สี, รุ่น)
+- เวลาประมาณที่จะถึง</doc>
+<tag>api</tag>
+<tag>critical</tag>
+<tag>data-validation</tag>
+<tag>notification</tag>
+<tag>pickup</tag>
+<tag>positive</tag>
+<status status="FAIL" start="2026-02-19T02:32:06.937112" elapsed="0.003515">Parent suite setup failed:
+500 != 200</status>
+</test>
+<test id="s1-t4" name="TC-API-NOTIFY-004 Passenger Can Mark Pickup Notification As Read" line="149">
+<doc>ทดสอบว่าผู้โดยสารสามารถทำเครื่องหมายอ่านแจ้งเตือน pickup
+Expected: HTTP 200
+Notification status เปลี่ยนเป็น read=true</doc>
+<tag>api</tag>
+<tag>interaction</tag>
+<tag>notification</tag>
+<tag>pickup</tag>
+<tag>positive</tag>
+<status status="FAIL" start="2026-02-19T02:32:06.941635" elapsed="0.001001">Parent suite setup failed:
+500 != 200</status>
+</test>
+<test id="s1-t5" name="TC-API-NOTIFY-005 Get Unread Notification Count" line="174">
+<doc>ทดสอบว่าสามารถดูจำนวนแจ้งเตือนที่ยังไม่อ่าน
+Expected: HTTP 200
+Response มี count ของ unread notifications</doc>
+<tag>api</tag>
+<tag>data</tag>
+<tag>notification</tag>
+<tag>pickup</tag>
+<tag>positive</tag>
+<status status="FAIL" start="2026-02-19T02:32:06.943634" elapsed="0.001002">Parent suite setup failed:
+500 != 200</status>
+</test>
+<test id="s1-t6" name="TC-API-NOTIFY-006 Passenger Cannot Access Other's Pickup Notifications" line="186">
+<doc>ทดสอบว่าผู้โดยสารไม่สามารถเข้าถึงแจ้งเตือนของคนอื่น
+Expected: HTTP 403 (Forbidden)</doc>
+<tag>api</tag>
+<tag>authorization</tag>
+<tag>negative</tag>
+<tag>notification</tag>
+<tag>pickup</tag>
+<tag>security</tag>
+<status status="FAIL" start="2026-02-19T02:32:06.944636" elapsed="0.000000">Parent suite setup failed:
+500 != 200</status>
+</test>
+<test id="s1-t7" name="TC-API-NOTIFY-007 Pickup Notification Has Correct Structure" line="201">
+<doc>ทดสอบว่าโครงสร้างแจ้งเตือน pickup ถูกต้องตาม schema
+Required Fields:
+- id, userId, type, title, message
+- driverName, vehicleInfo, createdAt
+- read, priority</doc>
+<tag>api</tag>
+<tag>data-validation</tag>
+<tag>notification</tag>
+<tag>pickup</tag>
+<tag>positive</tag>
+<tag>schema</tag>
+<status status="FAIL" start="2026-02-19T02:32:06.946178" elapsed="0.001021">Parent suite setup failed:
+500 != 200</status>
+</test>
+<test id="s1-t8" name="TC-API-NOTIFY-008 Delete Pickup Notification" line="227">
+<doc>ทดสอบว่าผู้โดยสารสามารถลบแจ้งเตือน
+Expected: HTTP 200 หรือ 204</doc>
+<tag>api</tag>
+<tag>interaction</tag>
+<tag>notification</tag>
+<tag>pickup</tag>
+<tag>positive</tag>
+<status status="FAIL" start="2026-02-19T02:32:06.948177" elapsed="0.001028">Parent suite setup failed:
+500 != 200</status>
+</test>
+<kw name="Delete All Sessions" owner="RequestsLibrary" type="TEARDOWN">
+<msg time="2026-02-19T02:32:06.950410" level="INFO">Deleting All Sessions</msg>
+<doc>Removes all the session objects</doc>
+<status status="PASS" start="2026-02-19T02:32:06.949205" elapsed="0.001205"/>
+</kw>
+<doc>API Test Suite: Passenger Pickup Notification (แจ้งเตือนผู้โดยสารเมื่อคนขับมาถึง)
+
+User Story:
+"As a passenger, I want to get a notification when the driver is about to pick me up
+so that I can get myself ready or respond to the driver."
+
+API Test Scenarios:
+- TC-API-NOTIFY-001: Admin สร้างแจ้งเตือน pickup สำหรับผู้โดยสาร
+- TC-API-NOTIFY-002: ผู้โดยสารสามารถดูแจ้งเตือน pickup
+- TC-API-NOTIFY-003: ผู้โดยสารจะได้รับแจ้งเตือน pickup เมื่อคนขับเปลี่ยนสถานะ
+- TC-API-NOTIFY-004: แจ้งเตือน pickup มีข้อมูลคนขับและรถ
+- TC-API-NOTIFY-005: ผู้โดยสารสามารถทำเครื่องหมายอ่านแจ้งเตือน pickup</doc>
+<status status="FAIL" start="2026-02-19T02:32:02.414074" elapsed="4.536336">Suite setup failed:
+500 != 200</status>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="8" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="0" fail="8" skip="0">api</stat>
+<stat pass="0" fail="1" skip="0">authorization</stat>
+<stat pass="0" fail="2" skip="0">critical</stat>
+<stat pass="0" fail="1" skip="0">data</stat>
+<stat pass="0" fail="2" skip="0">data-validation</stat>
+<stat pass="0" fail="2" skip="0">interaction</stat>
+<stat pass="0" fail="1" skip="0">negative</stat>
+<stat pass="0" fail="8" skip="0">notification</stat>
+<stat pass="0" fail="8" skip="0">pickup</stat>
+<stat pass="0" fail="7" skip="0">positive</stat>
+<stat pass="0" fail="1" skip="0">schema</stat>
+<stat pass="0" fail="1" skip="0">security</stat>
+<stat pass="0" fail="2" skip="0">smoke</stat>
+</tag>
+<suite>
+<stat name="07 Pickup Notification Api" id="s1" pass="0" fail="8" skip="0">07 Pickup Notification Api</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
