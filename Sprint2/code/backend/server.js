@@ -22,8 +22,8 @@ app.use(helmet());
 const corsOptions = {
     origin: ['http://localhost:3001',
         'https://amazing-crisp-9bcb1a.netlify.app',
-        'https://cs-se4g5-68.cpkku.com',
-        'http://cs-se4g5-68.cpkku.com'],
+        'http://csse4569.cpkku.com',
+        'https://csse4569.cpkku.com'],
         
         
     credentials: true,
