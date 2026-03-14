@@ -116,7 +116,7 @@ const getReviewByBookingId = async (bookingId) => {
 /**
  * POST /reviews — auth (passenger)
  */
-const createReview = async (passengerId, { bookingId, rating, comment }) => {
+const createReview = async (passengerId, { bookingId, rating, comment, mediaUrls }) => {
     // 1. ดึง booking + route
     const booking = await prisma.booking.findUnique({
         where: { id: bookingId },
@@ -149,6 +149,7 @@ const createReview = async (passengerId, { bookingId, rating, comment }) => {
             driverId: booking.route.driverId,
             rating,
             comment: comment || null,
+            mediaUrls: mediaUrls || null,
         },
         include: {
             passenger: {

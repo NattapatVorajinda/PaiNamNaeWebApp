@@ -1,5 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const reviewService = require('../services/review.service');
+const { uploadToCloudinary } = require('../utils/cloudinary');
+const ApiError = require('../utils/ApiError');
 
 const getDriverReviews = asyncHandler(async (req, res) => {
     const { driverId } = req.params;
@@ -33,9 +35,47 @@ const getReviewByBookingId = asyncHandler(async (req, res) => {
 
 const createReview = asyncHandler(async (req, res) => {
     const passengerId = req.user.sub;
-    const { bookingId, rating, comment } = req.body;
 
-    const review = await reviewService.createReview(passengerId, { bookingId, rating, comment });
+    // multipart/form-data sends fields as strings — parse them
+    const bookingId = req.body.bookingId;
+    const rating = parseInt(req.body.rating, 10);
+    const comment = req.body.comment || undefined;
+
+    // Validate required fields
+    if (!bookingId || typeof bookingId !== 'string' || bookingId.length === 0) {
+        throw new ApiError(400, 'bookingId is required');
+    }
+    if (isNaN(rating) || rating < 1 || rating > 5) {
+        throw new ApiError(400, 'rating ต้องอยู่ระหว่าง 1-5');
+    }
+
+    // Upload media files to Cloudinary (if any)
+    let mediaUrls = [];
+    if (req.files && req.files.length > 0) {
+        const uploadPromises = req.files.map(async (file) => {
+            const result = await uploadToCloudinary(file.buffer, 'painamnae/reviews');
+            // Determine file type category
+            let type = 'image';
+            if (file.mimetype.startsWith('audio/')) type = 'audio';
+            else if (file.mimetype.startsWith('video/')) type = 'video';
+
+            return {
+                url: result.url,
+                publicId: result.public_id,
+                type,
+                originalName: file.originalname,
+            };
+        });
+        mediaUrls = await Promise.all(uploadPromises);
+    }
+
+    const review = await reviewService.createReview(passengerId, {
+        bookingId,
+        rating,
+        comment,
+        mediaUrls: mediaUrls.length > 0 ? mediaUrls : undefined,
+    });
+
     res.status(201).json({
         success: true,
         data: review,

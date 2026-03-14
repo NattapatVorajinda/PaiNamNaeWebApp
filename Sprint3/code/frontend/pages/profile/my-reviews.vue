@@ -106,6 +106,31 @@
                                 <p v-if="review.comment" class="text-sm leading-relaxed text-gray-700">{{
                                     review.comment }}</p>
                                 <p v-else class="text-sm italic text-gray-400">ไม่มีความคิดเห็น</p>
+
+                                <!-- Media Attachments -->
+                                <div v-if="review.mediaUrls && review.mediaUrls.length > 0" class="mt-3">
+                                    <div class="flex flex-wrap gap-2">
+                                        <template v-for="(media, mIdx) in review.mediaUrls" :key="mIdx">
+                                            <!-- Image -->
+                                            <a v-if="media.type === 'image'" :href="media.url" target="_blank" rel="noopener">
+                                                <img :src="media.url" :alt="media.originalName || 'หลักฐาน'"
+                                                    class="w-20 h-20 rounded-lg object-cover border border-gray-200 hover:opacity-80 transition cursor-pointer" />
+                                            </a>
+                                            <!-- Audio -->
+                                            <div v-else-if="media.type === 'audio'" class="w-full">
+                                                <audio controls class="w-full h-8" style="max-width: 280px;">
+                                                    <source :src="media.url">
+                                                </audio>
+                                            </div>
+                                            <!-- Video -->
+                                            <div v-else-if="media.type === 'video'" class="w-full">
+                                                <video controls class="w-full rounded-lg" style="max-width: 280px; max-height: 180px;">
+                                                    <source :src="media.url">
+                                                </video>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Pagination -->

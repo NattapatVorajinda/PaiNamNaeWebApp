@@ -1,11 +1,11 @@
 const express = require('express');
-const validate = require('../middlewares/validate');
 const { protect } = require('../middlewares/auth');
 const reviewController = require('../controllers/review.controller');
+const validate = require('../middlewares/validate');
+const reviewUpload = require('../middlewares/reviewUpload.middleware');
 const {
     driverIdParamSchema,
     bookingIdParamSchema,
-    createReviewSchema,
     reviewQuerySchema,
 } = require('../validations/review.validation');
 
@@ -40,11 +40,11 @@ router.get(
     reviewController.getDriverReviews
 );
 
-// POST /reviews — auth (passenger)
+// POST /reviews — auth (passenger) + multipart upload (max 5 files)
 router.post(
     '/',
     protect,
-    validate({ body: createReviewSchema }),
+    reviewUpload.array('media', 5),
     reviewController.createReview
 );
 

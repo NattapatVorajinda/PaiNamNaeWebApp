@@ -116,6 +116,32 @@
                             </div>
                             <!-- Comment -->
                             <p v-if="review.comment" class="mt-2 text-sm text-gray-600 leading-relaxed">{{ review.comment }}</p>
+
+                            <!-- Media Attachments -->
+                            <div v-if="review.mediaUrls && review.mediaUrls.length > 0" class="mt-3">
+                                <div class="flex flex-wrap gap-2">
+                                    <template v-for="(media, mIdx) in review.mediaUrls" :key="mIdx">
+                                        <!-- Image -->
+                                        <a v-if="media.type === 'image'" :href="media.url" target="_blank" rel="noopener">
+                                            <img :src="media.url" :alt="media.originalName || 'หลักฐาน'"
+                                                class="w-20 h-20 rounded-lg object-cover border border-gray-200 hover:opacity-80 transition cursor-pointer" />
+                                        </a>
+                                        <!-- Audio -->
+                                        <div v-else-if="media.type === 'audio'" class="w-full">
+                                            <audio controls class="w-full h-8" style="max-width: 280px;">
+                                                <source :src="media.url">
+                                            </audio>
+                                        </div>
+                                        <!-- Video -->
+                                        <div v-else-if="media.type === 'video'" class="w-full">
+                                            <video controls class="w-full rounded-lg" style="max-width: 280px; max-height: 180px;">
+                                                <source :src="media.url">
+                                            </video>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+
                             <!-- Route -->
                             <div v-if="review.booking?.route" class="mt-2 flex items-center gap-1.5 text-xs text-gray-400">
                                 <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

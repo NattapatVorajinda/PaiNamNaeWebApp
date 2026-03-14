@@ -227,6 +227,7 @@ model Review {
   driver      User     @relation("DriverReviews", fields: [driverId], references: [id], onDelete: Cascade)
   rating      Int      // 1-5
   comment     String?
+  mediaUrls   Json?    @db.Json  // [{url, type, publicId}]
   createdAt   DateTime @default(now())
 
   @@index([driverId])
