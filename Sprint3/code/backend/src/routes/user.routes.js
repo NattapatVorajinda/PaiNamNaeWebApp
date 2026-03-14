@@ -97,4 +97,12 @@ router.put(
     userController.updateCurrentUserProfile
 );
 
+// PUT /api/users/me/promptpay — ตั้งค่าพร้อมเพย์ (คนขับ)
+router.put(
+    '/me/promptpay',
+    protect,
+    upload.single('promptPayQrImage'),
+    userController.updatePromptPay
+);
+
 module.exports = router;

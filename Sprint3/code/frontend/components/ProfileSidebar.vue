@@ -48,6 +48,12 @@
                             ข้อมูลรถยนต์ของฉัน
                         </NuxtLink>
                     </li>
+                    <li>
+                        <NuxtLink to="/profile/promptpay" class="block px-4 py-2 text-sm rounded-md"
+                            :class="isActive('/profile/promptpay') ? 'font-semibold text-blue-600 bg-blue-100' : 'text-gray-700 hover:bg-gray-100'">
+                            ตั้งค่าพร้อมเพย์
+                        </NuxtLink>
+                    </li>
                 </ul>
             </div>
         </nav>

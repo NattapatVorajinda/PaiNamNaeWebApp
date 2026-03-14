@@ -440,6 +440,14 @@ const completeRoute = async (routeId, driverId) => {
     }
   });
 
+  // สร้าง Payment records สำหรับ booking ที่ confirmed ทุกรายการ
+  try {
+    const paymentService = require('./payment.service');
+    await paymentService.createPaymentsForRoute(routeId);
+  } catch (err) {
+    console.error('Failed to create payments for route:', err);
+  }
+
   return { id: routeId, status: RouteStatus.COMPLETED, completedAt: now };
 };
 

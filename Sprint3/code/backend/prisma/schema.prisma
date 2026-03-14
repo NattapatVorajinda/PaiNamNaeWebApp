@@ -58,6 +58,18 @@ enum NotificationType {
   VERIFICATION
   BOOKING
   ROUTE
+  PAYMENT
+}
+
+enum PaymentStatus {
+  PENDING        // รอชำระ
+  PAID           // ผู้โดยสารแจ้งจ่ายแล้ว (รอคนขับยืนยัน)
+  CONFIRMED      // คนขับยืนยันรับเงินแล้ว
+}
+
+enum PaymentMethod {
+  CASH           // เงินสด
+  TRANSFER       // โอนเงิน/พร้อมเพย์
 }
 
 model User {
@@ -88,6 +100,8 @@ model User {
   notification          Notification[]
   createdRoutes         Route[]             @relation("DriverRoutes")
   bookings              Booking[]           @relation("PassengerBookings")
+  promptPayNumber       String?
+  promptPayQrUrl        String?
   passengerReviews      Review[]            @relation("PassengerReviews")
   driverReviews         Review[]            @relation("DriverReviews")
 
@@ -215,6 +229,7 @@ model Booking {
   createdAt       DateTime      @default(now())
 
   review          Review?
+  payment         Payment?
 }
 
 model Review {
@@ -233,4 +248,22 @@ model Review {
   @@index([driverId])
   @@index([passengerId])
   @@index([createdAt])
+}
+
+model Payment {
+  id              String        @id @default(cuid())
+  bookingId       String        @unique
+  booking         Booking       @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  amount          Float
+  method          PaymentMethod?
+  status          PaymentStatus @default(PENDING)
+  slipUrl         String?       // รูปสลิปโอนเงิน (Cloudinary)
+  paidAt          DateTime?     // ผู้โดยสารแจ้งจ่าย
+  confirmedAt     DateTime?     // คนขับยืนยันรับเงิน
+  receiptNumber   String?       @unique // REC-YYYYMMDD-XXX
+  createdAt       DateTime      @default(now())
+
+  @@index([bookingId])
+  @@index([status])
+  @@index([receiptNumber])
 }

@@ -196,6 +196,34 @@ const setUserStatus = asyncHandler(async (req, res) => {
     res.status(200).json({ success: true, message: "User status updated", data: updatedUser });
 });
 
+const updatePromptPay = asyncHandler(async (req, res) => {
+    const userId = req.user.sub;
+    const updateData = {};
+
+    if (req.body.promptPayNumber) {
+        updateData.promptPayNumber = req.body.promptPayNumber;
+    }
+
+    if (req.file) {
+        const result = await uploadToCloudinary(req.file.buffer, 'painamnae/promptpay');
+        updateData.promptPayQrUrl = result.url;
+    }
+
+    if (Object.keys(updateData).length === 0) {
+        throw new ApiError(400, 'กรุณาระบุเบอร์พร้อมเพย์หรืออัปโหลด QR code');
+    }
+
+    const updatedUser = await userService.updateUserProfile(userId, updateData);
+    res.status(200).json({
+        success: true,
+        message: 'PromptPay updated',
+        data: {
+            promptPayNumber: updatedUser.promptPayNumber,
+            promptPayQrUrl: updatedUser.promptPayQrUrl,
+        },
+    });
+});
+
 module.exports = {
     adminListUsers,
     getAllUsers,
@@ -207,5 +235,5 @@ module.exports = {
     adminUpdateUser,
     adminDeleteUser,
     setUserStatus,
-
+    updatePromptPay,
 };

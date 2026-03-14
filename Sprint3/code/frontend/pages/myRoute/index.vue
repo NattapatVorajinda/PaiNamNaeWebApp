@@ -158,6 +158,23 @@
                                                                 class="px-2 py-1 text-xs font-medium text-white transition-colors duration-200 bg-indigo-600 rounded hover:bg-indigo-700">
                                                                 แจ้งเตือนใกล้ถึง
                                                             </button>
+                                                            <!-- ปุ่มยืนยันรับเงิน (เฉพาะ route completed) -->
+                                                            <template v-if="route.status === 'completed'">
+                                                                <button v-if="!p.paymentStatus || p.paymentStatus === 'PENDING'"
+                                                                    class="px-2 py-1 text-xs font-medium text-gray-400 bg-gray-100 rounded cursor-not-allowed" disabled>
+                                                                    ⏳ รอผู้โดยสารชำระ
+                                                                </button>
+                                                                <button v-else-if="p.paymentStatus === 'PAID'"
+                                                                    @click.stop="confirmDriverPayment(p.bookingId, route)"
+                                                                    class="px-2 py-1 text-xs font-medium text-white transition-colors duration-200 bg-green-600 rounded hover:bg-green-700">
+                                                                    ✅ ยืนยันรับเงิน
+                                                                </button>
+                                                                <NuxtLink v-else-if="p.paymentStatus === 'CONFIRMED'" :to="`/receipt/${p.bookingId}`"
+                                                                    @click.stop
+                                                                    class="px-2 py-1 text-xs font-medium text-blue-600 bg-blue-50 rounded hover:bg-blue-100 transition">
+                                                                    📄 ดูใบเสร็จ
+                                                                </NuxtLink>
+                                                            </template>
                                                         </div>
                                                         <div class="text-sm text-gray-600">
                                                             ที่นั่ง: {{ p.seats }}
@@ -493,6 +510,7 @@ dayjs.locale('th')
 dayjs.extend(buddhistEra)
 
 const { $api } = useNuxtApp()
+const config = useRuntimeConfig()
 const { toast } = useToast()
 
 // --- State Management ---
@@ -681,8 +699,10 @@ async function fetchMyRoutes() {
                 conditions: r.conditions || '',
                 passengers: confirmedBookings.map(b => ({
                     id: b.id,
+                    bookingId: b.id,
                     seats: b.numberOfSeats || 0,
                     status: 'confirmed',
+                    paymentStatus: null,
                     name: `${b.passenger?.firstName || ''} ${b.passenger?.lastName || ''}`.trim() || 'ผู้โดยสาร',
                     image: b.passenger?.profilePicture || `https://ui-avatars.com/api/?name=${encodeURIComponent(b.passenger?.firstName || 'P')}&background=random&size=64`,
                     email: b.passenger?.email || '',
@@ -717,6 +737,21 @@ async function fetchMyRoutes() {
         })
         await Promise.allSettled(jobs)
 
+        // ดึงสถานะการชำระเงินของผู้โดยสาร (เฉพาะ route completed)
+        const completedRoutes = myRoutes.value.filter(r => r.status === 'completed')
+        for (const route of completedRoutes) {
+            for (const p of route.passengers) {
+                try {
+                    const res = await $fetch(`${config.public.apiBase}payments/booking/${p.bookingId}`, {
+                        headers: { Authorization: `Bearer ${useCookie('token').value}` },
+                    })
+                    if (res?.data) {
+                        p.paymentStatus = res.data.status
+                    }
+                } catch { /* ยังไม่มี payment */ }
+            }
+        }
+
     } catch (error) {
         console.error('Failed to fetch routes:', error)
         allTrips.value = []
@@ -733,6 +768,21 @@ async function notifyArrival(bookingId) {
         toast.success('แจ้งเตือนแล้ว', 'ระบบได้ส่งการแจ้งเตือนไปยังผู้โดยสารเรียบร้อยแล้ว')
     } catch (e) {
         toast.error('เกิดข้อผิดพลาด', e?.data?.message || 'ไม่สามารถส่งการแจ้งเตือนได้')
+    }
+}
+
+async function confirmDriverPayment(bookingId, route) {
+    try {
+        await $fetch(`${config.public.apiBase}payments/booking/${bookingId}/confirm`, {
+            method: 'PATCH',
+            headers: { Authorization: `Bearer ${useCookie('token').value}` },
+        })
+        toast.success('ยืนยันรับเงินแล้ว', 'ระบบออกใบเสร็จให้ผู้โดยสารเรียบร้อยแล้ว')
+        // อัปเดต status ใน UI เลยโดยไม่ต้อง reload
+        const p = route.passengers.find(x => x.bookingId === bookingId)
+        if (p) p.paymentStatus = 'CONFIRMED'
+    } catch (e) {
+        toast.error('เกิดข้อผิดพลาด', e?.data?.message || 'ไม่สามารถยืนยันรับเงินได้')
     }
 }
 
