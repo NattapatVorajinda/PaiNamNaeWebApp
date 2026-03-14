@@ -242,7 +242,7 @@
                                         <span v-else class="px-3 py-2 text-sm text-amber-700 bg-amber-50 rounded-md">✍️ รีวิวแล้ว</span>
                                         <NuxtLink :to="`/payment/${trip.id}`" @click.stop
                                             class="px-4 py-2 text-sm text-white transition duration-200 bg-emerald-600 rounded-md hover:bg-emerald-700">
-                                            💳 ชำระเงิน / ดูใบเสร็จ
+                                            {{ trip.paymentStatus === 'CONFIRMED' ? '🧾 ดูใบเสร็จ' : '💳 ชำระเงิน' }}
                                         </NuxtLink>
                                         <button
                                             class="px-4 py-2 text-sm text-white transition duration-200 bg-blue-600 rounded-md hover:bg-blue-700">
@@ -471,6 +471,7 @@ async function fetchMyTrips() {
                 id: b.id,
                 _rawBooking: b,
                 hasReview: false,
+                paymentStatus: b.payment?.status || null,
                 status: String(b.status || '').toLowerCase(),
                 origin: start?.name || `(${Number(start.lat).toFixed(2)}, ${Number(start.lng).toFixed(2)})`,
                 destination: end?.name || `(${Number(end.lat).toFixed(2)}, ${Number(end.lng).toFixed(2)})`,

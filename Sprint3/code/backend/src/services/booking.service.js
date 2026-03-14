@@ -308,8 +308,13 @@ const getMyBookings = async (passengerId) => {
             }
           }
         }
+      },
+      payment: {
+        select: {
+          status: true,
+          receiptNumber: true,
+        }
       }
-
     },
     orderBy: { createdAt: 'desc' },
   });

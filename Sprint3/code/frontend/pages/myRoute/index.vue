@@ -227,7 +227,7 @@
                                 </div>
 
                                 <!-- ปุ่มขวาล่าง -->
-                                <div class="flex justify-end gap-3" :class="{ 'mt-4': selectedTripId !== route.id }">
+                                <div class="flex flex-wrap justify-end gap-3" :class="{ 'mt-4': selectedTripId !== route.id }">
                                     <button v-if="route.status === 'available' || route.status === 'full'"
                                         @click.stop="openConfirmModal({ id: route.id, type: 'route' }, 'start')"
                                         class="px-4 py-2 text-sm text-white transition duration-200 bg-indigo-600 rounded-md hover:bg-indigo-700">
@@ -243,6 +243,25 @@
                                         @click.stop>
                                         แก้ไขเส้นทาง
                                     </NuxtLink>
+                                    <!-- ปุ่มชำระเงินสำหรับเส้นทางที่สิ้นสุดแล้ว -->
+                                    <template v-if="route.status === 'completed' && route.passengers.length">
+                                        <template v-for="p in route.passengers" :key="'pay-' + p.bookingId">
+                                            <button v-if="!p.paymentStatus || p.paymentStatus === 'PENDING'"
+                                                class="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 rounded-md cursor-not-allowed" disabled>
+                                                ⏳ รอผู้โดยสารชำระ
+                                            </button>
+                                            <button v-else-if="p.paymentStatus === 'PAID'"
+                                                @click.stop="confirmDriverPayment(p.bookingId, route)"
+                                                class="px-4 py-2 text-sm font-medium text-white transition duration-200 bg-green-600 rounded-md hover:bg-green-700">
+                                                ✅ ยืนยันรับเงิน
+                                            </button>
+                                            <NuxtLink v-else-if="p.paymentStatus === 'CONFIRMED'" :to="`/receipt/${p.bookingId}`"
+                                                @click.stop
+                                                class="px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-md hover:bg-blue-100 transition">
+                                                📄 ดูใบเสร็จ
+                                            </NuxtLink>
+                                        </template>
+                                    </template>
                                 </div>
                             </div>
                         </div>
