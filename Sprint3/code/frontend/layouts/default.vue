@@ -499,7 +499,7 @@ async function fetchUserNotifications(isBackground = false) {
             brandNew.forEach(n => {
                 // แจ้งเตือนเฉพาะเรื่องสำคัญ "คนขับกำลังจะถึง" → ค้างไว้ 15 นาที
                 if (n.title.includes('กำลังจะถึง') || n.body.includes('กำลังจะถึง')) {
-                   toast.info(n.title, n.body, 900000)
+                   toast.info(n.title, n.body, 8000)
                 } else {
                    // เรื่องอื่นๆ ก็แจ้งเตือนแบบธรรมดา
                    toast.info(n.title, n.body, 5000)

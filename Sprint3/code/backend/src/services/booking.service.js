@@ -511,6 +511,9 @@ const notifyPassengerArrival = async (id, driverId) => {
   if (booking.status !== BookingStatus.CONFIRMED) {
     throw new ApiError(400, 'Booking must be confirmed to notify arrival');
   }
+  if (['COMPLETED'].includes(booking.route.status)) {
+    throw new ApiError(400, 'Cannot notify arrival for completed route');
+  }
 
   await prisma.notification.create({
     data: {
