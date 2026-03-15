@@ -1,179 +1,10 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id                      String              @id @default(cuid())
-  username                String              @unique
-  email                   String              @unique
-  password                String
-  firstName               String?
-  lastName                String?
-  gender                  String?
-  phoneNumber             String?
-  profilePicture          String?
-  nationalIdNumber        String?             @unique
-  nationalIdPhotoUrl      String?             @unique
-  nationalIdExpiryDate    DateTime?
-  selfiePhotoUrl          String?
-  role                    Role                @default(PASSENGER)
-  isVerified              Boolean             @default(false)
-  isActive                Boolean             @default(true)
-  otpCode                 String?
-  lastLogin               DateTime?
-  createdAt               DateTime            @default(now())
-  updatedAt               DateTime            @updatedAt
-  passengerSuspendedUntil DateTime?
-  driverSuspendedUntil    DateTime?
-  bookings                Booking[]           @relation("PassengerBookings")
-  driverVerification      DriverVerification?
-  notification            Notification[]
-  driverReviews           Review[]            @relation("DriverReviews")
-  passengerReviews        Review[]            @relation("PassengerReviews")
-  createdRoutes           Route[]             @relation("DriverRoutes")
-  vehicles                Vehicle[]
-
-  @@index([role])
-  @@index([isActive])
-  @@index([isVerified])
-  @@index([createdAt])
-}
-
-model DriverVerification {
-  id                 String             @id @default(cuid())
-  userId             String             @unique
-  licenseNumber      String             @unique
-  firstNameOnLicense String
-  lastNameOnLicense  String
-  licenseIssueDate   DateTime
-  licenseExpiryDate  DateTime
-  licensePhotoUrl    String
-  selfiePhotoUrl     String
-  typeOnLicense      LicenseType
-  status             VerificationStatus @default(PENDING)
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
-  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([status])
-  @@index([createdAt])
-  @@index([licenseIssueDate])
-  @@index([licenseExpiryDate])
-}
-
-model Notification {
-  id              String           @id @default(cuid())
-  userId          String
-  type            NotificationType @default(SYSTEM)
-  title           String
-  body            String
-  link            String?
-  metadata        Json?            @db.Json
-  readAt          DateTime?
-  createdAt       DateTime         @default(now())
-  adminReviewedAt DateTime?
-  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId, createdAt])
-  @@index([userId, readAt])
-  @@index([adminReviewedAt])
-}
-
-model Vehicle {
-  id           String   @id @default(cuid())
-  userId       String
-  vehicleModel String
-  licensePlate String   @unique
-  vehicleType  String
-  color        String
-  seatCapacity Int
-  amenities    String[]
-  photos       Json?    @db.Json
-  isDefault    Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  routes       Route[]
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-  @@index([createdAt])
-  @@index([vehicleType])
-  @@index([seatCapacity])
-}
-
-model Route {
-  id              String      @id @default(cuid())
-  driverId        String
-  vehicleId       String
-  startLocation   Json        @db.Json
-  endLocation     Json        @db.Json
-  departureTime   DateTime
-  availableSeats  Int
-  pricePerSeat    Float
-  conditions      String?
-  status          RouteStatus @default(AVAILABLE)
-  cancelledAt     DateTime?
-  cancelledBy     String?
-  routePolyline   String?
-  distanceMeters  Int?
-  durationSeconds Int?
-  routeSummary    String?
-  distance        String?
-  duration        String?
-  waypoints       Json?       @db.Json
-  landmarks       Json?       @db.Json
-  steps           Json?       @db.Json
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-  completedAt     DateTime?
-  bookings        Booking[]
-  driver          User        @relation("DriverRoutes", fields: [driverId], references: [id], onDelete: Cascade)
-  vehicle         Vehicle     @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
-
-  @@index([driverId])
-  @@index([vehicleId])
-  @@index([status])
-  @@index([createdAt])
-  @@index([departureTime])
-}
-
-model Booking {
-  id              String        @id @default(cuid())
-  routeId         String
-  passengerId     String
-  numberOfSeats   Int
-  status          BookingStatus @default(PENDING)
-  cancelledAt     DateTime?
-  cancelledBy     String?
-  cancelReason    CancelReason?
-  pickupLocation  Json          @db.Json
-  dropoffLocation Json          @db.Json
-  createdAt       DateTime      @default(now())
-  passenger       User          @relation("PassengerBookings", fields: [passengerId], references: [id], onDelete: Cascade)
-  route           Route         @relation(fields: [routeId], references: [id], onDelete: Cascade)
-  review          Review?
-}
-
-model Review {
-  id          String   @id @default(cuid())
-  bookingId   String   @unique
-  passengerId String
-  driverId    String
-  rating      Int
-  comment     String?
-  createdAt   DateTime @default(now())
-  booking     Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
-  driver      User     @relation("DriverReviews", fields: [driverId], references: [id], onDelete: Cascade)
-  passenger   User     @relation("PassengerReviews", fields: [passengerId], references: [id], onDelete: Cascade)
-
-  @@index([driverId])
-  @@index([passengerId])
-  @@index([createdAt])
+generator client {
+  provider = "prisma-client-js"
 }
 
 enum Role {
@@ -204,22 +35,22 @@ enum BookingStatus {
 }
 
 enum CancelReason {
-  CHANGE_OF_PLAN
-  FOUND_ALTERNATIVE
-  DRIVER_DELAY
-  PRICE_ISSUE
-  WRONG_LOCATION
-  DUPLICATE_OR_WRONG_DATE
-  SAFETY_CONCERN
-  WEATHER_OR_FORCE_MAJEURE
-  COMMUNICATION_ISSUE
+  CHANGE_OF_PLAN               // เปลี่ยนแผน/มีธุระกะทันหัน
+  FOUND_ALTERNATIVE            // พบวิธีเดินทางอื่นแล้ว
+  DRIVER_DELAY                 // คนขับล่าช้าหรือเลื่อนเวลา
+  PRICE_ISSUE                  // ราคาหรือค่าใช้จ่ายไม่เหมาะสม
+  WRONG_LOCATION               // เลือกจุดรับ–ส่งผิด
+  DUPLICATE_OR_WRONG_DATE      // จองซ้ำหรือจองผิดวัน
+  SAFETY_CONCERN               // กังวลด้านความปลอดภัย
+  WEATHER_OR_FORCE_MAJEURE     // สภาพอากาศ/เหตุสุดวิสัย
+  COMMUNICATION_ISSUE          // สื่อสารไม่สะดวก/ติดต่อไม่ได้
 }
 
 enum LicenseType {
-  PRIVATE_CAR_TEMPORARY
-  PRIVATE_CAR
-  PUBLIC_CAR
-  LIFETIME
+  PRIVATE_CAR_TEMPORARY // รถยนต์ส่วนบุคคลชั่วคราว (2 ปี)
+  PRIVATE_CAR          // รถยนต์ส่วนบุคคล (5 ปี)
+  PUBLIC_CAR           // รถยนต์สาธารณะ
+  LIFETIME             // ตลอดชีพ
 }
 
 enum NotificationType {
@@ -227,4 +58,212 @@ enum NotificationType {
   VERIFICATION
   BOOKING
   ROUTE
+  PAYMENT
+}
+
+enum PaymentStatus {
+  PENDING        // รอชำระ
+  PAID           // ผู้โดยสารแจ้งจ่ายแล้ว (รอคนขับยืนยัน)
+  CONFIRMED      // คนขับยืนยันรับเงินแล้ว
+}
+
+enum PaymentMethod {
+  CASH           // เงินสด
+  TRANSFER       // โอนเงิน/พร้อมเพย์
+}
+
+model User {
+  id                    String   @id @default(cuid())
+  username              String   @unique
+  email                 String   @unique
+  password              String
+  firstName             String?
+  lastName              String?
+  gender                String?
+  phoneNumber           String?
+  profilePicture        String?
+  nationalIdNumber      String?  @unique
+  nationalIdPhotoUrl    String?  @unique
+  nationalIdExpiryDate  DateTime?
+  selfiePhotoUrl        String?
+  role                  Role     @default(PASSENGER)
+  isVerified            Boolean  @default(false)
+  isActive              Boolean  @default(true)
+  otpCode               String?
+  lastLogin             DateTime?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  passengerSuspendedUntil DateTime?
+  driverSuspendedUntil    DateTime?
+  driverVerification    DriverVerification?
+  vehicles              Vehicle[]
+  notification          Notification[]
+  createdRoutes         Route[]             @relation("DriverRoutes")
+  bookings              Booking[]           @relation("PassengerBookings")
+  promptPayNumber       String?
+  promptPayQrUrl        String?
+  passengerReviews      Review[]            @relation("PassengerReviews")
+  driverReviews         Review[]            @relation("DriverReviews")
+
+  @@index([role])
+  @@index([isActive])
+  @@index([isVerified])
+  @@index([createdAt])
+}
+
+model DriverVerification {
+  id                  String             @id @default(cuid())
+  userId              String             @unique
+  user                User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  licenseNumber       String             @unique
+  firstNameOnLicense  String
+  lastNameOnLicense   String
+  licenseIssueDate    DateTime
+  licenseExpiryDate   DateTime
+  licensePhotoUrl     String
+  selfiePhotoUrl      String
+  typeOnLicense       LicenseType
+  status              VerificationStatus @default(PENDING)
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([licenseIssueDate])
+  @@index([licenseExpiryDate])
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type      NotificationType @default(SYSTEM)
+  title     String
+  body      String
+  link      String?
+  metadata  Json?            @db.Json
+
+  readAt    DateTime?
+  createdAt DateTime         @default(now())
+  adminReviewedAt DateTime?
+
+  @@index([userId, createdAt])
+  @@index([userId, readAt])
+  @@index([adminReviewedAt])
+}
+
+model Vehicle {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vehicleModel  String
+  licensePlate  String   @unique
+  vehicleType   String
+  color         String
+  seatCapacity  Int
+  amenities     String[]
+  photos        Json?    @db.Json
+  isDefault     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  routes        Route[]
+
+  @@index([userId])
+  @@index([createdAt])
+  @@index([vehicleType])
+  @@index([seatCapacity])
+}
+
+model Route {
+  id              String      @id @default(cuid())
+  driverId        String
+  driver          User        @relation("DriverRoutes", fields: [driverId], references: [id], onDelete: Cascade)
+  vehicleId       String
+  vehicle         Vehicle     @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  startLocation   Json        @db.Json
+  endLocation     Json        @db.Json
+  departureTime   DateTime
+  availableSeats  Int
+  pricePerSeat    Float
+  conditions      String?
+  status          RouteStatus @default(AVAILABLE)
+  cancelledAt     DateTime?
+  cancelledBy     String?     // 'DRIVER' | 'ADMIN'
+  completedAt     DateTime?
+  routePolyline String?
+  distanceMeters Int?
+  durationSeconds Int?
+  routeSummary    String?
+  distance        String?
+  duration        String?
+  waypoints       Json?        @db.Json
+  landmarks       Json?       @db.Json
+  steps           Json?       @db.Json
+  createdAt       DateTime    @default(now())
+  updatedAt     DateTime @updatedAt
+
+  bookings        Booking[]
+
+  @@index([driverId])
+  @@index([vehicleId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([departureTime])
+}
+
+model Booking {
+  id              String        @id @default(cuid())
+  routeId         String
+  route           Route         @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  passengerId     String
+  passenger       User          @relation("PassengerBookings", fields: [passengerId], references: [id], onDelete: Cascade)
+  numberOfSeats   Int
+  status          BookingStatus @default(PENDING)
+  cancelledAt     DateTime?
+  cancelledBy     String?       // 'PASSENGER' | 'DRIVER' | 'ADMIN'
+  cancelReason    CancelReason?
+  pickupLocation  Json          @db.Json
+  dropoffLocation Json          @db.Json
+  createdAt       DateTime      @default(now())
+
+  review          Review?
+  payment         Payment?
+}
+
+model Review {
+  id          String   @id @default(cuid())
+  bookingId   String   @unique
+  booking     Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  passengerId String
+  passenger   User     @relation("PassengerReviews", fields: [passengerId], references: [id], onDelete: Cascade)
+  driverId    String
+  driver      User     @relation("DriverReviews", fields: [driverId], references: [id], onDelete: Cascade)
+  rating      Int      // 1-5
+  comment     String?
+  mediaUrls   Json?    @db.Json  // [{url, type, publicId}]
+  createdAt   DateTime @default(now())
+
+  @@index([driverId])
+  @@index([passengerId])
+  @@index([createdAt])
+}
+
+model Payment {
+  id              String        @id @default(cuid())
+  bookingId       String        @unique
+  booking         Booking       @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  amount          Float
+  method          PaymentMethod?
+  status          PaymentStatus @default(PENDING)
+  slipUrl         String?       // รูปสลิปโอนเงิน (Cloudinary)
+  paidAt          DateTime?     // ผู้โดยสารแจ้งจ่าย
+  confirmedAt     DateTime?     // คนขับยืนยันรับเงิน
+  receiptNumber   String?       @unique // REC-YYYYMMDD-XXX
+  createdAt       DateTime      @default(now())
+
+  @@index([bookingId])
+  @@index([status])
+  @@index([receiptNumber])
 }
