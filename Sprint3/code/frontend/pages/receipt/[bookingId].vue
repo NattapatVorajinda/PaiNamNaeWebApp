@@ -1,6 +1,6 @@
 <template>
-    <div class="min-h-screen bg-gray-50 font-kanit">
-        <div class="max-w-lg mx-auto px-4 py-8">
+    <div class="min-h-screen bg-gray-100 font-kanit">
+        <div class="max-w-2xl mx-auto px-4 py-8">
             <!-- Loading -->
             <div v-if="loading" class="flex justify-center py-20">
                 <div class="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full"></div>
@@ -13,7 +13,7 @@
             </div>
 
             <!-- Receipt -->
-            <div v-else-if="receipt" id="receipt-content">
+            <div v-else-if="receipt">
                 <!-- Actions (hide on print) -->
                 <div class="print:hidden mb-6 flex items-center justify-between">
                     <NuxtLink to="/myTrip" class="text-sm text-blue-600 hover:underline flex items-center gap-1">
@@ -32,86 +32,110 @@
                     </button>
                 </div>
 
-                <!-- Receipt Card -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <!-- Receipt Document -->
+                <div id="receipt-content" class="bg-white border border-gray-300 shadow-sm">
                     <!-- Header -->
-                    <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6 text-center">
-                        <h1 class="text-xl font-bold">ใบเสร็จรับเงิน</h1>
-                        <p class="text-blue-100 text-xs mt-1">Receipt</p>
+                    <div class="px-8 pt-8 pb-4 border-b-2 border-gray-800">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <h2 class="text-xl font-bold text-gray-900">PaiNamNae</h2>
+                                <p class="text-xs text-gray-500">ระบบร่วมเดินทาง</p>
+                            </div>
+                            <div class="text-right">
+                                <h1 class="text-2xl font-bold text-gray-900">ใบเสร็จรับเงิน</h1>
+                                <p class="text-sm text-gray-500">Receipt</p>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Receipt Number & Date -->
-                    <div class="px-6 pt-5 pb-3 flex justify-between text-sm border-b border-gray-100">
+                    <div class="px-8 py-4 grid grid-cols-2 gap-4 text-sm border-b border-gray-200">
                         <div>
-                            <span class="text-gray-400 text-xs">เลขที่</span>
-                            <p class="font-mono font-bold text-gray-900">{{ receipt.receiptNumber }}</p>
+                            <span class="text-gray-500">เลขที่ (No.)</span>
+                            <p class="font-mono font-bold text-gray-900 mt-0.5">{{ receipt.receiptNumber }}</p>
                         </div>
                         <div class="text-right">
-                            <span class="text-gray-400 text-xs">วันที่</span>
-                            <p class="text-gray-900">{{ formatDate(receipt.confirmedAt) }}</p>
+                            <span class="text-gray-500">วันที่ (Date)</span>
+                            <p class="text-gray-900 font-medium mt-0.5">{{ formatDate(receipt.confirmedAt) }}</p>
                         </div>
                     </div>
 
                     <!-- Parties -->
-                    <div class="px-6 py-4 border-b border-gray-100 space-y-3">
-                        <div class="flex justify-between text-sm">
-                            <span class="text-gray-500">ผู้รับเงิน (คนขับ)</span>
-                            <span class="text-gray-900 font-medium">{{ driverName }}</span>
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-gray-500">ผู้จ่ายเงิน (ผู้โดยสาร)</span>
-                            <span class="text-gray-900 font-medium">{{ passengerName }}</span>
-                        </div>
+                    <div class="px-8 py-4 border-b border-gray-200">
+                        <table class="w-full text-sm">
+                            <tbody>
+                                <tr>
+                                    <td class="py-1.5 text-gray-500 w-40">ผู้รับเงิน (คนขับ)</td>
+                                    <td class="py-1.5 text-gray-900 font-medium">{{ driverName }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-1.5 text-gray-500">ผู้จ่ายเงิน (ผู้โดยสาร)</td>
+                                    <td class="py-1.5 text-gray-900 font-medium">{{ passengerName }}</td>
+                                </tr>
+                                <tr v-if="vehiclePlate">
+                                    <td class="py-1.5 text-gray-500">ทะเบียนรถยนต์</td>
+                                    <td class="py-1.5 text-gray-900 font-medium">{{ vehiclePlate }}</td>
+                                </tr>
+                                <tr v-if="vehicleDesc">
+                                    <td class="py-1.5 text-gray-500">รถยนต์</td>
+                                    <td class="py-1.5 text-gray-900">{{ vehicleDesc }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                     <!-- Details Table -->
-                    <div class="px-6 py-4 border-b border-gray-100">
-                        <table class="w-full text-sm">
+                    <div class="px-8 py-4 border-b border-gray-200">
+                        <table class="w-full text-sm border border-gray-300">
                             <thead>
-                                <tr class="text-gray-400 text-xs uppercase">
-                                    <th class="text-left pb-2">รายการ</th>
-                                    <th class="text-center pb-2">จำนวน</th>
-                                    <th class="text-right pb-2">หน่วยละ</th>
-                                    <th class="text-right pb-2">จำนวนเงิน</th>
+                                <tr class="bg-gray-50">
+                                    <th class="text-left py-2 px-3 border-b border-gray-300 font-semibold text-gray-700">รายการ</th>
+                                    <th class="text-center py-2 px-3 border-b border-gray-300 font-semibold text-gray-700 w-20">จำนวน</th>
+                                    <th class="text-right py-2 px-3 border-b border-gray-300 font-semibold text-gray-700 w-24">หน่วยละ</th>
+                                    <th class="text-right py-2 px-3 border-b border-gray-300 font-semibold text-gray-700 w-28">จำนวนเงิน</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="py-2 text-gray-900">
+                                    <td class="py-3 px-3 border-b border-gray-200 text-gray-900">
                                         ค่าร่วมเดินทาง
-                                        <p class="text-xs text-gray-400">{{ routeDisplay }}</p>
+                                        <p class="text-xs text-gray-500 mt-0.5">{{ routeDisplay }}</p>
                                     </td>
-                                    <td class="text-center text-gray-700">{{ receipt.booking?.numberOfSeats }}</td>
-                                    <td class="text-right text-gray-700">฿{{ receipt.booking?.route?.pricePerSeat?.toLocaleString() }}</td>
-                                    <td class="text-right font-semibold text-gray-900">฿{{ receipt.amount?.toLocaleString() }}</td>
+                                    <td class="text-center py-3 px-3 border-b border-gray-200 text-gray-700">{{ receipt.booking?.numberOfSeats }}</td>
+                                    <td class="text-right py-3 px-3 border-b border-gray-200 text-gray-700">{{ formatNumber(receipt.booking?.route?.pricePerSeat) }}</td>
+                                    <td class="text-right py-3 px-3 border-b border-gray-200 font-semibold text-gray-900">{{ formatNumber(receipt.amount) }}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
                     <!-- Total -->
-                    <div class="px-6 py-4 border-b border-gray-100">
+                    <div class="px-8 py-5 border-b border-gray-200">
                         <div class="flex justify-between items-center">
-                            <span class="text-gray-700 font-semibold">ยอดรวมทั้งสิ้น</span>
-                            <span class="text-2xl font-bold text-blue-600">฿{{ receipt.amount?.toLocaleString() }}</span>
+                            <span class="text-lg font-bold text-gray-900">ยอดรวมทั้งสิ้น</span>
+                            <span class="text-2xl font-bold text-gray-900">{{ formatNumber(receipt.amount) }} บาท</span>
                         </div>
                         <p class="text-xs text-gray-400 text-right mt-1">* ไม่รวม VAT (บุคคลธรรมดา)</p>
                     </div>
 
-                    <!-- Payment Method -->
-                    <div class="px-6 py-4 space-y-2 text-sm">
-                        <div class="flex justify-between">
-                            <span class="text-gray-500">วิธีชำระเงิน</span>
-                            <span class="text-gray-900">{{ receipt.method === 'CASH' ? 'เงินสด' : 'โอนเงิน' }}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-500">สถานะ</span>
-                            <span class="text-green-600 font-medium">✅ ชำระแล้ว</span>
-                        </div>
+                    <!-- Payment Info -->
+                    <div class="px-8 py-4 border-b border-gray-200">
+                        <table class="w-full text-sm">
+                            <tbody>
+                                <tr>
+                                    <td class="py-1.5 text-gray-500 w-40">วิธีชำระเงิน</td>
+                                    <td class="py-1.5 text-gray-900">{{ receipt.method === 'CASH' ? 'เงินสด' : 'โอนเงิน' }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-1.5 text-gray-500">สถานะ</td>
+                                    <td class="py-1.5 text-green-700 font-medium">ชำระแล้ว</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                     <!-- Footer -->
-                    <div class="bg-gray-50 px-6 py-4 text-center">
+                    <div class="px-8 py-5 text-center">
                         <p class="text-xs text-gray-400">เอกสารนี้ออกโดยระบบอัตโนมัติ — PaiNamNae Carpool</p>
                     </div>
                 </div>
@@ -140,6 +164,14 @@ const passengerName = computed(() => {
     return p ? `${p.firstName} ${p.lastName}` : '-'
 })
 
+const vehiclePlate = computed(() => receipt.value?.booking?.route?.vehicle?.licensePlate || '')
+
+const vehicleDesc = computed(() => {
+    const v = receipt.value?.booking?.route?.vehicle
+    if (!v) return ''
+    return [v.brand, v.model, v.color].filter(Boolean).join(' ')
+})
+
 const routeDisplay = computed(() => {
     const r = receipt.value?.booking?.route
     if (!r) return ''
@@ -149,6 +181,10 @@ const routeDisplay = computed(() => {
     const endName = typeof end === 'object' ? (end.name || '') : end
     return startName && endName ? `${startName} → ${endName}` : ''
 })
+
+function formatNumber(num) {
+    return Number(num || 0).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+}
 
 function formatDate(dateStr) {
     if (!dateStr) return '-'
@@ -182,5 +218,15 @@ onMounted(async () => {
 @media print {
     body { background: white !important; }
     .print\:hidden { display: none !important; }
+
+    @page {
+        size: A4;
+        margin: 15mm;
+    }
+
+    #receipt-content {
+        border: none !important;
+        box-shadow: none !important;
+    }
 }
 </style>

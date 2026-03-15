@@ -231,6 +231,9 @@ const getReceipt = async (bookingId) => {
                             driver: {
                                 select: { id: true, firstName: true, lastName: true },
                             },
+                            vehicle: {
+                                select: { licensePlate: true, brand: true, model: true, color: true },
+                            },
                         },
                     },
                     passenger: {

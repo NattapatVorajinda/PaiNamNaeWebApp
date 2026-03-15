@@ -59,9 +59,6 @@
                         <p class="text-green-700 font-medium">✅ ชำระเงินเรียบร้อยแล้ว</p>
                         <NuxtLink :to="`/receipt/${route.params.bookingId}`"
                             class="inline-block mt-2 text-sm text-green-600 hover:underline">ดูใบเสร็จ →</NuxtLink>
-                        <br>
-                        <NuxtLink :to="`/tax-invoice/${route.params.bookingId}`"
-                            class="inline-block mt-1 text-sm text-green-600 hover:underline">ใบกำกับภาษี →</NuxtLink>
                     </div>
                 </div>
 
