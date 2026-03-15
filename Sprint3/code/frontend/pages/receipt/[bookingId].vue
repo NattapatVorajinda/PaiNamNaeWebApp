@@ -169,7 +169,7 @@ const vehiclePlate = computed(() => receipt.value?.booking?.route?.vehicle?.lice
 const vehicleDesc = computed(() => {
     const v = receipt.value?.booking?.route?.vehicle
     if (!v) return ''
-    return [v.brand, v.model, v.color].filter(Boolean).join(' ')
+    return [v.vehicleModel, v.color].filter(Boolean).join(' ')
 })
 
 const routeDisplay = computed(() => {

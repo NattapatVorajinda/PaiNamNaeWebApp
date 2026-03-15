@@ -232,7 +232,7 @@ const getReceipt = async (bookingId) => {
                                 select: { id: true, firstName: true, lastName: true },
                             },
                             vehicle: {
-                                select: { licensePlate: true, brand: true, model: true, color: true },
+                                select: { licensePlate: true, vehicleModel: true, color: true },
                             },
                         },
                     },
