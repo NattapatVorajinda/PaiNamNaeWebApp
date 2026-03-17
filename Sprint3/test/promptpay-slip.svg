@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="900" viewBox="0 0 600 900">
+  <rect width="600" height="900" fill="#f8fafc"/>
+  <rect x="40" y="40" width="520" height="820" rx="24" fill="#ffffff" stroke="#cbd5e1" stroke-width="4"/>
+  <text x="300" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" fill="#0f172a">PromptPay Slip</text>
+  <text x="300" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#334155">PaiNamNae Test Upload</text>
+  <rect x="160" y="230" width="280" height="280" fill="#e2e8f0" stroke="#94a3b8" stroke-width="3"/>
+  <path d="M200 270h200v200H200z" fill="none" stroke="#0f172a" stroke-width="10" stroke-dasharray="20 10"/>
+  <text x="300" y="560" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#0f172a">Amount: THB 120</text>
+  <text x="300" y="610" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#0f172a">Date: 2026-03-17</text>
+  <text x="300" y="660" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#0f172a">Ref: TC13-TRANSFER</text>
+</svg>

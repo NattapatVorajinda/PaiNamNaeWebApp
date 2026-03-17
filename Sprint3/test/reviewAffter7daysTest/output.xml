@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.4.1 (Python 3.13.7 on win32)" generated="2026-03-04T22:02:51.546776" rpa="false" schemaversion="5">
+<suite id="s1" name="Review 7Day Window" source="C:\Projects\soften\painamnae\Sprint2\test\reviewAffter7daysTest\review_7day_window.robot">
+<kw name="Expire All Passenger Completed Bookings" type="SETUP">
+<kw name="Run Process" owner="Process">
+<msg time="2026-03-04T22:02:51.715101" level="INFO">Starting process:
+node C:\Projects\soften\painamnae\Sprint2\test\reviewAffter7daysTest/setup/create_expired_booking.js</msg>
+<msg time="2026-03-04T22:02:51.724412" level="INFO">Waiting for process to complete.</msg>
+<msg time="2026-03-04T22:02:53.124556" level="INFO">Process completed.</msg>
+<msg time="2026-03-04T22:02:53.124695" level="INFO">${result} = &lt;result object with rc 0&gt;</msg>
+<var>${result}</var>
+<arg>node</arg>
+<arg>C:\\Projects\\soften\\painamnae\\Sprint2\\test\\reviewAffter7daysTest/setup/create_expired_booking.js</arg>
+<arg>cwd=${BACKEND_DIR}</arg>
+<arg>shell=True</arg>
+<doc>Runs a process and waits for it to complete.</doc>
+<status status="PASS" start="2026-03-04T22:02:51.714835" elapsed="1.409885"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2026-03-04T22:02:53.125267" level="INFO">stdout: OK</msg>
+<arg>stdout: ${result.stdout}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2026-03-04T22:02:53.124861" elapsed="0.000442"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2026-03-04T22:02:53.125740" level="INFO">stderr: INFO: à¸à¸±à¹à¸ completedAt = 2026-02-24T15:02:52.802Z à¹à¸«à¹ 6 route(s) à¸à¸­à¸ panawat.c@kkumail.com</msg>
+<arg>stderr: ${result.stderr}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2026-03-04T22:02:53.125426" elapsed="0.000344"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-03-04T22:02:53.126279" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${result.rc}</arg>
+<arg>0</arg>
+<arg>msg=Setup ล้มเหลว กรุณาตรวจสอบ:\n${result.stderr}</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-03-04T22:02:53.125833" elapsed="0.000484"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2026-03-04T22:02:53.128135" level="INFO">✓ Setup สำเร็จ: Booking ทุกอันถูก expire แล้ว</msg>
+<arg>✓ Setup สำเร็จ: Booking ทุกอันถูก expire แล้ว</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2026-03-04T22:02:53.126385" elapsed="0.001783"/>
+</kw>
+<doc>รัน create_expired_booking.js เพื่อตั้ง completedAt
+ย้อนหลัง 8 วันให้ทุก Booking ของ test passenger</doc>
+<status status="PASS" start="2026-03-04T22:02:51.714446" elapsed="1.413771"/>
+</kw>
+<test id="s1-t1" name="TC-7DAY-001 Review Button Visible But Submit Fails After 7 Days" line="36">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2026-03-04T22:02:53.129200" level="INFO">Opening browser 'chrome' to base url 'https://csse4569.cpkku.com/login'.</msg>
+<arg>${FRONTEND_URL}/login</arg>
+<arg>${BROWSER}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2026-03-04T22:02:53.129063" elapsed="1.647190"/>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" start="2026-03-04T22:02:54.776534" elapsed="0.017407"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>เข้าสู่ระบบ</arg>
+<arg>timeout=15s</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" start="2026-03-04T22:02:54.794242" elapsed="0.218705"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-04T22:02:55.013940" level="INFO">Typing text 'panawat.c@kkumail.com' into text field 'id:identifier'.</msg>
+<arg>id:identifier</arg>
+<arg>${PASSENGER_EMAIL}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-04T22:02:55.013566" elapsed="0.073260"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-04T22:02:55.087775" level="INFO">Typing text '12345678Cp' into text field 'id:password'.</msg>
+<arg>id:password</arg>
+<arg>${PASSENGER_PASS}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-04T22:02:55.087385" elapsed="0.041405"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-03-04T22:02:55.129818" level="INFO">Clicking element 'css:button[type="submit"]'.</msg>
+<arg>css:button[type="submit"]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-04T22:02:55.129507" elapsed="0.034813"/>
+</kw>
+<kw name="Wait Until Location Does Not Contain" owner="SeleniumLibrary">
+<arg>/login</arg>
+<arg>timeout=15s</arg>
+<doc>Waits until the current URL does not contains ``location``.</doc>
+<status status="PASS" start="2026-03-04T22:02:55.164714" elapsed="1.025713"/>
+</kw>
+<kw name="Go To" owner="SeleniumLibrary">
+<msg time="2026-03-04T22:02:56.191155" level="INFO">Opening url 'https://csse4569.cpkku.com/myTrip'</msg>
+<arg>${FRONTEND_URL}/myTrip</arg>
+<doc>Navigates the current browser window to the provided ``url``.</doc>
+<status status="PASS" start="2026-03-04T22:02:56.190906" elapsed="0.068781"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>การเดินทางของฉัน</arg>
+<arg>timeout=15s</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" start="2026-03-04T22:02:56.259954" elapsed="0.015606"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-03-04T22:03:02.277014" level="INFO">Slept 6 seconds.</msg>
+<arg>6s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-03-04T22:02:56.275999" elapsed="6.001206"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-03-04T22:03:02.278754" level="INFO">Clicking element 'xpath=//button[contains(text(),'ยืนยันแล้ว')]'.</msg>
+<arg>xpath=//button[contains(text(),'ยืนยันแล้ว')]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-04T22:03:02.277987" elapsed="0.053356"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-03-04T22:03:04.332576" level="INFO">Slept 2 seconds.</msg>
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-03-04T22:03:02.331568" elapsed="2.001422"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>⭐ เขียนรีวิว</arg>
+<arg>timeout=15s</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" start="2026-03-04T22:03:04.334144" elapsed="1.509750"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2026-03-04T22:03:05.844416" level="INFO">✓ Step 4: ปุ่ม "⭐ เขียนรีวิว" แสดงอยู่บนหน้า</msg>
+<arg>✓ Step 4: ปุ่ม "⭐ เขียนรีวิว" แสดงอยู่บนหน้า</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2026-03-04T22:03:05.844219" elapsed="0.000234"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-03-04T22:03:05.844711" level="INFO">Clicking element 'xpath=(//button[contains(text(),'⭐ เขียนรีวิว')])[1]'.</msg>
+<arg>xpath=(//button[contains(text(),'⭐ เขียนรีวิว')])[1]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-04T22:03:05.844589" elapsed="0.052059"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>ให้คะแนนการเดินทาง</arg>
+<arg>timeout=10s</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" start="2026-03-04T22:03:05.897117" elapsed="0.008472"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2026-03-04T22:03:05.906049" level="INFO">✓ Step 5: Modal รีวิวเปิดขึ้น</msg>
+<arg>✓ Step 5: Modal รีวิวเปิดขึ้น</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2026-03-04T22:03:05.905863" elapsed="0.000217"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-03-04T22:03:05.906431" level="INFO">Clicking element 'xpath=(//button[contains(@class,'star-btn')])[5]'.</msg>
+<arg>xpath=(//button[contains(@class,'star-btn')])[5]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-04T22:03:05.906315" elapsed="0.048341"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-03-04T22:03:06.455512" level="INFO">Slept 500 milliseconds.</msg>
+<arg>0.5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-03-04T22:03:05.954981" elapsed="0.500620"/>
+</kw>
+<kw name="Wait Until Element Is Enabled" owner="SeleniumLibrary">
+<arg>xpath=//button[contains(text(),'ส่งรีวิว')]</arg>
+<arg>timeout=5s</arg>
+<doc>Waits until the element ``locator`` is enabled.</doc>
+<status status="PASS" start="2026-03-04T22:03:06.455900" elapsed="0.030550"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2026-03-04T22:03:06.486915" level="INFO">✓ Step 6: เลือก 5 ดาว ปุ่ม Submit ใช้งานได้</msg>
+<arg>✓ Step 6: เลือก 5 ดาว ปุ่ม Submit ใช้งานได้</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2026-03-04T22:03:06.486716" elapsed="0.000234"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-03-04T22:03:06.487273" level="INFO">Clicking element 'xpath=//button[contains(text(),'ส่งรีวิว')]'.</msg>
+<arg>xpath=//button[contains(text(),'ส่งรีวิว')]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-04T22:03:06.487140" elapsed="0.042661"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2026-03-04T22:03:06.530686" level="INFO">✓ Step 7: กดปุ่ม ส่งรีวิว</msg>
+<arg>✓ Step 7: กดปุ่ม ส่งรีวิว</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2026-03-04T22:03:06.530232" elapsed="0.000544"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>เกิดข้อผิดพลาด</arg>
+<arg>timeout=8s</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" start="2026-03-04T22:03:06.531047" elapsed="0.431737"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2026-03-04T22:03:06.963817" level="INFO">✓ Step 8: Toast "เกิดข้อผิดพลาด" แสดงขึ้น — Backend ปฏิเสธการรีวิวเกิน 7 วัน</msg>
+<arg>✓ Step 8: Toast "เกิดข้อผิดพลาด" แสดงขึ้น — Backend ปฏิเสธการรีวิวเกิน 7 วัน</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2026-03-04T22:03:06.963612" elapsed="0.000239"/>
+</kw>
+<doc>หลัง Route completedAt เกิน 7 วัน:
+- ปุ่ม "⭐ เขียนรีวิว" ยังแสดงอยู่ (Frontend ไม่ block)
+- กด Submit → Backend ปฏิเสธ → Toast "เกิดข้อผิดพลาด"</doc>
+<tag>7-day-window</tag>
+<tag>critical</tag>
+<tag>negative</tag>
+<status status="PASS" start="2026-03-04T22:02:53.128264" elapsed="13.836324"/>
+</test>
+<kw name="Close Browser" owner="SeleniumLibrary" type="TEARDOWN">
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2026-03-04T22:03:06.965043" elapsed="2.154683"/>
+</kw>
+<doc>Test: ผู้โดยสารไม่สามารถรีวิวได้หลังจากผ่านไป 7 วัน
+
+Flow ที่ทดสอบ:
+1. Suite Setup รัน create_expired_booking.js
+   → update completedAt ของทุก route ให้ย้อนหลัง 8 วัน
+2. Login ด้วย Passenger account
+3. ไปหน้า My Trips → Tab ยืนยันแล้ว
+4. ปุ่ม "⭐ เขียนรีวิว" ต้องมีอยู่ (Frontend ไม่ filter 7 วัน)
+5. คลิก → เลือกดาว → กด Submit
+6. Toast "เกิดข้อผิดพลาด" ต้องแสดงขึ้น (Backend ปฏิเสธ)
+
+วิธีรัน:
+cd Sprint2/test
+robot uat/review_7day_window.robot</doc>
+<status status="PASS" start="2026-03-04T22:02:51.548020" elapsed="17.572106"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="1" fail="0" skip="0">7-day-window</stat>
+<stat pass="1" fail="0" skip="0">critical</stat>
+<stat pass="1" fail="0" skip="0">negative</stat>
+</tag>
+<suite>
+<stat name="Review 7Day Window" id="s1" pass="1" fail="0" skip="0">Review 7Day Window</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
