@@ -1,0 +1,939 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.4.1 (Python 3.10.8 on win32)" generated="2026-03-17T15:10:43.297613" rpa="false" schemaversion="5">
+<suite id="s1" name="Test TC3" source="C:\PaiNamNaeWebApp\Sprint3\code\test\Test TC3.robot">
+<test id="s1-t1" name="TC3 Driver Create Route Successfully" line="29">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:10:43.512077" level="INFO">Opening browser 'chrome' to base url 'https://csse4569.cpkku.com/'.</msg>
+<arg>${URL}</arg>
+<arg>${BROWSER}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2026-03-17T15:10:43.512077" elapsed="2.601009"/>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" start="2026-03-17T15:10:46.114087" elapsed="0.049972"/>
+</kw>
+<kw name="Set Selenium Speed" owner="SeleniumLibrary">
+<arg>0.2s</arg>
+<doc>Sets the delay that is waited after each Selenium command.</doc>
+<status status="PASS" start="2026-03-17T15:10:46.164059" elapsed="0.002002"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//a[@href='/login' or contains(.,'เข้าสู่ระบบ')]</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-17T15:10:46.167060" elapsed="0.591125"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:10:46.758185" level="INFO">Clicking element 'xpath=//a[@href='/login' or contains(.,'เข้าสู่ระบบ')]'.</msg>
+<arg>xpath=//a[@href='/login' or contains(.,'เข้าสู่ระบบ')]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:10:46.758185" elapsed="0.502953"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>id=identifier</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-17T15:10:47.262382" elapsed="0.446337"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:10:47.711552" level="INFO">Typing text 'sitananyjjk13@gmail.com' into text field 'id=identifier'.</msg>
+<arg>id=identifier</arg>
+<arg>${DRIVER_EMAIL}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:10:47.711552" elapsed="0.769659"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:10:48.481211" level="INFO">Typing text 'Ching13082547' into text field 'id=password'.</msg>
+<arg>id=password</arg>
+<arg>${DRIVER_PASS}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:10:48.481211" elapsed="0.799439"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:10:49.280650" level="INFO">Clicking button 'xpath=//form[@id='loginForm']//button[@type='submit']'.</msg>
+<arg>xpath=//form[@id='loginForm']//button[@type='submit']</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:10:49.280650" elapsed="1.109087"/>
+</kw>
+<kw name="Wait Until Page Contains Element" owner="SeleniumLibrary">
+<arg>xpath=//a[@href='/createTrip' and contains(.,'สร้างเส้นทาง')]</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` appears on the current page.</doc>
+<status status="PASS" start="2026-03-17T15:10:50.392389" elapsed="1.496010"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:10:51.889348" level="INFO">Clicking element 'xpath=//a[@href='/createTrip' and contains(.,'สร้างเส้นทาง')]'.</msg>
+<arg>xpath=//a[@href='/createTrip' and contains(.,'สร้างเส้นทาง')]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:10:51.889348" elapsed="0.500237"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>id=startPoint</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-17T15:10:52.391819" elapsed="0.457476"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:10:52.851308" level="INFO">Typing text 'ขอนแก่น' into text field 'id=startPoint'.</msg>
+<arg>id=startPoint</arg>
+<arg>ขอนแก่น</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:10:52.851308" elapsed="0.715444"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<arg>3s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-17T15:10:53.566752" elapsed="1.302219"/>
+</kw>
+<arg>Wait Until Element Is Visible</arg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<arg>3s</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="PASS" start="2026-03-17T15:10:53.566752" elapsed="1.302219"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:10:54.868971" level="INFO">Clicking element 'xpath=(//div[contains(@class,'pac-item')])[1]'.</msg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:10:54.868971" elapsed="0.520983"/>
+</kw>
+<arg>Click Element</arg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="PASS" start="2026-03-17T15:10:54.868971" elapsed="0.520983"/>
+</kw>
+<kw name="Press Keys" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:10:55.390955" level="INFO">Sending key(s) ('TAB',) to id=startPoint element.</msg>
+<msg time="2026-03-17T15:10:56.102092" level="INFO">Pressing special key TAB to element.</msg>
+<msg time="2026-03-17T15:10:56.102092" level="INFO">Releasing special key TAB.</msg>
+<arg>id=startPoint</arg>
+<arg>TAB</arg>
+<doc>Simulates the user pressing key(s) to an element or on the active browser.</doc>
+<status status="PASS" start="2026-03-17T15:10:55.390955" elapsed="0.942682"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:10:56.335323" level="INFO">Typing text 'โคราช' into text field 'id=endPoint'.</msg>
+<arg>id=endPoint</arg>
+<arg>โคราช</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:10:56.335323" elapsed="0.779077"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<arg>3s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-17T15:10:57.116416" elapsed="0.848238"/>
+</kw>
+<arg>Wait Until Element Is Visible</arg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<arg>3s</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="PASS" start="2026-03-17T15:10:57.114400" elapsed="0.850254"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:10:57.964654" level="INFO">Clicking element 'xpath=(//div[contains(@class,'pac-item')])[1]'.</msg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:10:57.964654" elapsed="0.499762"/>
+</kw>
+<arg>Click Element</arg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="PASS" start="2026-03-17T15:10:57.964654" elapsed="0.499762"/>
+</kw>
+<kw name="Press Keys" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:10:58.464416" level="INFO">Sending key(s) ('TAB',) to id=endPoint element.</msg>
+<msg time="2026-03-17T15:10:59.166147" level="INFO">Pressing special key TAB to element.</msg>
+<msg time="2026-03-17T15:10:59.166147" level="INFO">Releasing special key TAB.</msg>
+<arg>id=endPoint</arg>
+<arg>TAB</arg>
+<doc>Simulates the user pressing key(s) to an element or on the active browser.</doc>
+<status status="PASS" start="2026-03-17T15:10:58.464416" elapsed="0.917617"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:10:59.384946" level="INFO">Clicking element 'xpath=//form[@id='postRouteForm']//button[@type='button' and contains(.,'เพิ่มจุดแวะ')]'.</msg>
+<arg>xpath=//form[@id='postRouteForm']//button[@type='button' and contains(.,'เพิ่มจุดแวะ')]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:10:59.384946" elapsed="0.512929"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:10:59.897875" level="INFO">Typing text 'ชัยภูมิ' into text field 'xpath=//form[@id='postRouteForm']//input[contains(@placeholder,'(#1)')]'.</msg>
+<arg>xpath=//form[@id='postRouteForm']//input[contains(@placeholder,'(#1)')]</arg>
+<arg>ชัยภูมิ</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:10:59.897875" elapsed="0.738447"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<arg>3s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-17T15:11:00.636322" elapsed="0.869506"/>
+</kw>
+<arg>Wait Until Element Is Visible</arg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<arg>3s</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="PASS" start="2026-03-17T15:11:00.636322" elapsed="0.870805"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:01.510233" level="INFO">Clicking element 'xpath=(//div[contains(@class,'pac-item')])[1]'.</msg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:01.509229" elapsed="0.524869"/>
+</kw>
+<arg>Click Element</arg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="PASS" start="2026-03-17T15:11:01.508227" elapsed="0.525871"/>
+</kw>
+<kw name="Press Keys" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:02.034098" level="INFO">Sending key(s) ('TAB',) to xpath=//form[@id='postRouteForm']//input[contains(@placeholder,'(#1)')] element.</msg>
+<msg time="2026-03-17T15:11:02.748778" level="INFO">Pressing special key TAB to element.</msg>
+<msg time="2026-03-17T15:11:02.748778" level="INFO">Releasing special key TAB.</msg>
+<arg>xpath=//form[@id='postRouteForm']//input[contains(@placeholder,'(#1)')]</arg>
+<arg>TAB</arg>
+<doc>Simulates the user pressing key(s) to an element or on the active browser.</doc>
+<status status="PASS" start="2026-03-17T15:11:02.034098" elapsed="0.932774"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:02.966872" level="INFO">Clicking element 'xpath=//form[@id='postRouteForm']//button[@type='button' and contains(.,'เพิ่มจุดแวะ')]'.</msg>
+<arg>xpath=//form[@id='postRouteForm']//button[@type='button' and contains(.,'เพิ่มจุดแวะ')]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:02.966872" elapsed="0.497335"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:03.464207" level="INFO">Typing text 'นครราชสีมา' into text field 'xpath=//form[@id='postRouteForm']//input[contains(@placeholder,'(#2)')]'.</msg>
+<arg>xpath=//form[@id='postRouteForm']//input[contains(@placeholder,'(#2)')]</arg>
+<arg>นครราชสีมา</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:03.464207" elapsed="0.758343"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<arg>3s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-17T15:11:04.226853" elapsed="0.429016"/>
+</kw>
+<arg>Wait Until Element Is Visible</arg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<arg>3s</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="PASS" start="2026-03-17T15:11:04.225853" elapsed="0.430016"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:04.657988" level="INFO">Clicking element 'xpath=(//div[contains(@class,'pac-item')])[1]'.</msg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:04.656989" elapsed="0.463756"/>
+</kw>
+<arg>Click Element</arg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="PASS" start="2026-03-17T15:11:04.656989" elapsed="0.463756"/>
+</kw>
+<kw name="Press Keys" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:05.121964" level="INFO">Sending key(s) ('TAB',) to xpath=//form[@id='postRouteForm']//input[contains(@placeholder,'(#2)')] element.</msg>
+<msg time="2026-03-17T15:11:05.870034" level="INFO">Pressing special key TAB to element.</msg>
+<msg time="2026-03-17T15:11:05.870034" level="INFO">Releasing special key TAB.</msg>
+<arg>xpath=//form[@id='postRouteForm']//input[contains(@placeholder,'(#2)')]</arg>
+<arg>TAB</arg>
+<doc>Simulates the user pressing key(s) to an element or on the active browser.</doc>
+<status status="PASS" start="2026-03-17T15:11:05.120745" elapsed="0.969118"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:06.089863" level="INFO">Typing text '10/12/2026' into text field 'id=travelDate'.</msg>
+<arg>id=travelDate</arg>
+<arg>${TRIP_DATE_UI}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:06.089863" elapsed="0.745350"/>
+</kw>
+<msg time="2026-03-17T15:11:06.835213" level="INFO">${date_status} = PASS</msg>
+<msg time="2026-03-17T15:11:06.835213" level="INFO">${date_msg} = None</msg>
+<var>${date_status}</var>
+<var>${date_msg}</var>
+<arg>Input Text</arg>
+<arg>id=travelDate</arg>
+<arg>${TRIP_DATE_UI}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="PASS" start="2026-03-17T15:11:06.089863" elapsed="0.745350"/>
+</kw>
+<kw name="Run Keyword If" owner="BuiltIn">
+<arg>'${date_status}'=='FAIL'</arg>
+<arg>Input Text</arg>
+<arg>id=travelDate</arg>
+<arg>${TRIP_DATE_ISO}</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="PASS" start="2026-03-17T15:11:06.835213" elapsed="0.000000"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:06.835213" level="INFO">Typing text '17:00' into text field 'id=travelTime'.</msg>
+<arg>id=travelTime</arg>
+<arg>17:00</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:06.835213" elapsed="0.779265"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:07.614478" level="INFO">Typing text '4' into text field 'id=seatCount'.</msg>
+<arg>id=seatCount</arg>
+<arg>4</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:07.614478" elapsed="0.767349"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:08.381827" level="INFO">Typing text '250' into text field 'id=pricePerSeat'.</msg>
+<arg>id=pricePerSeat</arg>
+<arg>250</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:08.381827" elapsed="0.734411"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//button[@type='button' and contains(.,'เพิ่ม / จัดการข้อมูล')]</arg>
+<arg>8s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-17T15:11:09.116238" elapsed="0.452697"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:09.571284" level="INFO">Clicking element 'xpath=//button[@type='button' and contains(.,'เพิ่ม / จัดการข้อมูล')]'.</msg>
+<arg>xpath=//button[@type='button' and contains(.,'เพิ่ม / จัดการข้อมูล')]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:09.568935" elapsed="0.497603"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//button[contains(.,'เพิ่มรถยนต์คันใหม่')]</arg>
+<arg>8s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-17T15:11:10.066538" elapsed="0.455063"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:10.522756" level="INFO">Clicking element 'xpath=//button[contains(.,'เพิ่มรถยนต์คันใหม่')]'.</msg>
+<arg>xpath=//button[contains(.,'เพิ่มรถยนต์คันใหม่')]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:10.521601" elapsed="0.493008"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//input[contains(@placeholder,'Toyota Camry')]</arg>
+<arg>8s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-17T15:11:11.014609" elapsed="0.446811"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:11.461420" level="INFO">Typing text 'Toyota Camry' into text field 'xpath=//input[contains(@placeholder,'Toyota Camry')]'.</msg>
+<arg>xpath=//input[contains(@placeholder,'Toyota Camry')]</arg>
+<arg>Toyota Camry</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:11.461420" elapsed="0.759447"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:12.245053" level="INFO">Typing text 'กก 1234 ขอนแก่น' into text field 'xpath=//input[contains(@placeholder,'กก 1234 ขอนแก่น')]'.</msg>
+<arg>xpath=//input[contains(@placeholder,'กก 1234 ขอนแก่น')]</arg>
+<arg>กก 1234 ขอนแก่น</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:12.244060" elapsed="0.814275"/>
+</kw>
+<kw name="Select From List By Label" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:13.060803" level="INFO">Selecting options from selection list 'xpath=//select[contains(@class,'form-input')]' by label Sedan.</msg>
+<arg>xpath=//select[contains(@class,'form-input')]</arg>
+<arg>Sedan</arg>
+<doc>Selects options from selection list ``locator`` by ``labels``.</doc>
+<status status="PASS" start="2026-03-17T15:11:13.059338" elapsed="2.447411"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:15.508699" level="INFO">Typing text 'สีดำ' into text field 'xpath=//input[contains(@placeholder,'เช่น สีดำ')]'.</msg>
+<arg>xpath=//input[contains(@placeholder,'เช่น สีดำ')]</arg>
+<arg>สีดำ</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:15.507871" elapsed="0.752152"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:16.263979" level="INFO">Typing text '3' into text field 'xpath=//input[@type='number' and contains(@placeholder,'เช่น 4')]'.</msg>
+<arg>xpath=//input[@type='number' and contains(@placeholder,'เช่น 4')]</arg>
+<arg>3</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:16.262978" elapsed="0.734282"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:16.997260" level="INFO">Typing text 'Air, Music' into text field 'xpath=//input[contains(@placeholder,'Air Conditioner')]'.</msg>
+<arg>xpath=//input[contains(@placeholder,'Air Conditioner')]</arg>
+<arg>Air, Music</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:16.997260" elapsed="0.728635"/>
+</kw>
+<kw name="Wait Until Page Contains Element" owner="SeleniumLibrary">
+<arg>xpath=(//div[contains(@class,'modal-overlay')]//input[@type='file'])[1]</arg>
+<arg>8s</arg>
+<doc>Waits until the element ``locator`` appears on the current page.</doc>
+<status status="PASS" start="2026-03-17T15:11:17.725895" elapsed="0.221076"/>
+</kw>
+<kw name="Choose File" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:17.946971" level="INFO">Sending C:\PaiNamNaeWebApp\Sprint3\code\test\pic\test.png to browser.</msg>
+<arg>xpath=(//div[contains(@class,'modal-overlay')]//input[@type='file'])[1]</arg>
+<arg>C:\\PaiNamNaeWebApp\\Sprint3\\code\\test/pic/test.png</arg>
+<doc>Inputs the ``file_path`` into the file input field ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:17.946971" elapsed="0.469665"/>
+</kw>
+<kw name="Choose File" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:18.418125" level="INFO">Sending C:\PaiNamNaeWebApp\Sprint3\code\test\pic\test.png to browser.</msg>
+<arg>xpath=(//div[contains(@class,'modal-overlay')]//input[@type='file'])[2]</arg>
+<arg>C:\\PaiNamNaeWebApp\\Sprint3\\code\\test/pic/test.png</arg>
+<doc>Inputs the ``file_path`` into the file input field ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:18.418125" elapsed="0.464945"/>
+</kw>
+<kw name="Choose File" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:18.883070" level="INFO">Sending C:\PaiNamNaeWebApp\Sprint3\code\test\pic\test.png to browser.</msg>
+<arg>xpath=(//div[contains(@class,'modal-overlay')]//input[@type='file'])[3]</arg>
+<arg>C:\\PaiNamNaeWebApp\\Sprint3\\code\\test/pic/test.png</arg>
+<doc>Inputs the ``file_path`` into the file input field ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:18.883070" elapsed="0.452195"/>
+</kw>
+<kw name="Select Checkbox" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:19.335265" level="INFO">Selecting checkbox 'id=isDefault'.</msg>
+<arg>id=isDefault</arg>
+<doc>Selects the checkbox identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:19.335265" elapsed="1.120557"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:20.456855" level="INFO">Clicking button 'xpath=//div[contains(@class,'modal-overlay')]//button[@type='submit' and contains(.,'บันทึก')]'.</msg>
+<arg>xpath=//div[contains(@class,'modal-overlay')]//button[@type='submit' and contains(.,'บันทึก')]</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:20.456855" elapsed="1.165381"/>
+</kw>
+<kw name="Run Keyword And Return Status" owner="BuiltIn">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//div[contains(@class,'modal-overlay')]//button[contains(.,'ยืนยัน')]</arg>
+<arg>5s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-17T15:11:21.622236" elapsed="4.697888"/>
+</kw>
+<msg time="2026-03-17T15:11:26.320124" level="INFO">${has_confirm} = True</msg>
+<var>${has_confirm}</var>
+<arg>Wait Until Element Is Visible</arg>
+<arg>xpath=//div[contains(@class,'modal-overlay')]//button[contains(.,'ยืนยัน')]</arg>
+<arg>5s</arg>
+<doc>Runs the specified keyword and returns the status as a Boolean value.</doc>
+<status status="PASS" start="2026-03-17T15:11:21.622236" elapsed="4.697888"/>
+</kw>
+<if>
+<branch type="IF" condition="${has_confirm}">
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:26.321274" level="INFO">Clicking button 'xpath=//div[contains(@class,'modal-overlay')]//button[contains(.,'ยืนยัน')]'.</msg>
+<arg>xpath=//div[contains(@class,'modal-overlay')]//button[contains(.,'ยืนยัน')]</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:26.321274" elapsed="1.100189"/>
+</kw>
+<status status="PASS" start="2026-03-17T15:11:26.320124" elapsed="1.101339"/>
+</branch>
+<branch type="ELSE">
+<kw name="Run Keyword And Return Status" owner="BuiltIn">
+<var>${has_back}</var>
+<arg>Wait Until Element Is Visible</arg>
+<arg>xpath=//div[contains(@class,'modal-overlay')]//button[.//*[name()='path' and contains(@d,'M15 19l-7-7 7-7')]]</arg>
+<arg>2s</arg>
+<doc>Runs the specified keyword and returns the status as a Boolean value.</doc>
+<status status="NOT RUN" start="2026-03-17T15:11:27.421896" elapsed="0.000000"/>
+</kw>
+<if>
+<branch type="IF" condition="${has_back}">
+<kw name="Click Element" owner="SeleniumLibrary">
+<arg>xpath=//div[contains(@class,'modal-overlay')]//button[.//*[name()='path' and contains(@d,'M15 19l-7-7 7-7')]]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" start="2026-03-17T15:11:27.421896" elapsed="0.000000"/>
+</kw>
+<status status="NOT RUN" start="2026-03-17T15:11:27.421896" elapsed="0.000000"/>
+</branch>
+<status status="NOT RUN" start="2026-03-17T15:11:27.421896" elapsed="0.000000"/>
+</if>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<arg>Click Button</arg>
+<arg>xpath=//div[contains(@class,'modal-overlay')]//button[contains(.,'ปิด')]</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="NOT RUN" start="2026-03-17T15:11:27.421896" elapsed="0.000000"/>
+</kw>
+<status status="NOT RUN" start="2026-03-17T15:11:27.421896" elapsed="0.000000"/>
+</branch>
+<status status="PASS" start="2026-03-17T15:11:26.320124" elapsed="1.101772"/>
+</if>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<kw name="Click Element At Coordinates" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:27.421896" level="INFO">Clicking element 'xpath=//div[contains(@class,'modal-overlay')]' at coordinates x=5, y=5.</msg>
+<msg time="2026-03-17T15:11:27.973267" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-1.png"&gt;&lt;img src="selenium-screenshot-1.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2026-03-17T15:11:27.973267" level="FAIL">StaleElementReferenceException: Message: stale element reference: stale element not found in the current frame
+  (Session info: chrome=145.0.7632.160); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#staleelementreferenceexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	0x7ff75ccdaa55
+	0x7ff75ca38630
+	0x7ff75c7cd75d
+	0x7ff75c7d56c1
+	0x7ff75c7d87e4
+	0x7ff75c7d88af
+	0x7ff75c82fd24
+	0x7ff75c82ef12
+	0x7ff75c88102e
+	0x7ff75c8519da
+	0x7ff75c87591c
+	0x7ff75c819098
+	0x7ff75c819f83
+	0x7ff75cd07810
+	0x7ff75cd01afd
+	0x7ff75cd22c1a
+	0x7ff75ca53345
+	0x7ff75ca5b81c
+	0x7ff75ca41924
+	0x7ff75ca41ad6
+	0x7ff75ca27e47
+	0x7ffcb589e8d7
+	0x7ffcb72cc48c
+</msg>
+<arg>xpath=//div[contains(@class,'modal-overlay')]</arg>
+<arg>5</arg>
+<arg>5</arg>
+<doc>Click the element ``locator`` at ``xoffset/yoffset``.</doc>
+<status status="FAIL" start="2026-03-17T15:11:27.421896" elapsed="0.551371">StaleElementReferenceException: Message: stale element reference: stale element not found in the current frame
+  (Session info: chrome=145.0.7632.160); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#staleelementreferenceexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	0x7ff75ccdaa55
+	0x7ff75ca38630
+	0x7ff75c7cd75d
+	0x7ff75c7d56c1
+	0x7ff75c7d87e4
+	0x7ff75c7d88af
+	0x7ff75c82fd24
+	0x7ff75c82ef12
+	0x7ff75c88102e
+	0x7ff75c8519da
+	0x7ff75c87591c
+	0x7ff75c819098
+	0x7ff75c819f83
+	0x7ff75cd07810
+	0x7ff75cd01afd
+	0x7ff75cd22c1a
+	0x7ff75ca53345
+	0x7ff75ca5b81c
+	0x7ff75ca41924
+	0x7ff75ca41ad6
+	0x7ff75ca27e47
+	0x7ffcb589e8d7
+	0x7ffcb72cc48c
+</status>
+</kw>
+<arg>Click Element At Coordinates</arg>
+<arg>xpath=//div[contains(@class,'modal-overlay')]</arg>
+<arg>5</arg>
+<arg>5</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="PASS" start="2026-03-17T15:11:27.421896" elapsed="0.551371"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<kw name="Wait Until Element Is Not Visible" owner="SeleniumLibrary">
+<arg>xpath=//div[contains(@class,'modal-overlay')]</arg>
+<arg>8s</arg>
+<doc>Waits until the element ``locator`` is not visible.</doc>
+<status status="PASS" start="2026-03-17T15:11:27.973267" elapsed="0.227844"/>
+</kw>
+<arg>Wait Until Element Is Not Visible</arg>
+<arg>xpath=//div[contains(@class,'modal-overlay')]</arg>
+<arg>8s</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="PASS" start="2026-03-17T15:11:27.973267" elapsed="0.227844"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-03-17T15:11:29.209431" level="INFO">Slept 1 second.</msg>
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-03-17T15:11:28.201111" elapsed="1.008320"/>
+</kw>
+<kw name="Go To" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:29.209431" level="INFO">Opening url 'https://csse4569.cpkku.com/createTrip'</msg>
+<arg>${URL}createTrip</arg>
+<doc>Navigates the current browser window to the provided ``url``.</doc>
+<status status="PASS" start="2026-03-17T15:11:29.209431" elapsed="0.328638"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>id=startPoint</arg>
+<arg>12s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-17T15:11:29.539283" elapsed="0.429396"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>id=travelDate</arg>
+<arg>12s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-17T15:11:29.968679" elapsed="0.417137"/>
+</kw>
+<kw name="Run Keyword And Return Status" owner="BuiltIn">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>id=vehicle</arg>
+<arg>5s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-17T15:11:30.385816" elapsed="0.432600"/>
+</kw>
+<msg time="2026-03-17T15:11:30.818416" level="INFO">${has_vehicle_select} = True</msg>
+<var>${has_vehicle_select}</var>
+<arg>Wait Until Element Is Visible</arg>
+<arg>id=vehicle</arg>
+<arg>5s</arg>
+<doc>Runs the specified keyword and returns the status as a Boolean value.</doc>
+<status status="PASS" start="2026-03-17T15:11:30.385816" elapsed="0.432600"/>
+</kw>
+<kw name="Run Keyword If" owner="BuiltIn">
+<kw name="Select From List By Index" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:30.818416" level="INFO">Selecting options from selection list 'id=vehicle' by index 1.</msg>
+<arg>id=vehicle</arg>
+<arg>1</arg>
+<doc>Selects options from selection list ``locator`` by ``indexes``.</doc>
+<status status="PASS" start="2026-03-17T15:11:30.818416" elapsed="1.744287"/>
+</kw>
+<arg>${has_vehicle_select}</arg>
+<arg>Select From List By Index</arg>
+<arg>id=vehicle</arg>
+<arg>1</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="PASS" start="2026-03-17T15:11:30.818416" elapsed="1.744287"/>
+</kw>
+<kw name="Clear Element Text" owner="SeleniumLibrary">
+<arg>id=startPoint</arg>
+<doc>Clears the value of the text-input-element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:32.562703" elapsed="0.464290"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:33.026993" level="INFO">Typing text 'ขอนแก่น' into text field 'id=startPoint'.</msg>
+<arg>id=startPoint</arg>
+<arg>ขอนแก่น</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:33.026993" elapsed="0.725697"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<arg>3s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-17T15:11:33.753640" elapsed="0.866505"/>
+</kw>
+<arg>Wait Until Element Is Visible</arg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<arg>3s</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="PASS" start="2026-03-17T15:11:33.753640" elapsed="0.866505"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:34.621147" level="INFO">Clicking element 'xpath=(//div[contains(@class,'pac-item')])[1]'.</msg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:34.621147" elapsed="0.510711"/>
+</kw>
+<arg>Click Element</arg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="PASS" start="2026-03-17T15:11:34.620145" elapsed="0.511713"/>
+</kw>
+<kw name="Press Keys" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:35.131858" level="INFO">Sending key(s) ('TAB',) to id=startPoint element.</msg>
+<msg time="2026-03-17T15:11:35.847012" level="INFO">Pressing special key TAB to element.</msg>
+<msg time="2026-03-17T15:11:35.847012" level="INFO">Releasing special key TAB.</msg>
+<arg>id=startPoint</arg>
+<arg>TAB</arg>
+<doc>Simulates the user pressing key(s) to an element or on the active browser.</doc>
+<status status="PASS" start="2026-03-17T15:11:35.131858" elapsed="0.949037"/>
+</kw>
+<kw name="Clear Element Text" owner="SeleniumLibrary">
+<arg>id=endPoint</arg>
+<doc>Clears the value of the text-input-element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:36.080895" elapsed="0.428667"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:36.509562" level="INFO">Typing text 'โคราช' into text field 'id=endPoint'.</msg>
+<arg>id=endPoint</arg>
+<arg>โคราช</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:36.509562" elapsed="0.728049"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<arg>3s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-17T15:11:37.239821" elapsed="0.428736"/>
+</kw>
+<arg>Wait Until Element Is Visible</arg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<arg>3s</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="PASS" start="2026-03-17T15:11:37.238753" elapsed="0.429804"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:37.668557" level="INFO">Clicking element 'xpath=(//div[contains(@class,'pac-item')])[1]'.</msg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:37.668557" elapsed="0.462757"/>
+</kw>
+<arg>Click Element</arg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="PASS" start="2026-03-17T15:11:37.668557" elapsed="0.462757"/>
+</kw>
+<kw name="Press Keys" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:38.135921" level="INFO">Sending key(s) ('TAB',) to id=endPoint element.</msg>
+<msg time="2026-03-17T15:11:38.831795" level="INFO">Pressing special key TAB to element.</msg>
+<msg time="2026-03-17T15:11:38.831795" level="INFO">Releasing special key TAB.</msg>
+<arg>id=endPoint</arg>
+<arg>TAB</arg>
+<doc>Simulates the user pressing key(s) to an element or on the active browser.</doc>
+<status status="PASS" start="2026-03-17T15:11:38.135921" elapsed="0.911956"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:39.047877" level="INFO">Clicking element 'xpath=//form[@id='postRouteForm']//button[@type='button' and contains(.,'เพิ่มจุดแวะ')]'.</msg>
+<arg>xpath=//form[@id='postRouteForm']//button[@type='button' and contains(.,'เพิ่มจุดแวะ')]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:39.047877" elapsed="0.482226"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:39.530103" level="INFO">Typing text 'ชัยภูมิ' into text field 'xpath=//form[@id='postRouteForm']//input[contains(@placeholder,'(#1)')]'.</msg>
+<arg>xpath=//form[@id='postRouteForm']//input[contains(@placeholder,'(#1)')]</arg>
+<arg>ชัยภูมิ</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:39.530103" elapsed="0.716215"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<arg>3s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-17T15:11:40.251454" elapsed="0.450840"/>
+</kw>
+<arg>Wait Until Element Is Visible</arg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<arg>3s</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="PASS" start="2026-03-17T15:11:40.249351" elapsed="0.452943"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:40.706330" level="INFO">Clicking element 'xpath=(//div[contains(@class,'pac-item')])[1]'.</msg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:40.706330" elapsed="0.494170"/>
+</kw>
+<arg>Click Element</arg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="PASS" start="2026-03-17T15:11:40.704314" elapsed="0.496186"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:41.200500" level="INFO">Clicking element 'xpath=//form[@id='postRouteForm']//button[@type='button' and contains(.,'เพิ่มจุดแวะ')]'.</msg>
+<arg>xpath=//form[@id='postRouteForm']//button[@type='button' and contains(.,'เพิ่มจุดแวะ')]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:41.200500" elapsed="0.480655"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:41.681155" level="INFO">Typing text 'นครราชสีมา' into text field 'xpath=//form[@id='postRouteForm']//input[contains(@placeholder,'(#2)')]'.</msg>
+<arg>xpath=//form[@id='postRouteForm']//input[contains(@placeholder,'(#2)')]</arg>
+<arg>นครราชสีมา</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:41.681155" elapsed="0.730482"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<arg>3s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-17T15:11:42.415646" elapsed="0.437179"/>
+</kw>
+<arg>Wait Until Element Is Visible</arg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<arg>3s</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="PASS" start="2026-03-17T15:11:42.414642" elapsed="0.438183"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:42.852825" level="INFO">Clicking element 'xpath=(//div[contains(@class,'pac-item')])[1]'.</msg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:42.852825" elapsed="0.479970"/>
+</kw>
+<arg>Click Element</arg>
+<arg>xpath=(//div[contains(@class,'pac-item')])[1]</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="PASS" start="2026-03-17T15:11:42.852825" elapsed="0.479970"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:43.332795" level="INFO">Typing text '10/12/2026' into text field 'id=travelDate'.</msg>
+<arg>id=travelDate</arg>
+<arg>${TRIP_DATE_UI}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:43.332795" elapsed="0.720767"/>
+</kw>
+<msg time="2026-03-17T15:11:44.053562" level="INFO">${date_status_2} = PASS</msg>
+<msg time="2026-03-17T15:11:44.053562" level="INFO">${date_msg_2} = None</msg>
+<var>${date_status_2}</var>
+<var>${date_msg_2}</var>
+<arg>Input Text</arg>
+<arg>id=travelDate</arg>
+<arg>${TRIP_DATE_UI}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="PASS" start="2026-03-17T15:11:43.332795" elapsed="0.720767"/>
+</kw>
+<kw name="Run Keyword If" owner="BuiltIn">
+<arg>'${date_status_2}'=='FAIL'</arg>
+<arg>Input Text</arg>
+<arg>id=travelDate</arg>
+<arg>${TRIP_DATE_ISO}</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="PASS" start="2026-03-17T15:11:44.053562" elapsed="0.000000"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:44.053562" level="INFO">Typing text '17:00' into text field 'id=travelTime'.</msg>
+<arg>id=travelTime</arg>
+<arg>17:00</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:44.053562" elapsed="0.731872"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:44.785434" level="INFO">Typing text '4' into text field 'id=seatCount'.</msg>
+<arg>id=seatCount</arg>
+<arg>4</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:44.785434" elapsed="0.696364"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:45.481798" level="INFO">Typing text '250' into text field 'id=pricePerSeat'.</msg>
+<arg>id=pricePerSeat</arg>
+<arg>250</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:45.481798" elapsed="0.737635"/>
+</kw>
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:46.219433" level="INFO">Typing text 'ห้ามสูบบุหรี่, ห้ามนำสัตว์เลี้ยงขึ้นมา' into text field 'id=terms'.</msg>
+<arg>id=terms</arg>
+<arg>ห้ามสูบบุหรี่, ห้ามนำสัตว์เลี้ยงขึ้นมา</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:46.219433" elapsed="0.731509"/>
+</kw>
+<arg>Input Text</arg>
+<arg>id=terms</arg>
+<arg>ห้ามสูบบุหรี่, ห้ามนำสัตว์เลี้ยงขึ้นมา</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="PASS" start="2026-03-17T15:11:46.219433" elapsed="0.732310"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//form[@id='postRouteForm']//button[@type='submit']</arg>
+<arg>12s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-17T15:11:46.951743" elapsed="0.450421"/>
+</kw>
+<kw name="Get WebElement" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:47.610160" level="INFO">${submit_btn} = &lt;selenium.webdriver.remote.webelement.WebElement (session="661d397ee058354bca4d8bfc5a3e89a0", element="f.4C33375F184DDEF6E60260AD9D241A10.d.803776D3EE742085CF88006CDC71CE54.e.185")&gt;</msg>
+<var>${submit_btn}</var>
+<arg>xpath=//form[@id='postRouteForm']//button[@type='submit']</arg>
+<doc>Returns the first WebElement matching the given ``locator``.</doc>
+<status status="PASS" start="2026-03-17T15:11:47.402164" elapsed="0.207996"/>
+</kw>
+<kw name="Execute Javascript" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:47.610160" level="INFO">Executing JavaScript:
+arguments[0].scrollIntoView({block: 'center'});
+By using argument:
+'&lt;selenium.webdriver.remote.webelement.WebElement (session="661d397ee058354bca4d8bfc5a3e89a0", element="f.4C33375F184DDEF6E60260AD9D241A10.d.803776D3EE742085CF88006CDC71CE54.e.185")&gt;'</msg>
+<arg>arguments[0].scrollIntoView({block: 'center'});</arg>
+<arg>ARGUMENTS</arg>
+<arg>${submit_btn}</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<status status="PASS" start="2026-03-17T15:11:47.610160" elapsed="0.228085"/>
+</kw>
+<kw name="Execute Javascript" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:47.840855" level="INFO">Executing JavaScript:
+arguments[0].click();
+By using argument:
+'&lt;selenium.webdriver.remote.webelement.WebElement (session="661d397ee058354bca4d8bfc5a3e89a0", element="f.4C33375F184DDEF6E60260AD9D241A10.d.803776D3EE742085CF88006CDC71CE54.e.185")&gt;'</msg>
+<arg>arguments[0].click();</arg>
+<arg>ARGUMENTS</arg>
+<arg>${submit_btn}</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<status status="PASS" start="2026-03-17T15:11:47.839757" elapsed="0.225485"/>
+</kw>
+<kw name="Run Keyword And Return Status" owner="BuiltIn">
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>สำเร็จ</arg>
+<arg>15s</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" start="2026-03-17T15:11:48.065242" elapsed="0.669919"/>
+</kw>
+<msg time="2026-03-17T15:11:48.735161" level="INFO">${success_toast} = True</msg>
+<var>${success_toast}</var>
+<arg>Wait Until Page Contains</arg>
+<arg>สำเร็จ</arg>
+<arg>15s</arg>
+<doc>Runs the specified keyword and returns the status as a Boolean value.</doc>
+<status status="PASS" start="2026-03-17T15:11:48.065242" elapsed="0.669919"/>
+</kw>
+<kw name="Run Keyword And Return Status" owner="BuiltIn">
+<kw name="Wait Until Location Contains" owner="SeleniumLibrary">
+<arg>/findTrip</arg>
+<arg>15s</arg>
+<doc>Waits until the current URL contains ``expected``.</doc>
+<status status="PASS" start="2026-03-17T15:11:48.735161" elapsed="1.457748"/>
+</kw>
+<msg time="2026-03-17T15:11:50.192909" level="INFO">${redirected} = True</msg>
+<var>${redirected}</var>
+<arg>Wait Until Location Contains</arg>
+<arg>/findTrip</arg>
+<arg>15s</arg>
+<doc>Runs the specified keyword and returns the status as a Boolean value.</doc>
+<status status="PASS" start="2026-03-17T15:11:48.735161" elapsed="1.457748"/>
+</kw>
+<if>
+<branch type="IF" condition="not ${success_toast} and not ${redirected}">
+<kw name="Fail" owner="BuiltIn">
+<arg>ไม่พบข้อความสำเร็จและไม่ redirect ไป /findTrip</arg>
+<doc>Fails the test with the given message and optionally alters its tags.</doc>
+<status status="NOT RUN" start="2026-03-17T15:11:50.192909" elapsed="0.000000"/>
+</kw>
+<status status="NOT RUN" start="2026-03-17T15:11:50.192909" elapsed="0.000000"/>
+</branch>
+<status status="PASS" start="2026-03-17T15:11:50.192909" elapsed="0.000000"/>
+</if>
+<kw name="Capture Page Screenshot" owner="SeleniumLibrary">
+<msg time="2026-03-17T15:11:50.543151" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-2.png"&gt;&lt;img src="selenium-screenshot-2.png" width="800px"&gt;&lt;/a&gt;</msg>
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<status status="PASS" start="2026-03-17T15:11:50.192909" elapsed="0.350242"/>
+</kw>
+<kw name="Close All Browsers" owner="SeleniumLibrary" type="TEARDOWN">
+<doc>Closes all open browsers and resets the browser cache.</doc>
+<status status="PASS" start="2026-03-17T15:11:50.543151" elapsed="2.389995"/>
+</kw>
+<status status="PASS" start="2026-03-17T15:10:43.507609" elapsed="69.425537"/>
+</test>
+<kw name="Close All Browsers" owner="SeleniumLibrary" type="TEARDOWN">
+<doc>Closes all open browsers and resets the browser cache.</doc>
+<status status="PASS" start="2026-03-17T15:11:52.933146" elapsed="0.000000"/>
+</kw>
+<status status="PASS" start="2026-03-17T15:10:43.297613" elapsed="69.635533"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Test TC3" id="s1" pass="1" fail="0" skip="0">Test TC3</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
