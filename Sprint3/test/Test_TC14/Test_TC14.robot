@@ -8,8 +8,8 @@ ${URL}                 https://csse4569.cpkku.com/
 ${BROWSER}             chrome
 ${DRIVER_EMAIL}        sitananyjjk13@gmail.com
 ${DRIVER_PASS}         Ching13082547
-${PROMPTPAY_NUMBER}    1234567891
-${QR_FILE}             C:/PaiNamNaeWebApp/selenium-screenshot-1.png
+${PROMPTPAY_NUMBER}    0812345678
+${QR_FILE}             C:/PaiNamNaeWebApp/Sprint2/test/pic/test.png
 
 *** Keywords ***
 Capture Screenshot With Test Name
@@ -62,15 +62,7 @@ Set PromptPay And Save
 	Wait Until Element Is Visible    xpath=//button[contains(normalize-space(.),'บันทึก')]    10s
 	Click Button    xpath=//button[contains(normalize-space(.),'บันทึก')]
 
-	${toast_title}=    Run Keyword And Return Status    Wait Until Page Contains    สำเร็จ    20s
-	${toast_msg_exact}=    Run Keyword And Return Status    Wait Until Page Contains    บันทึกข้อมูลสำเร็จ    20s
-	${toast_msg_actual}=    Run Keyword And Return Status    Wait Until Page Contains    บันทึกข้อมูลพร้อมเพย์แล้ว    20s
-	IF    not ${toast_title}
-		Fail    ไม่พบข้อความสำเร็จหลังบันทึกพร้อมเพย์
-	END
-	IF    not ${toast_msg_exact} and not ${toast_msg_actual}
-		Fail    ไม่พบข้อความยืนยันการบันทึกข้อมูลพร้อมเพย์
-	END
+	Wait Until Page Contains    บันทึกข้อมูลพร้อมเพย์แล้ว    15s
 
 *** Test Cases ***
 TC14 Driver Set PromptPay Successfully

@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.4.1 (Python 3.10.8 on win32)" generated="2026-03-18T15:01:11.318446" rpa="false" schemaversion="5">
+<suite id="s1" name="Test TC14" source="C:\PaiNamNaeWebApp\Sprint3\test\Test_TC14.robot">
+<test id="s1-t1" name="TC14 Driver Set PromptPay Successfully" line="68">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2026-03-18T15:01:11.617102" level="INFO">Opening browser 'chrome' to base url 'https://csse4569.cpkku.com/'.</msg>
+<arg>${URL}</arg>
+<arg>${BROWSER}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2026-03-18T15:01:11.617102" elapsed="2.139436"/>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" start="2026-03-18T15:01:13.757060" elapsed="0.037007"/>
+</kw>
+<kw name="Set Selenium Speed" owner="SeleniumLibrary">
+<arg>0.2s</arg>
+<doc>Sets the delay that is waited after each Selenium command.</doc>
+<status status="PASS" start="2026-03-18T15:01:13.794581" elapsed="0.000000"/>
+</kw>
+<kw name="Clear Session And Go To Login">
+<kw name="Go To" owner="SeleniumLibrary">
+<msg time="2026-03-18T15:01:13.796590" level="INFO">Opening url 'https://csse4569.cpkku.com/'</msg>
+<arg>${URL}</arg>
+<doc>Navigates the current browser window to the provided ``url``.</doc>
+<status status="PASS" start="2026-03-18T15:01:13.794581" elapsed="0.252915"/>
+</kw>
+<kw name="Delete All Cookies" owner="SeleniumLibrary">
+<doc>Deletes all cookies.</doc>
+<status status="PASS" start="2026-03-18T15:01:14.047496" elapsed="0.208212"/>
+</kw>
+<kw name="Execute Javascript" owner="SeleniumLibrary">
+<msg time="2026-03-18T15:01:14.256260" level="INFO">Executing JavaScript:
+window.localStorage.clear(); window.sessionStorage.clear();
+Without any arguments.</msg>
+<arg>window.localStorage.clear(); window.sessionStorage.clear();</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<status status="PASS" start="2026-03-18T15:01:14.255708" elapsed="0.206255"/>
+</kw>
+<kw name="Go To" owner="SeleniumLibrary">
+<msg time="2026-03-18T15:01:14.461963" level="INFO">Opening url 'https://csse4569.cpkku.com/login'</msg>
+<arg>${URL}login</arg>
+<doc>Navigates the current browser window to the provided ``url``.</doc>
+<status status="PASS" start="2026-03-18T15:01:14.461963" elapsed="0.427007"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>id=identifier</arg>
+<arg>15s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-18T15:01:14.888970" elapsed="0.445944"/>
+</kw>
+<status status="PASS" start="2026-03-18T15:01:13.794581" elapsed="1.540333"/>
+</kw>
+<kw name="Login With">
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-18T15:01:15.338673" level="INFO">Typing text 'sitananyjjk13@gmail.com' into text field 'id=identifier'.</msg>
+<arg>id=identifier</arg>
+<arg>${email}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-18T15:01:15.334914" elapsed="0.870917"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-18T15:01:16.205831" level="INFO">Typing text 'Ching13082547' into text field 'id=password'.</msg>
+<arg>id=password</arg>
+<arg>${password}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-18T15:01:16.205831" elapsed="0.838641"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2026-03-18T15:01:17.045579" level="INFO">Clicking button 'xpath=//form[@id='loginForm']//button[@type='submit']'.</msg>
+<arg>xpath=//form[@id='loginForm']//button[@type='submit']</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-18T15:01:17.044472" elapsed="1.202926"/>
+</kw>
+<kw name="Wait Until Keyword Succeeds" owner="BuiltIn">
+<kw name="Assert Current URL Is Not Login">
+<kw name="Get Location" owner="SeleniumLibrary">
+<msg time="2026-03-18T15:01:18.462808" level="INFO">${current_url} = https://csse4569.cpkku.com/login/</msg>
+<var>${current_url}</var>
+<doc>Returns the current browser window URL.</doc>
+<status status="PASS" start="2026-03-18T15:01:18.249685" elapsed="0.213123"/>
+</kw>
+<kw name="Should Not Contain" owner="BuiltIn">
+<msg time="2026-03-18T15:01:18.464821" level="FAIL">'https://csse4569.cpkku.com/login/' contains '/login'</msg>
+<arg>${current_url}</arg>
+<arg>/login</arg>
+<doc>Fails if ``container`` contains ``item`` one or more times.</doc>
+<status status="FAIL" start="2026-03-18T15:01:18.462808" elapsed="0.002013">'https://csse4569.cpkku.com/login/' contains '/login'</status>
+</kw>
+<status status="FAIL" start="2026-03-18T15:01:18.249685" elapsed="0.216512">'https://csse4569.cpkku.com/login/' contains '/login'</status>
+</kw>
+<kw name="Assert Current URL Is Not Login">
+<kw name="Get Location" owner="SeleniumLibrary">
+<msg time="2026-03-18T15:01:20.674159" level="INFO">${current_url} = https://csse4569.cpkku.com/</msg>
+<var>${current_url}</var>
+<doc>Returns the current browser window URL.</doc>
+<status status="PASS" start="2026-03-18T15:01:20.470386" elapsed="0.204596"/>
+</kw>
+<kw name="Should Not Contain" owner="BuiltIn">
+<arg>${current_url}</arg>
+<arg>/login</arg>
+<doc>Fails if ``container`` contains ``item`` one or more times.</doc>
+<status status="PASS" start="2026-03-18T15:01:20.674982" elapsed="0.000513"/>
+</kw>
+<status status="PASS" start="2026-03-18T15:01:20.469189" elapsed="0.206306"/>
+</kw>
+<arg>8x</arg>
+<arg>2s</arg>
+<arg>Assert Current URL Is Not Login</arg>
+<doc>Runs the specified keyword and retries if it fails.</doc>
+<status status="PASS" start="2026-03-18T15:01:18.248446" elapsed="2.427049"/>
+</kw>
+<arg>${DRIVER_EMAIL}</arg>
+<arg>${DRIVER_PASS}</arg>
+<status status="PASS" start="2026-03-18T15:01:15.334914" elapsed="5.340581"/>
+</kw>
+<kw name="Open Account Page">
+<kw name="Run Keyword And Return Status" owner="BuiltIn">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<msg time="2026-03-18T15:01:29.641469" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-1.png"&gt;&lt;img src="selenium-screenshot-1.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2026-03-18T15:01:29.642061" level="FAIL">Element 'xpath=(//a[contains(normalize-space(.),'บัญชีของฉัน')])[1]' not visible after 8 seconds.</msg>
+<arg>xpath=(//a[contains(normalize-space(.),'บัญชีของฉัน')])[1]</arg>
+<arg>8s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="FAIL" start="2026-03-18T15:01:20.685562" elapsed="8.957009">Element 'xpath=(//a[contains(normalize-space(.),'บัญชีของฉัน')])[1]' not visible after 8 seconds.</status>
+</kw>
+<msg time="2026-03-18T15:01:29.644592" level="INFO">${has_account_menu} = False</msg>
+<var>${has_account_menu}</var>
+<arg>Wait Until Element Is Visible</arg>
+<arg>xpath=(//a[contains(normalize-space(.),'บัญชีของฉัน')])[1]</arg>
+<arg>8s</arg>
+<doc>Runs the specified keyword and returns the status as a Boolean value.</doc>
+<status status="PASS" start="2026-03-18T15:01:20.683546" elapsed="8.961046"/>
+</kw>
+<if>
+<branch type="IF" condition="${has_account_menu}">
+<kw name="Click Element" owner="SeleniumLibrary">
+<arg>xpath=(//a[contains(normalize-space(.),'บัญชีของฉัน')])[1]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" start="2026-03-18T15:01:29.645607" elapsed="0.000000"/>
+</kw>
+<status status="NOT RUN" start="2026-03-18T15:01:29.644592" elapsed="0.001015"/>
+</branch>
+<branch type="ELSE">
+<kw name="Go To" owner="SeleniumLibrary">
+<msg time="2026-03-18T15:01:29.645607" level="INFO">Opening url 'https://csse4569.cpkku.com/profile'</msg>
+<arg>${URL}profile</arg>
+<doc>Navigates the current browser window to the provided ``url``.</doc>
+<status status="PASS" start="2026-03-18T15:01:29.645607" elapsed="0.682089"/>
+</kw>
+<status status="PASS" start="2026-03-18T15:01:29.645607" elapsed="0.682089"/>
+</branch>
+<status status="PASS" start="2026-03-18T15:01:29.644592" elapsed="0.683104"/>
+</if>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//h1[contains(normalize-space(.),'โปรไฟล์ของฉัน') or contains(normalize-space(.),'โปรไฟล์และการตั้งค่า')]</arg>
+<arg>15s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-18T15:01:30.327696" elapsed="0.451266"/>
+</kw>
+<status status="PASS" start="2026-03-18T15:01:20.681530" elapsed="10.097432"/>
+</kw>
+<kw name="Open PromptPay Settings Page">
+<kw name="Run Keyword And Return Status" owner="BuiltIn">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//a[contains(@href,'/profile/promptpay') and contains(normalize-space(.),'ตั้งค่าพร้อมเพย์')]</arg>
+<arg>8s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-18T15:01:30.783943" elapsed="0.457355"/>
+</kw>
+<msg time="2026-03-18T15:01:31.241951" level="INFO">${has_promptpay_link} = True</msg>
+<var>${has_promptpay_link}</var>
+<arg>Wait Until Element Is Visible</arg>
+<arg>xpath=//a[contains(@href,'/profile/promptpay') and contains(normalize-space(.),'ตั้งค่าพร้อมเพย์')]</arg>
+<arg>8s</arg>
+<doc>Runs the specified keyword and returns the status as a Boolean value.</doc>
+<status status="PASS" start="2026-03-18T15:01:30.783943" elapsed="0.458008"/>
+</kw>
+<if>
+<branch type="IF" condition="${has_promptpay_link}">
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2026-03-18T15:01:31.241951" level="INFO">Clicking element 'xpath=//a[contains(@href,'/profile/promptpay') and contains(normalize-space(.),'ตั้งค่าพร้อมเพย์')]'.</msg>
+<arg>xpath=//a[contains(@href,'/profile/promptpay') and contains(normalize-space(.),'ตั้งค่าพร้อมเพย์')]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-18T15:01:31.241951" elapsed="0.599598"/>
+</kw>
+<status status="PASS" start="2026-03-18T15:01:31.241951" elapsed="0.599598"/>
+</branch>
+<branch type="ELSE">
+<kw name="Go To" owner="SeleniumLibrary">
+<arg>${URL}profile/promptpay</arg>
+<doc>Navigates the current browser window to the provided ``url``.</doc>
+<status status="NOT RUN" start="2026-03-18T15:01:31.841549" elapsed="0.000000"/>
+</kw>
+<status status="NOT RUN" start="2026-03-18T15:01:31.841549" elapsed="0.001223"/>
+</branch>
+<status status="PASS" start="2026-03-18T15:01:31.241951" elapsed="0.600821"/>
+</if>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//h1[contains(normalize-space(.),'ตั้งค่าพร้อมเพย์')]</arg>
+<arg>15s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-18T15:01:31.842772" elapsed="0.435666"/>
+</kw>
+<status status="PASS" start="2026-03-18T15:01:30.782139" elapsed="1.496299"/>
+</kw>
+<kw name="Set PromptPay And Save">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//label[contains(normalize-space(.),'เบอร์พร้อมเพย์')]</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-18T15:01:32.280461" elapsed="0.456257"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-18T15:01:32.736718" level="INFO">Typing text '0812345678' into text field 'xpath=//input[@type='tel']'.</msg>
+<arg>xpath=//input[@type='tel']</arg>
+<arg>${PROMPTPAY_NUMBER}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-18T15:01:32.736718" elapsed="0.763347"/>
+</kw>
+<kw name="Wait Until Page Contains Element" owner="SeleniumLibrary">
+<arg>xpath=//input[@type='file']</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` appears on the current page.</doc>
+<status status="PASS" start="2026-03-18T15:01:33.500783" elapsed="0.235002"/>
+</kw>
+<kw name="Choose File" owner="SeleniumLibrary">
+<msg time="2026-03-18T15:01:33.735785" level="INFO">Sending C:\PaiNamNaeWebApp\Sprint2\test\pic\test.png to browser.</msg>
+<arg>xpath=//input[@type='file']</arg>
+<arg>${QR_FILE}</arg>
+<doc>Inputs the ``file_path`` into the file input field ``locator``.</doc>
+<status status="PASS" start="2026-03-18T15:01:33.735785" elapsed="0.447850"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//button[contains(normalize-space(.),'บันทึก')]</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-18T15:01:34.183635" elapsed="0.439713"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2026-03-18T15:01:34.624038" level="INFO">Clicking button 'xpath=//button[contains(normalize-space(.),'บันทึก')]'.</msg>
+<arg>xpath=//button[contains(normalize-space(.),'บันทึก')]</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-18T15:01:34.623348" elapsed="1.131835"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>บันทึกข้อมูลพร้อมเพย์แล้ว</arg>
+<arg>15s</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" start="2026-03-18T15:01:35.755183" elapsed="12.653219"/>
+</kw>
+<status status="PASS" start="2026-03-18T15:01:32.278438" elapsed="16.129964"/>
+</kw>
+<kw name="Capture Screenshot With Test Name" type="TEARDOWN">
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-03-18T15:01:48.409899" level="INFO">${testname} = TC14 Driver Set PromptPay Successfully</msg>
+<var>${testname}</var>
+<arg>${TEST NAME}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2026-03-18T15:01:48.409899" elapsed="0.000000"/>
+</kw>
+<kw name="Capture Page Screenshot" owner="SeleniumLibrary">
+<msg time="2026-03-18T15:01:48.747881" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="TC14%20Driver%20Set%20PromptPay%20Successfully.png"&gt;&lt;img src="TC14%20Driver%20Set%20PromptPay%20Successfully.png" width="800px"&gt;&lt;/a&gt;</msg>
+<arg>${testname}.png</arg>
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<status status="PASS" start="2026-03-18T15:01:48.409899" elapsed="0.337982"/>
+</kw>
+<status status="PASS" start="2026-03-18T15:01:48.408402" elapsed="0.339479"/>
+</kw>
+<status status="PASS" start="2026-03-18T15:01:11.616097" elapsed="37.135731"/>
+</test>
+<kw name="Close All Browsers" owner="SeleniumLibrary" type="TEARDOWN">
+<doc>Closes all open browsers and resets the browser cache.</doc>
+<status status="PASS" start="2026-03-18T15:01:48.751828" elapsed="2.427273"/>
+</kw>
+<status status="PASS" start="2026-03-18T15:01:11.324751" elapsed="39.854350"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Test TC14" id="s1" pass="1" fail="0" skip="0">Test TC14</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
