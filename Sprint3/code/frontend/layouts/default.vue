@@ -1,6 +1,6 @@
 <template>
     <div>
-        <header class="sticky top-0 z-50 bg-white shadow-sm">
+        <header class="sticky top-0 z-50 bg-white shadow-sm print:hidden">
             <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-16">
                     <NuxtLink to="/">
